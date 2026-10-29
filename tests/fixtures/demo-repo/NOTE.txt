@@ -1,0 +1,3 @@
+Markdown files here carry a ".in" suffix on purpose: the repository self-scan walks every *.md
+under the repo root and would report this fixture's intentional drift. tests/test_e2e.py copies
+the tree to a temp directory and strips the suffix before scanning.

@@ -1,0 +1,14 @@
+# Setup
+
+## Installation
+
+The entry point is `app.py`; its settings live in `config/settings.yaml`.
+
+```bash
+export APP_MODE=dev
+export APP_SECRET_KEY=changeme
+./scripts/run.sh
+```
+
+<!-- driftwatch: ignore -->
+Legacy notes live in `docs/legacy.md`.

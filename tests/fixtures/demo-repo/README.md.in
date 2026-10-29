@@ -1,0 +1,11 @@
+# Demo Repo
+
+Start the app with `scripts/run.sh`; the old launcher `scripts/old_run.sh` is gone.
+
+See the [setup guide](docs/setup.md#installation) and the [missing guide](docs/missing.md).
+Also the [bad anchor](docs/setup.md#nope).
+
+```bash
+./scripts/run.sh
+./scripts/deploy.sh
+```
