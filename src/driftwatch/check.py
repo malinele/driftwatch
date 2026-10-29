@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import difflib
 import os
+import posixpath
 import re
 import shlex
 import shutil
@@ -11,7 +12,7 @@ import sys
 import tomllib
 from collections.abc import Collection, Sequence
 from pathlib import Path
-from typing import Protocol
+from typing import Literal, Protocol
 
 from driftwatch.envscan import scan_code_env_reads
 from driftwatch.markdown import parse_markdown
@@ -127,8 +128,61 @@ def heading_slugs(headings: list[str]) -> list[str]:
     return slugs
 
 
-def _resolve(file_part: str, doc_file: Path, root: Path) -> Path | None:
-    """Resolve a link target: doc-relative first, then repo root (a leading ``/`` means repo root)."""
+MKDOCS_FILES = ("mkdocs.yml", "mkdocs.yaml")
+DEFAULT_DOCS_DIR = "docs"
+_DOCS_DIR = re.compile(r"""^docs_dir:[ \t]*['"]?([^'"#\r\n]*?)['"]?[ \t]*(?:#.*)?$""", re.MULTILINE)
+_INDEX_STEMS = frozenset({"index", "readme"})
+MkdocsSetting = bool | Literal["auto"]
+
+
+def mkdocs_docs_dir(root: Path, setting: MkdocsSetting = "auto") -> Path | None:
+    """The mkdocs docs directory when mkdocs mode is on for ``root``, else ``None``.
+
+    ``auto`` enables the mode when mkdocs.yml / mkdocs.yaml exists at the root; ``docs_dir`` is read with a
+    regex (default ``docs``). ``True`` forces the mode on, ``False`` off.
+    """
+    if setting is False:
+        return None
+    config = next((root / name for name in MKDOCS_FILES if (root / name).is_file()), None)
+    if config is None and setting != "auto":
+        return root / DEFAULT_DOCS_DIR
+    if config is None:
+        return None
+    try:
+        match = _DOCS_DIR.search(config.read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError):
+        match = None
+    docs_dir = match.group(1).strip() if match else ""
+    return root / (docs_dir or DEFAULT_DOCS_DIR)
+
+
+def _mkdocs_resolve(file_part: str, doc_file: Path, root: Path, docs_dir: Path) -> Path | None:
+    """Resolve an extensionless relative link with mkdocs directory-URL semantics, or ``None``."""
+    if file_part.startswith("/") or Path(file_part.rstrip("/")).suffix:
+        return None
+    docs = Path(os.path.abspath(docs_dir))
+    page = Path(os.path.abspath(doc_file))
+    if not page.is_relative_to(docs):
+        return None
+    relative = page.relative_to(docs)
+    url_dir = relative.parent if relative.stem.lower() in _INDEX_STEMS else relative.with_suffix("")
+    resolved = posixpath.normpath(posixpath.join(url_dir.as_posix(), file_part))
+    if resolved == ".." or resolved.startswith("../"):
+        return None
+    base = docs / resolved if resolved != "." else docs
+    candidates = [base.with_name(base.name + ".md"), base / "index.md"] if resolved != "." else [base / "index.md"]
+    return next((c for c in candidates if is_within(c, root) and c.is_file()), None)
+
+
+def _resolve(file_part: str, doc_file: Path, root: Path, docs_dir: Path | None = None) -> Path | None:
+    """Resolve a link target: mkdocs URL semantics first (if on), then doc-relative, then repo root.
+
+    A leading ``/`` means repo root.
+    """
+    if docs_dir is not None:
+        found = _mkdocs_resolve(file_part, doc_file, root, docs_dir)
+        if found is not None:
+            return found
     if file_part.startswith("/"):
         bases = [root / file_part.lstrip("/")]
     else:
@@ -149,11 +203,12 @@ class LinkChecker:
 
     name = "link"
 
-    def check(self, claims: list[Claim], root: Path) -> list[Finding]:
+    def check(self, claims: list[Claim], root: Path, mkdocs: MkdocsSetting = "auto") -> list[Finding]:
+        docs_dir = mkdocs_docs_dir(root, mkdocs)
         return [
             Finding(claim, Severity.ERROR, f"link target does not exist: {claim.value}", self.name)
             for claim in claims
-            if claim.kind is ClaimKind.LINK and _resolve(claim.value, claim.location.file, root) is None
+            if claim.kind is ClaimKind.LINK and _resolve(claim.value, claim.location.file, root, docs_dir) is None
         ]
 
 
@@ -162,20 +217,23 @@ class AnchorChecker:
 
     name = "anchor"
 
-    def check(self, claims: list[Claim], root: Path) -> list[Finding]:
+    def check(self, claims: list[Claim], root: Path, mkdocs: MkdocsSetting = "auto") -> list[Finding]:
         findings: list[Finding] = []
         cache: dict[Path, list[str] | None] = {}
+        docs_dir = mkdocs_docs_dir(root, mkdocs)
         for claim in claims:
             if claim.kind is not ClaimKind.ANCHOR:
                 continue
-            finding = self._check_one(claim, root, cache)
+            finding = self._check_one(claim, root, cache, docs_dir)
             if finding is not None:
                 findings.append(finding)
         return findings
 
-    def _check_one(self, claim: Claim, root: Path, cache: dict[Path, list[str] | None]) -> Finding | None:
+    def _check_one(
+        self, claim: Claim, root: Path, cache: dict[Path, list[str] | None], docs_dir: Path | None
+    ) -> Finding | None:
         file_part, _, anchor = claim.value.partition("#")
-        target = claim.location.file if not file_part else _resolve(file_part, claim.location.file, root)
+        target = claim.location.file if not file_part else _resolve(file_part, claim.location.file, root, docs_dir)
         # A missing file is the LinkChecker's finding; non-markdown targets cannot be verified.
         if target is None or not target.is_file() or target.suffix.lower() != ".md":
             return None

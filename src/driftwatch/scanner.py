@@ -8,7 +8,7 @@ import re
 from collections.abc import Iterator
 from pathlib import Path
 
-from driftwatch.check import CHECKERS, EnvChecker
+from driftwatch.check import CHECKERS, AnchorChecker, EnvChecker, LinkChecker
 from driftwatch.config import Config
 from driftwatch.extract import (
     extract_command_claims,
@@ -133,7 +133,11 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
         for name, checker in CHECKERS.items():
             if historical and name not in HISTORICAL_CHECKERS:
                 continue
-            if name in cfg.enabled_checkers and not isinstance(checker, EnvChecker):
+            if name not in cfg.enabled_checkers or isinstance(checker, EnvChecker):
+                continue
+            if isinstance(checker, LinkChecker | AnchorChecker):
+                findings.extend(checker.check(claims, root, cfg.mkdocs))
+            else:
                 findings.extend(checker.check(claims, root))
     # The env checker is bidirectional, so it needs every claim and the whole doc corpus at once.
     if files:

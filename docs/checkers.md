@@ -62,6 +62,8 @@ Resolution: relative to the document's directory first, then relative to the rep
 
 **ERROR:** `link target does not exist: ...`.
 
+Mkdocs mode: mkdocs serves a page at a directory URL, so a relative extensionless link is resolved against that URL, not against the file. The mode is on for documents under the docs directory when a mkdocs.yml or mkdocs.yaml file exists at the scan root (the `mkdocs` option defaults to `"auto"`; `true` forces it on, `false` off). The docs directory comes from a `docs_dir:` line in that file if present, otherwise it is docs. For a page named sub/page.md the URL directory is sub/page/, and index.md and README.md map to their parent directory. The link is resolved against the URL directory, then mapped back to a file: the result with the markdown suffix appended, or the result as a directory containing index.md, inside the docs directory. For example, a link to ../advanced/transports from docs/async.md resolves to docs/advanced/transports.md. This is tried first; if it finds nothing, the chain above still applies. Targets with a file extension, and targets starting with a slash, always use the chain above. The anchor checker maps cross-document targets the same way.
+
 Example:
 
 ```markdown

@@ -7,14 +7,14 @@ from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any
 
-from driftwatch.check import CHECKERS
+from driftwatch.check import CHECKERS, MkdocsSetting
 from driftwatch.models import Severity
 
 PYPROJECT = "pyproject.toml"
 DRIFTWATCH_TOML = "driftwatch.toml"
 KNOWN_KEYS = frozenset({
     "enabled_checkers", "exclude", "env_stoplist_extra", "fail_on",
-    "ambient_extra", "historical", "historical_full_scan",
+    "ambient_extra", "historical", "historical_full_scan", "mkdocs",
 })  # fmt: skip
 _SEVERITY_RANK = {Severity.INFO: 0, Severity.WARNING: 1, Severity.ERROR: 2}
 
@@ -40,6 +40,7 @@ class Config:
     ambient_extra: tuple[str, ...] = ()
     historical: tuple[str, ...] = ()
     historical_full_scan: bool = False
+    mkdocs: MkdocsSetting = "auto"
 
 
 def _read_toml(path: Path) -> dict[str, Any]:
@@ -77,6 +78,14 @@ def _parse_bool(key: str, value: object) -> bool:
     if not isinstance(value, bool):
         raise ConfigError(f"driftwatch config: '{key}' must be true or false")
     return value
+
+
+def _parse_mkdocs(value: object) -> MkdocsSetting:
+    if isinstance(value, bool):
+        return value
+    if value == "auto":
+        return "auto"
+    raise ConfigError("driftwatch config: 'mkdocs' must be true, false or \"auto\"")
 
 
 def _parse_fail_on(value: object) -> Severity:
@@ -123,6 +132,7 @@ def load_config(root: Path) -> Config:
         if "historical_full_scan" in raw
         else defaults.historical_full_scan
     )
+    mkdocs = _parse_mkdocs(raw["mkdocs"]) if "mkdocs" in raw else defaults.mkdocs
     return Config(
         enabled_checkers=checkers,
         exclude=exclude,
@@ -131,4 +141,5 @@ def load_config(root: Path) -> Config:
         ambient_extra=ambient,
         historical=historical,
         historical_full_scan=full_scan,
+        mkdocs=mkdocs,
     )

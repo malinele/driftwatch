@@ -121,6 +121,7 @@ Settings come from the `[tool.driftwatch]` table in `pyproject.toml`, from a `dr
 | `ambient_extra` | list of strings | empty | Extra environment variable names treated as ambient (merged with the built-in ambient set). A documented ambient variable that the code does not read is INFO, not ERROR, and is never reported as undocumented. |
 | `historical` | list of strings | empty | Extra glob patterns for changelog-type files, which only get the link and anchor checkers. Built in: `CHANGELOG*.md`, `HISTORY*.md`, `CHANGES*.md`, `RELEASES*.md`, `docs/release-notes*.md`. |
 | `historical_full_scan` | boolean | `false` | When `true`, historical files are checked by every checker like any other document. |
+| `mkdocs` | boolean or `"auto"` | `"auto"` | mkdocs directory-URL link resolution for documents under the docs directory. `"auto"` enables it when a mkdocs config file exists at the scan root. See the link checker in [checkers](checkers.md). |
 
 Example:
 
