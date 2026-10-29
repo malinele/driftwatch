@@ -28,6 +28,9 @@ def _looks_like_path(token: str) -> bool:
         return False
     if "*" in token or "{" in token or _SCHEME.match(token):
         return False
+    # String literals such as b"HTTP/1.1" are code, not paths.
+    if "'" in token or '"' in token:
+        return False
     return "/" in token or token.lower().endswith(PATH_EXTENSIONS)
 
 

@@ -25,9 +25,17 @@ A span counts as a path when, after trimming whitespace and trailing punctuation
 - contains no asterisk or opening brace and does not start with a URL scheme (`https://`, `git@host:` and similar),
 - and either contains a slash or ends in one of: `.py .md .toml .yaml .yml .json .txt .sh .cfg .ini .html .css .js .ts .png .lock` (case-insensitive).
 
-**ERROR:** `path does not exist: ...` when the path exists neither relative to the repository root (the working directory) nor relative to the directory of the document that mentions it.
+Spans containing a single or double quote character (string literals such as `b"HTTP/1.1"`) are never claimed.
+
+**ERROR:** `path does not exist: ...` when the path exists neither relative to the repository root (the working directory) nor relative to the directory of the document that mentions it, and neither downgrade below applies.
 
 **WARNING:** `absolute path in docs is machine-specific` for any absolute path, whether or not it exists.
+
+**WARNING:** `placeholder path in docs` replaces the ERROR when the missing path's base name without extension is one of `foo bar baz example sample myfile yourfile placeholder test`.
+
+**WARNING:** `path does not exist at the stated location; found at: <path>` replaces the ERROR when a file with the same base name exists elsewhere under the root. The first match in sorted order is reported. The index is built once per scan and skips hidden directories, `venv`, `node_modules`, `dist` and `__pycache__`.
+
+**INFO:** `user-local path, not checked` for paths starting with `~/`. They are claimed but never looked up.
 
 Example:
 
@@ -39,8 +47,8 @@ Run it with `make test`              <- not a path (contains whitespace)
 
 Limitations:
 
-- A bare file name such as main.py is only looked up in the root and in the document's own directory. There is no recursive search.
-- Anything with a slash is treated as a path, so a span like "and/or" or "v1/v2" is reported, and a home-relative path starting with a tilde is looked up relative to the root and reported as missing. Use an ignore comment for these.
+- A bare file name such as main.py is looked up in the root and in the document's own directory; if missing, the base name index gives a warning (not an error) when the file exists elsewhere.
+- Anything with a slash is treated as a path, so a span like "and/or" or "v1/v2" is reported. Use an ignore comment for these.
 - Globs (anything with an asterisk) and brace expansions are skipped, not checked.
 - A span without a slash and with an extension outside the list above is not seen.
 
@@ -50,7 +58,7 @@ Limitations:
 
 Skipped: any target with a URL scheme (http, https, mailto and so on) or starting with two slashes, empty targets, and autolinks written in angle brackets. A query string is dropped and percent-escapes are decoded before the lookup. A pure fragment link such as `[x](#section)` has no file part and is handled by the anchor checker; a link like `[x](other.md#section)` yields one link claim and one anchor claim.
 
-Resolution: relative to the document's directory first, then relative to the repository root. A target starting with a slash is relative to the repository root only. A directory counts as existing.
+Resolution: relative to the document's directory first, then relative to the repository root. A target starting with a slash is relative to the repository root only. A directory counts as existing. A target with no file extension is tried, in order, as written, then with the markdown suffix appended, then as a directory containing an index file, then as a directory containing a readme file (mkdocs conventions; the file names are index.md and README.md). The anchor checker resolves cross-document targets the same way.
 
 **ERROR:** `link target does not exist: ...`.
 

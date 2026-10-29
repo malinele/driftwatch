@@ -38,6 +38,19 @@ def is_within(candidate: Path, root: Path) -> bool:
 
 
 ESCAPE_MESSAGE = "path escapes the scanned repository"
+PLACEHOLDER_STEMS = frozenset({"foo", "bar", "baz", "example", "sample", "myfile", "yourfile", "placeholder", "test"})
+_INDEX_SKIP_DIRS = frozenset({"venv", "node_modules", "dist", "__pycache__"})
+
+
+def _basename_index(root: Path) -> dict[str, str]:
+    """Map each file basename under ``root`` to its first root-relative POSIX path (sorted walk)."""
+    index: dict[str, str] = {}
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if not d.startswith(".") and d not in _INDEX_SKIP_DIRS)
+        for filename in sorted(filenames):
+            if filename not in index:
+                index[filename] = (Path(dirpath) / filename).relative_to(root).as_posix()
+    return index
 
 
 class PathChecker:
@@ -47,15 +60,34 @@ class PathChecker:
 
     def check(self, claims: list[Claim], root: Path) -> list[Finding]:
         findings: list[Finding] = []
+        index: dict[str, str] | None = None
         for claim in claims:
             if claim.kind is not ClaimKind.PATH:
                 continue
             finding = self._check_one(claim, root)
+            if finding is not None and finding.severity is Severity.ERROR:
+                if index is None:
+                    index = _basename_index(root)
+                finding = self._with_fallbacks(finding, index)
             if finding is not None:
                 findings.append(finding)
         return findings
 
+    def _with_fallbacks(self, finding: Finding, index: dict[str, str]) -> Finding:
+        """Downgrade a missing-path ERROR to a WARNING for placeholder names or a path found elsewhere."""
+        claim = finding.claim
+        basename = Path(claim.value.rstrip("/")).name
+        if Path(basename).stem.lower() in PLACEHOLDER_STEMS:
+            return Finding(claim, Severity.WARNING, "placeholder path in docs", self.name)
+        found = index.get(basename)
+        if found is not None:
+            message = f"path does not exist at the stated location; found at: {found}"
+            return Finding(claim, Severity.WARNING, message, self.name)
+        return finding
+
     def _check_one(self, claim: Claim, root: Path) -> Finding | None:
+        if claim.value.startswith("~/"):
+            return Finding(claim, Severity.INFO, "user-local path, not checked", self.name)
         if Path(claim.value).is_absolute():
             return Finding(claim, Severity.WARNING, "absolute path in docs is machine-specific", self.name)
         doc_dir = claim.location.file.parent
@@ -98,10 +130,18 @@ def heading_slugs(headings: list[str]) -> list[str]:
 def _resolve(file_part: str, doc_file: Path, root: Path) -> Path | None:
     """Resolve a link target: doc-relative first, then repo root (a leading ``/`` means repo root)."""
     if file_part.startswith("/"):
-        candidates = [root / file_part.lstrip("/")]
+        bases = [root / file_part.lstrip("/")]
     else:
-        candidates = [doc_file.parent / file_part, root / file_part]
+        bases = [doc_file.parent / file_part, root / file_part]
+    candidates = [c for base in bases for c in _with_conventions(base, file_part)]
     return next((c for c in candidates if is_within(c, root) and c.exists()), None)
+
+
+def _with_conventions(base: Path, file_part: str) -> list[Path]:
+    """``base`` plus, for extensionless targets, the mkdocs-style ``.md`` / ``index.md`` / ``README.md`` forms."""
+    if Path(file_part.rstrip("/")).suffix:
+        return [base]
+    return [base, base.with_name(base.name + ".md"), base / "index.md", base / "README.md"]
 
 
 class LinkChecker:
