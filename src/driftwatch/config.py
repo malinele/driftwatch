@@ -14,7 +14,7 @@ PYPROJECT = "pyproject.toml"
 DRIFTWATCH_TOML = "driftwatch.toml"
 KNOWN_KEYS = frozenset({
     "enabled_checkers", "exclude", "env_stoplist_extra", "fail_on",
-    "ambient_extra", "historical", "historical_full_scan", "mkdocs", "scan_tests",
+    "ambient_extra", "historical", "historical_full_scan", "mkdocs", "scan_tests", "locales",
 })  # fmt: skip
 _SEVERITY_RANK = {Severity.INFO: 0, Severity.WARNING: 1, Severity.ERROR: 2}
 
@@ -42,6 +42,7 @@ class Config:
     historical_full_scan: bool = False
     mkdocs: MkdocsSetting = "auto"
     scan_tests: bool = False
+    locales: bool = True
 
 
 def _read_toml(path: Path) -> dict[str, Any]:
@@ -135,6 +136,7 @@ def load_config(root: Path) -> Config:
     )
     mkdocs = _parse_mkdocs(raw["mkdocs"]) if "mkdocs" in raw else defaults.mkdocs
     scan_tests = _parse_bool("scan_tests", raw["scan_tests"]) if "scan_tests" in raw else defaults.scan_tests
+    locales = _parse_bool("locales", raw["locales"]) if "locales" in raw else defaults.locales
     return Config(
         enabled_checkers=checkers,
         exclude=exclude,
@@ -145,4 +147,5 @@ def load_config(root: Path) -> Config:
         historical_full_scan=full_scan,
         mkdocs=mkdocs,
         scan_tests=scan_tests,
+        locales=locales,
     )

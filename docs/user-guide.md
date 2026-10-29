@@ -107,6 +107,15 @@ exclude = ["CHANGELOG.md", "docs/archive/*"]
 
 Excluded files are neither checked nor counted as documentation by the env checker. Exclusion applies to markdown files only: the env checker still reads source files from the whole repository.
 
+## Translated documentation
+
+A directory named by an ISO 639-1 code (optionally with a region, such as `pt-BR` or `zh_CN`) directly under a `docs` directory, or under an `i18n` or `locales` directory, is a locale copy. The source locale is `en` when `docs/en` exists, otherwise the bare `docs/` tree.
+
+- **Dedup:** findings with the same path (locale segment removed), line, checker and value in the source locale and in translations are reported once, for the source locale. The translation copies collapse into one INFO: `same finding repeated in N locale copies (de, es, ...)`.
+- **Fallback:** a path or link error that appears only in a translation, whose target exists in the source locale, becomes a WARNING: `missing in this locale, exists in source locale`.
+
+Set `locales = false` to turn both off and get the raw findings.
+
 ## Configuration
 
 <!-- driftwatch: ignore=path -->
@@ -122,6 +131,7 @@ Settings come from the `[tool.driftwatch]` table in `pyproject.toml`, from a `dr
 | `historical` | list of strings | empty | Extra glob patterns for changelog-type files, which only get the link and anchor checkers. Built in: `CHANGELOG*.md`, `HISTORY*.md`, `CHANGES*.md`, `RELEASES*.md`, `docs/release-notes*.md`. |
 | `historical_full_scan` | boolean | `false` | When `true`, historical files are checked by every checker like any other document. |
 | `mkdocs` | boolean or `"auto"` | `"auto"` | mkdocs directory-URL link resolution for documents under the docs directory. `"auto"` enables it when a mkdocs config file exists at the scan root. See the link checker in [checkers](checkers.md). |
+| `locales` | boolean | `true` | Locale-aware reporting for translated docs. See [Translated documentation](#translated-documentation). Set `false` for raw per-file findings. |
 
 Example:
 

@@ -4,8 +4,11 @@ from __future__ import annotations
 
 import fnmatch
 import os
+import posixpath
 import re
+from collections import defaultdict
 from collections.abc import Iterator
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 from driftwatch.check import CHECKERS, AnchorChecker, EnvChecker, LinkChecker
@@ -18,7 +21,7 @@ from driftwatch.extract import (
     extract_path_claims,
 )
 from driftwatch.markdown import parse_markdown
-from driftwatch.models import Claim, Finding
+from driftwatch.models import Claim, Finding, Severity
 
 SKIP_DIRS = frozenset({".git", ".venv", "venv", "node_modules", "dist", "__pycache__"})
 
@@ -168,7 +171,120 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
                     [c for c in env_claims if c.value not in extra], root, files, cfg.ambient_extra
                 )
                 findings.extend(f for f in checked if f.claim.value not in extra)
-    return [f for f in findings if not _is_ignored(f, ignores)]
+    kept = [f for f in findings if not _is_ignored(f, ignores)]
+    return dedupe_locales(kept, root) if cfg.locales else kept
+
+
+ISO_639_1 = frozenset(
+    "aa ab ae af ak am an ar as av ay az ba be bg bh bi bm bn bo br bs ca ce ch co cr cs cu cv cy da de dv dz "
+    "ee el en eo es et eu fa ff fi fj fo fr fy ga gd gl gn gu gv ha he hi ho hr ht hu hy hz ia id ie ig ii ik "
+    "io is it iu ja jv ka kg ki kj kk kl km kn ko kr ks ku kv kw ky la lb lg li ln lo lt lu lv mg mh mi mk ml "
+    "mn mr ms mt my na nb nd ne ng nl nn no nr nv ny oc oj om or os pa pi pl ps pt qu rm rn ro ru rw sa sc sd "
+    "se sg si sk sl sm sn so sq sr ss st su sv sw ta te tg th ti tk tl tn to tr ts tt tw ty ug uk ur uz ve vi "
+    "vo wa wo xh yi yo za zh zu".split()
+)
+_LOCALE_DIR = re.compile(r"^([a-z]{2})(?:[-_][A-Za-z]{2})?$")
+_LOCALE_PARENTS = frozenset({"docs", "i18n", "locales"})
+SOURCE_LOCALE = "en"
+LOCALE_FALLBACK_MESSAGE = "missing in this locale, exists in source locale"
+_FALLBACK_CHECKERS = frozenset({"path", "link"})
+
+
+@dataclass(frozen=True)
+class LocaleFile:
+    """A file's place in a translated tree: ``prefix/<locale>/rest`` (``locale`` is None in a bare docs tree)."""
+
+    prefix: tuple[str, ...]
+    locale: str | None
+    rest: tuple[str, ...]
+
+    @property
+    def stripped(self) -> tuple[str, ...]:
+        return (*self.prefix, *self.rest)
+
+
+def locale_of(relative: str) -> LocaleFile | None:
+    """Classify a root-relative posix path as a locale copy or part of a bare ``docs/`` tree."""
+    parts = tuple(relative.split("/"))
+    for index in range(1, len(parts) - 1):
+        match = _LOCALE_DIR.match(parts[index])
+        if match and match.group(1) in ISO_639_1 and parts[index - 1] in _LOCALE_PARENTS:
+            return LocaleFile(parts[:index], parts[index], parts[index + 1 :])
+    for index, part in enumerate(parts[:-1]):
+        if part == "docs":
+            return LocaleFile(parts[: index + 1], None, parts[index + 1 :])
+    return None
+
+
+def _source_dir(info: LocaleFile, root: Path) -> Path | None:
+    """Source-locale directory of ``info``'s tree: ``<prefix>/en`` if it exists, else a bare docs dir."""
+    base = root.joinpath(*info.prefix)
+    if (base / SOURCE_LOCALE).is_dir():
+        return base / SOURCE_LOCALE
+    return base if info.prefix[-1] == "docs" else None
+
+
+def _is_source(info: LocaleFile, root: Path) -> bool:
+    source = _source_dir(info, root)
+    if source is None:
+        return False
+    if source.name == SOURCE_LOCALE and source != root.joinpath(*info.prefix):
+        return info.locale == SOURCE_LOCALE
+    return info.locale is None
+
+
+def _target_exists_in_source(finding: Finding, info: LocaleFile, source_dir: Path) -> bool:
+    value = finding.claim.value.split("#", 1)[0].split("?", 1)[0]
+    if not value or value.startswith(("/", "~")) or "://" in value:
+        return False
+    here = source_dir.joinpath(*info.rest[:-1])
+    target = Path(posixpath.normpath((here / value).as_posix()))
+    candidates = (target, target.with_name(target.name + ".md"), target / "index.md", target / "README.md")
+    return any(c.exists() for c in candidates)
+
+
+def _translation_fallback(finding: Finding, info: LocaleFile | None, root: Path) -> Finding:
+    if info is None or info.locale in (None, SOURCE_LOCALE):
+        return finding
+    if finding.checker not in _FALLBACK_CHECKERS or finding.severity is not Severity.ERROR:
+        return finding
+    source_dir = _source_dir(info, root)
+    if source_dir is None or not _target_exists_in_source(finding, info, source_dir):
+        return finding
+    return replace(finding, severity=Severity.WARNING, message=LOCALE_FALLBACK_MESSAGE)
+
+
+def dedupe_locales(findings: list[Finding], root: Path) -> list[Finding]:
+    """Collapse findings repeated across translation copies and soften ones the source locale satisfies."""
+    resolved = root.resolve()
+    infos = [locale_of(_relative_posix(f.claim.location.file, root)) for f in findings]
+    groups: dict[tuple[tuple[str, ...], int, str, str], list[int]] = defaultdict(list)
+    for index, (finding, info) in enumerate(zip(findings, infos, strict=True)):
+        if info is not None:
+            groups[(info.stripped, finding.claim.location.line, finding.checker, finding.claim.value)].append(index)
+    dropped: set[int] = set()
+    summaries: dict[int, Finding] = {}
+    for members in groups.values():
+        copies = [i for i in members if not _is_source(_require(infos[i]), resolved)]
+        if len(copies) == len(members) or not copies:
+            continue
+        names = sorted({str(_require(infos[i]).locale) for i in copies})
+        message = f"same finding repeated in {len(copies)} locale copies ({', '.join(names)})"
+        dropped.update(copies)
+        summaries[copies[0]] = replace(findings[copies[0]], severity=Severity.INFO, message=message)
+    result: list[Finding] = []
+    for index, finding in enumerate(findings):
+        if index in summaries:
+            result.append(summaries[index])
+        elif index not in dropped:
+            result.append(_translation_fallback(finding, infos[index], resolved))
+    return result
+
+
+def _require(info: LocaleFile | None) -> LocaleFile:
+    if info is None:
+        raise ValueError("finding is not inside a locale tree")
+    return info
 
 
 def scan(root: Path, paths: list[Path], config: Config | None = None) -> list[Finding]:
