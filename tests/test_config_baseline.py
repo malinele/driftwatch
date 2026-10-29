@@ -125,7 +125,7 @@ def test_ignore_comment_covers_next_line_only(tmp_path: Path) -> None:
 
 
 def test_per_checker_ignore_suppresses_only_named_checkers(tmp_path: Path) -> None:
-    line = "`missing/a.py` and `UNREAD_VAR`"
+    line = "`missing/a.py` and `UNREAD_VAR=1`"
     _write(tmp_path, "README.md", f"{line} <!-- driftwatch: ignore=path -->\n")
     assert {f.checker for f in scan(tmp_path, [tmp_path])} == {"env"}
 
@@ -134,7 +134,7 @@ def test_per_checker_ignore_suppresses_only_named_checkers(tmp_path: Path) -> No
 
 
 def test_per_checker_ignore_on_previous_line(tmp_path: Path) -> None:
-    _write(tmp_path, "README.md", "<!-- driftwatch: ignore=path -->\n`missing/a.py` and `UNREAD_VAR`\n")
+    _write(tmp_path, "README.md", "<!-- driftwatch: ignore=path -->\n`missing/a.py` and `UNREAD_VAR=1`\n")
 
     assert {f.checker for f in scan(tmp_path, [tmp_path])} == {"env"}
 

@@ -16,14 +16,14 @@ def _env(findings: list[Finding]) -> list[Finding]:
 
 
 def test_ambient_documented_not_read_is_info(tmp_path: Path) -> None:
-    _write(tmp_path, "README.md", "Honours `HTTP_PROXY`.\n")
+    _write(tmp_path, "README.md", "Honours `HTTP_PROXY=x`.\n")
     findings = _env(scan(tmp_path, [tmp_path]))
     assert [f.severity for f in findings] == [Severity.INFO]
     assert "ambient environment variable" in findings[0].message
 
 
 def test_non_ambient_documented_not_read_is_still_error(tmp_path: Path) -> None:
-    _write(tmp_path, "README.md", "Set `MY_APP_TOKEN`.\n")
+    _write(tmp_path, "README.md", "Set `MY_APP_TOKEN=x`.\n")
     assert [f.severity for f in _env(scan(tmp_path, [tmp_path]))] == [Severity.ERROR]
 
 
@@ -35,7 +35,7 @@ def test_ambient_read_by_code_never_warned_undocumented(tmp_path: Path) -> None:
 
 
 def test_ambient_extra_honored(tmp_path: Path) -> None:
-    _write(tmp_path, "README.md", "Uses `CORP_PROXY_URL`.\n")
+    _write(tmp_path, "README.md", "Uses `CORP_PROXY_URL=x`.\n")
     assert [f.severity for f in _env(scan(tmp_path, [tmp_path]))] == [Severity.ERROR]
     config = Config(ambient_extra=("CORP_PROXY_URL",))
     assert [f.severity for f in _env(scan(tmp_path, [tmp_path], config))] == [Severity.INFO]
@@ -45,7 +45,7 @@ def _changelog_repo(root: Path) -> None:
     _write(
         root,
         "CHANGELOG.md",
-        "# Changes\n\nRemoved `OLD_SETTING`.\n\n```bash\nnonexistent-tool --go\n```\n\nSee [gone](missing.md).\n",
+        "# Changes\n\nRemoved `OLD_SETTING=x`.\n\n```bash\nnonexistent-tool --go\n```\n\nSee [gone](missing.md).\n",
     )
 
 
@@ -57,13 +57,13 @@ def test_changelog_skips_env_and_command_but_keeps_links(tmp_path: Path) -> None
 
 
 def test_historical_is_case_insensitive_and_covers_release_notes(tmp_path: Path) -> None:
-    _write(tmp_path, "docs/Release-Notes-1.md", "Dropped `GONE_VAR`.\n")
-    _write(tmp_path, "history.md", "Dropped `OTHER_GONE_VAR`.\n")
+    _write(tmp_path, "docs/Release-Notes-1.md", "Dropped `GONE_VAR=x`.\n")
+    _write(tmp_path, "history.md", "Dropped `OTHER_GONE_VAR=x`.\n")
     assert scan(tmp_path, [tmp_path]) == []
 
 
 def test_historical_extra_pattern(tmp_path: Path) -> None:
-    _write(tmp_path, "NEWS.md", "Dropped `GONE_VAR`.\n")
+    _write(tmp_path, "NEWS.md", "Dropped `GONE_VAR=x`.\n")
     assert _env(scan(tmp_path, [tmp_path]))
     assert not _env(scan(tmp_path, [tmp_path], Config(historical=("NEWS.md",))))
 

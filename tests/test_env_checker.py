@@ -40,7 +40,7 @@ def test_documented_and_read_passes(tmp_path: Path) -> None:
 
 def test_documented_not_read_errors(tmp_path: Path) -> None:
     _write(tmp_path, "app.py", "print('hi')\n")
-    _write(tmp_path, "README.md", "Set `OLD_API_KEY` first.\n")
+    _write(tmp_path, "README.md", "Set `OLD_API_KEY=x` first.\n")
     findings = scan(tmp_path, [tmp_path])
     assert _messages(findings, Severity.ERROR) == ["documented env var is not read by the code: OLD_API_KEY"]
 
@@ -68,13 +68,14 @@ def test_mention_in_prose_counts_as_documented(tmp_path: Path) -> None:
 
 
 def test_stoplist_tokens_ignored(tmp_path: Path) -> None:
-    text = "Use `TODO`, `GET`, `JSON`, `NOTE` and `HTTP_STATUS`.\n\n```bash\nexport TODO=1\ncurl -X GET $API\n```\n"
+    text = "Use `TODO`, `GET`, `JSON`, `NOTE` and `HTTP_STATUS=1`.\n\n```bash\nexport TODO=1\ncurl -X GET $API\n```\n"
     assert _names(_claims(tmp_path, text)) == ["HTTP_STATUS"]
 
 
-def test_underscore_or_assignment_context_required(tmp_path: Path) -> None:
+def test_explicit_env_context_required(tmp_path: Path) -> None:
+    # Bare tokens (even with an underscore) are constants/prose, not claims (dw-031).
     text = "Plain `TOKEN` and `MY_VAR` and `PORT=80` and `$HOST` and `${NAME}`.\n"
-    assert _names(_claims(tmp_path, text)) == ["MY_VAR", "PORT", "HOST", "NAME"]
+    assert _names(_claims(tmp_path, text)) == ["PORT", "HOST", "NAME"]
 
 
 def test_shell_fence_claims_have_fence_lines(tmp_path: Path) -> None:

@@ -256,31 +256,32 @@ ENV_STOPLIST = frozenset({
     "PATCH", "HTTP", "HTTPS", "API", "URL", "JSON", "YAML", "README", "LICENSE", "CLI", "SQL",
     "HTML", "CSS", "TRUE", "FALSE", "NULL",
 })  # fmt: skip
-_ENV_TOKEN = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")
 _ENV_CONTEXTS = (
     re.compile(r"(?<![A-Za-z0-9_])([A-Z][A-Z0-9_]{2,})="),
     re.compile(r"\bexport\s+([A-Z][A-Z0-9_]{2,})\b"),
     re.compile(r"\$\{?([A-Z][A-Z0-9_]{2,})\b"),
 )
+_ENV_ERROR_CODE = re.compile(r"^(?:ERR_|FST_ERR_|E[A-Z]{2,}_)")
 
 
 def _env_ok(name: str) -> bool:
-    return bool(ENV_NAME.match(name)) and name not in ENV_STOPLIST and name not in SYSTEM_ENV_VARS
+    return (
+        bool(ENV_NAME.match(name))
+        and name not in ENV_STOPLIST
+        and name not in SYSTEM_ENV_VARS
+        and not _ENV_ERROR_CODE.match(name)
+    )
 
 
-def _env_names(text: str, *, whole_span: bool) -> list[str]:
-    """Env-var-looking names in ``text`` without duplicates.
+def _env_names(text: str) -> list[str]:
+    """Env-var names in ``text`` that appear in an explicit shell/env context, without duplicates.
 
-    An underscore or an assignment/export/``$`` context is required. With ``whole_span`` (inline
-    code) a bare token only counts when it is the entire span, so prose-like code is not mined.
+    Only ``VAR=value``, ``export VAR``, ``$VAR`` / ``${VAR}`` (which also covers ``env VAR=``)
+    count; a bare upper-case token (a constant name in prose or code) is never a claim. Error-code
+    prefixes (``ERR_``, ``FST_ERR_``, ``E[A-Z]{2,}_``) are skipped even in shell context.
     """
     in_context = {m.group(1) for pattern in _ENV_CONTEXTS for m in pattern.finditer(text)}
-    stripped = text.strip()
-    bare = [stripped] if whole_span and _ENV_TOKEN.fullmatch(stripped) else []
-    if not whole_span:
-        bare = _ENV_TOKEN.findall(text)
-    candidates = sorted(in_context | set(bare), key=text.find)
-    return [n for n in candidates if _env_ok(n) and ("_" in n or n in in_context)]
+    return [n for n in sorted(in_context, key=text.find) if _env_ok(n)]
 
 
 def _env_claims(names: list[str], doc: MarkdownDocument, line: int, context: str) -> list[Claim]:
@@ -318,20 +319,20 @@ def _fence_env_lines(fence: CodeFence) -> list[tuple[int, str]]:
 def extract_env_claims(doc: MarkdownDocument) -> list[Claim]:
     """Return an ENV_VAR claim for each env-var-looking name in inline code and shell fences.
 
-    Names match ``^[A-Z][A-Z0-9_]{2,}$`` and must contain ``_`` or appear in an assignment
-    (``VAR=...``), ``export VAR`` or ``$VAR`` / ``${VAR}`` context. A small stoplist (``TODO``,
-    ``GET``, ``JSON`` ...) and OS-provided variables (``PATH``, ``HOME`` ...) are ignored.
-    Inline code only yields a bare name when it is the whole span. Fences follow the command
-    extractor's output discipline (see ``_fence_env_lines``).
+    Names match ``^[A-Z][A-Z0-9_]{2,}$`` and must appear in an assignment (``VAR=...``),
+    ``export VAR`` or ``$VAR`` / ``${VAR}`` context; bare tokens are never claims. A small stoplist
+    (``TODO``, ``GET``, ``JSON`` ...), OS-provided variables (``PATH``, ``HOME`` ...) and
+    error-code names (``ERR_*``) are ignored. Fences follow the command extractor's output
+    discipline (see ``_fence_env_lines``).
     """
     lines = _source_lines(doc)
     claims: list[Claim] = []
     for code in doc.inline_codes:
         context = lines[code.line - 1] if 0 < code.line <= len(lines) else ""
-        claims.extend(_env_claims(_env_names(code.text, whole_span=True), doc, code.line, context))
+        claims.extend(_env_claims(_env_names(code.text), doc, code.line, context))
     for fence in doc.code_fences:
         if fence.language.strip().lower() not in SHELL_LANGUAGES:
             continue
         for line_no, line in _fence_env_lines(fence):
-            claims.extend(_env_claims(_env_names(line, whole_span=False), doc, line_no, line))
+            claims.extend(_env_claims(_env_names(line), doc, line_no, line))
     return claims

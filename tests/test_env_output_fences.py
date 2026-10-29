@@ -50,4 +50,5 @@ def test_non_shell_fences_never_claim() -> None:
 
 
 def test_inline_code_unchanged() -> None:
-    assert _names("Set `MY_VAR` and `X=1`.\n") == ["MY_VAR"]
+    # Bare `MY_VAR` is constant-like, not a claim; `X=1` is too short to be a name.
+    assert _names("Set `MY_VAR` and `X=1` and `MY_OTHER=1`.\n") == ["MY_OTHER"]
