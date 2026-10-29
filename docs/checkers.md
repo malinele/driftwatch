@@ -91,7 +91,7 @@ Limitations:
 
 ## Command checker
 
-**Claims:** the first command word of each line in code fences whose language is `bash`, `sh`, `shell`, `zsh`, `console`, or empty. Fences with any other language (`python`, `yaml`, `text`, `markdown` ...) are not read, so always give example output a language.
+**Claims:** the first command word of each line in code fences whose language is `bash`, `sh`, `shell`, `zsh` or `console`, plus prompted lines (`$ ` or `> `) in fences with no language. Fences with any other language (`python`, `yaml`, `text`, `markdown` ...) are not read, so always give example output a language.
 
 How lines are read:
 
@@ -99,6 +99,7 @@ How lines are read:
 - In a `console` fence that has at least one prompted line, unprompted lines are treated as output and ignored.
 - Blank lines, comment lines and the continuation lines after a trailing backslash are skipped.
 - Leading variable assignments are skipped to find the command word.
+- A first word is never claimed when it is all capitals (two or more characters, such as `DEBUG`), ends with `:` or `.`, contains a parenthesis, or is a dotted identifier (contains `.` but no `/`, such as `httpx.ProxyError:`).
 - Lines whose first word is a shell builtin or keyword (`cd`, `export`, `source`, `set`, `echo`, `exit`, `if`, `for`, `while` and similar) or starts with an operator such as a pipe, ampersand, semicolon, parenthesis or brace are skipped.
 
 A command is accepted when any of these holds: it exists relative to the repository root (so a script path like ./scripts/deploy.sh works), it is found on the `PATH` of the machine running the scan, it is `python`, `python3` or a path ending in "/python", or it is one of `git docker make curl pip npm node uvicorn pytest`.

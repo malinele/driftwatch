@@ -98,8 +98,42 @@ def test_non_shell_fences_produce_no_claims(tmp_path: Path) -> None:
     assert _claims(tmp_path, text) == []
 
 
-def test_untagged_fence_is_scanned(tmp_path: Path) -> None:
-    assert [c.value for c in _claims(tmp_path, _fence("git status", ""))] == ["git"]
+def test_bare_fence_with_prompt_claims_command(tmp_path: Path) -> None:
+    assert [c.value for c in _claims(tmp_path, _fence("$ git status", ""))] == ["git"]
+
+
+def test_bare_fence_gt_prompt_claims_command(tmp_path: Path) -> None:
+    assert [c.value for c in _claims(tmp_path, _fence("> make test", ""))] == ["make"]
+
+
+def test_bare_fence_unprompted_line_is_output(tmp_path: Path) -> None:
+    assert _claims(tmp_path, _fence("git status", "")) == []
+
+
+def test_bare_fence_log_output_produces_no_claims(tmp_path: Path) -> None:
+    body = "DEBUG connecting to host\nTraceback (most recent call last):\nhttpx.ProxyError: nope\nPassword:"
+    assert _claims(tmp_path, _fence(body, "")) == []
+
+
+def test_bare_fence_mixes_prompted_and_output(tmp_path: Path) -> None:
+    claims = _claims(tmp_path, _fence("$ git log\nDEBUG x\nsome output", ""))
+    assert [c.value for c in claims] == ["git"]
+
+
+def test_shell_fence_dotted_identifier_not_claimed(tmp_path: Path) -> None:
+    assert _claims(tmp_path, _fence("httpx.ProxyError: blah")) == []
+
+
+def test_shell_fence_all_caps_word_not_claimed(tmp_path: Path) -> None:
+    assert _claims(tmp_path, _fence("DEBUG something")) == []
+
+
+def test_shell_fence_trailing_colon_or_paren_not_claimed(tmp_path: Path) -> None:
+    assert _claims(tmp_path, _fence("Password:\nfoo(bar)\nDone.")) == []
+
+
+def test_shell_fence_relative_script_still_claimed(tmp_path: Path) -> None:
+    assert [c.value for c in _claims(tmp_path, _fence("./scripts/run.sh"))] == ["./scripts/run.sh"]
 
 
 def test_claim_location_is_the_actual_line(tmp_path: Path) -> None:

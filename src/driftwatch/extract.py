@@ -116,6 +116,15 @@ def _tokens(line: str) -> list[str]:
         return line.split()
 
 
+def _is_output_token(token: str) -> bool:
+    """True for tokens that are log levels, tracebacks or dotted identifiers rather than commands."""
+    if len(token) >= 2 and token.isupper():
+        return True
+    if token.endswith((":", ".")) or "(" in token or ")" in token:
+        return True
+    return "." in token and "/" not in token
+
+
 def _command_token(line: str) -> str | None:
     """First command word of ``line`` after leading ``VAR=value`` assignments, or None to skip."""
     for token in _tokens(line):
@@ -123,7 +132,7 @@ def _command_token(line: str) -> str | None:
             continue
         if _CONTROL_START.match(token) or token in SHELL_BUILTINS:
             return None
-        return token
+        return None if _is_output_token(token) else token
     return None
 
 
@@ -131,7 +140,9 @@ def _fence_commands(fence: CodeFence) -> list[tuple[int, str, str]]:
     """``(line, command, stripped_line)`` for each command line in a shell fence."""
     stripped = [_strip_prompt(line.strip()) for line in fence.content.splitlines()]
     # In console transcripts, unprompted lines are program output, not commands.
-    require_prompt = fence.language == "console" and any(had for _, had in stripped)
+    # Bare fences are mostly output (logs, tracebacks), so only prompted lines count there.
+    language = fence.language.strip().lower()
+    require_prompt = language == "" or (language == "console" and any(had for _, had in stripped))
     results: list[tuple[int, str, str]] = []
     continued = False
     for offset, (line, had_prompt) in enumerate(stripped):
