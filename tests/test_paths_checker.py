@@ -3,6 +3,7 @@ from pathlib import Path
 
 import pytest
 
+from driftwatch import __version__
 from driftwatch.check import CHECKERS, PathChecker
 from driftwatch.cli import main
 from driftwatch.extract import extract_path_claims
@@ -174,16 +175,20 @@ def test_cli_json_format(
     code = main(["scan", ".", "--format", "json"])
 
     assert code == 1
-    assert json.loads(capsys.readouterr().out) == [
-        {
-            "file": "a.md",
-            "line": 1,
-            "severity": "error",
-            "checker": "path",
-            "message": "path does not exist: gone/one.py",
-            "value": "gone/one.py",
-        }
-    ]
+    assert json.loads(capsys.readouterr().out) == {
+        "version": __version__,
+        "findings": [
+            {
+                "file": "a.md",
+                "line": 1,
+                "severity": "error",
+                "checker": "path",
+                "message": "path does not exist: gone/one.py",
+                "value": "gone/one.py",
+            }
+        ],
+        "summary": {"errors": 1, "warnings": 0, "info": 0},
+    }
 
 
 def test_cli_missing_scan_path_is_usage_error(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
