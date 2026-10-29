@@ -18,7 +18,7 @@ Without installing, `python -m driftwatch.cli scan .` works from a checkout with
 
 ## Quickstart
 
-Run the scan from the repository root. The current working directory is treated as the repository root: configuration, the baseline file and relative paths are all resolved against it.
+The scan root is derived from the scan target, never from where you run the command. Starting at the first path given (or its parent directory when it is a file), DriftWatch walks up to the nearest ancestor that contains `.git`, `pyproject.toml` or `driftwatch.toml`. If no ancestor has one of those, the root is the target directory itself, or the file's parent directory when the target is a file. Configuration, the baseline file and relative paths are all resolved against that root, so `driftwatch scan docs` from a subdirectory of a checkout still uses the checkout's configuration. Only the first path decides the root.
 
 ```bash
 driftwatch scan .
@@ -128,10 +128,12 @@ Settings come from the `[tool.driftwatch]` table in `pyproject.toml`, from a `dr
 | `fail_on` | string | `"error"` | Lowest severity that makes the exit code 1: `"error"`, `"warning"` or `"info"` (case-insensitive). |
 | `env_stoplist_extra` | list of strings | empty | Environment variable names to ignore entirely, both when found in docs and when read by code. |
 | `ambient_extra` | list of strings | empty | Extra environment variable names treated as ambient (merged with the built-in ambient set). A documented ambient variable that the code does not read is INFO, not ERROR, and is never reported as undocumented. |
-| `historical` | list of strings | empty | Extra glob patterns for changelog-type files, which only get the link and anchor checkers. Built in: `CHANGELOG*.md`, `HISTORY*.md`, `CHANGES*.md`, `RELEASES*.md`, `docs/release-notes*.md`. |
+| `historical` | list of strings | empty | Extra glob patterns for changelog-type files, which only get the link and anchor checkers. Patterns containing a slash match the root-relative path; others match the base name or the path, case-insensitively. Built in (base name, any directory): `release-notes*.md`, `release_notes*.md`, `CHANGELOG*`, `HISTORY*`, `CHANGES*`, `NEWS*`, `RELEASES*.md`. |
 | `historical_full_scan` | boolean | `false` | When `true`, historical files are checked by every checker like any other document. |
-| `mkdocs` | boolean or `"auto"` | `"auto"` | mkdocs directory-URL link resolution for documents under the docs directory. `"auto"` enables it when a mkdocs config file exists at the scan root. See the link checker in [checkers](checkers.md). |
+| `mkdocs` | boolean or `"auto"` | `"auto"` | mkdocs directory-URL link resolution for documents under the docs directory. `"auto"` enables it when `mkdocs.yml` or `mkdocs.yaml` exists at the scan root; `true` forces it on, `false` off. See the link checker in [checkers](checkers.md). |
+| `scan_tests` | boolean | `false` | When `true`, markdown under `tests/`, `test/`, `fixtures/` or `testdata/` directories is scanned. By default it is skipped as fixture input. |
 | `locales` | boolean | `true` | Locale-aware reporting for translated docs. See [Translated documentation](#translated-documentation). Set `false` for raw per-file findings. |
+| `env_tool_prefixes_extra` | list of strings | empty | Extra name prefixes (plain prefix match) of environment variables read by external tools. A documented, unread variable with such a prefix is INFO instead of ERROR. Merged with the built-in prefixes such as `AWS_` and `UV_`. |
 
 Example:
 

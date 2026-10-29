@@ -25,6 +25,10 @@ A noise-reduction release targeting the last diagnosed false-positive classes. A
 
 - Duplicate findings are no longer reported.
 
+### Verified results
+
+- Final campaign result for 0.6.0: across the 13 pinned repositories the final count is 67 errors, of which 65 verified true, 1 true-but-low and 1 false positive (~97% precision of reported errors; recall not measured). Evidence (pinned commits, raw outputs, per-finding verdicts) is in `benchmark/2026-10-campaign/`.
+
 ## [0.5.0] - 2026-10-30
 
 A noise-reduction release targeting the remaining path, command and environment-variable false-positive classes.

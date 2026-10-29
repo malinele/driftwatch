@@ -4,11 +4,11 @@ DriftWatch has five checkers, covering four kinds of claim: paths, links and anc
 
 | Checker | Severity produced | Checks |
 |---------|-------------------|--------|
-| `path` | error, warning | Inline code spans that look like file paths exist. |
+| `path` | error, warning, info | Inline code spans that look like file paths exist. |
 | `link` | error, warning | Relative link and image targets exist. |
 | `anchor` | error, info | Fragments (`#heading`) match a heading, explicit id or HTML anchor in the target markdown file. |
 | `command` | error, info | Repo-defined commands have a target and `./` paths under existing directories exist; every other unknown tool is only INFO. |
-| `env` | error, warning | Environment variables in docs and in code agree. |
+| `env` | error, warning, info | Environment variables in docs and in code agree. |
 
 ## Wiring
 
@@ -27,13 +27,13 @@ A span counts as a path when, after trimming whitespace and trailing punctuation
 
 Further filters remove tokens that only look like paths:
 
-- A token with a slash whose last segment has no file extension is claimed only with a leading marker (`./`, `../`, `~/` or an absolute `/`). A trailing-slash directory form is claimed with a marker, or when its first segment is one of `docs src tests scripts app`. This drops media types, `owner/repo` names and prose such as `async/await`.
+- A token with a slash whose last segment has no file extension is claimed only with a leading marker (`./`, `../`, `~/` or an absolute `/`), and never when it is a media type. A trailing-slash directory form is claimed with a marker, when its first segment is one of `docs src tests scripts app`, or when it has at least two segments and its first segment is a plausible directory name (three or more lower-case letters, digits, hyphens or underscores). This drops media types, `owner/repo` names and prose such as `async/await`, `and/or` or `v1/v2`.
 - Tokens starting with `@` (npm scopes) are never claimed.
 - Media types under the IANA top-level types (`application audio font image message model multipart text video`) are not claimed, unless the last segment ends in a known file extension (so a file such as `image/logo.png` <!-- driftwatch: ignore=path --> is still checked).
 - CIDR and IP forms (IPv4 or colon-hex groups with a `/N` suffix, optionally in square brackets) are not claimed.
 - Bare extensions such as `.json` or `.py` are not claimed.
-- Tokens containing `^`, `$`, `|` or a shell redirection like `2>/` are not claimed.
-- A colon after the first segment (as in `owner/repo:HEAD`) disqualifies the token.
+- Tokens containing `^`, `$`, `|` or a `>` character (shell redirections such as `2>/dev/null`) are not claimed.
+- A colon after the first slash (as in `owner/repo:HEAD`) disqualifies the token.
 
 Spans containing a single or double quote character (string literals such as `b"HTTP/1.1"`) are never claimed.
 
@@ -49,7 +49,7 @@ Spans containing a single or double quote character (string literals such as `b"
 
 The placeholder, found-elsewhere and ecosystem rules below are tried before the ladder, in that order, so a file that exists at another location still gets the found-at WARNING.
 
-**ERROR:** `path does not exist: ...` when the path exists neither relative to the repository root (the working directory) nor relative to the directory of the document that mentions it, and no downgrade applies (see the ladder above).
+**ERROR:** `path does not exist: ...` when the path exists neither relative to the scan root (see the [user guide](user-guide.md#quickstart)) nor relative to the directory of the document that mentions it, and no downgrade applies (see the ladder above).
 
 **WARNING:** `absolute path in docs is machine-specific` for any absolute path, whether or not it exists.
 
@@ -61,24 +61,26 @@ The placeholder, found-elsewhere and ecosystem rules below are tried before the 
 
 **INFO:** `file the reader is asked to create` replaces the ERROR when the claim's line, or either of the two lines before it, contains (case-insensitive) `create a file`, `save it as`, `name it`, `add a file`, `new file called`, the words `called` or `named`, `for example`, `e.g.`, `your ` or `a file like`. Such a path is an instruction or an example, not a claim about the repo.
 
-**INFO:** `generated or ignored artifact` replaces the ERROR when the missing path lies under `site/`, `build/`, `dist/` or `docs/build/`, or is matched by the repository's root `.gitignore`. The matcher is deliberately simple: exact names, `dir/` prefixes, and `*` globs via `fnmatch`, matched against the whole path (patterns containing a slash or starting with `/`) or any single path component (other patterns). Limitation: negation lines (`!pattern`) are not supported and are ignored, as are nested `.gitignore` files.
+**INFO:** `generated or ignored artifact` replaces the ERROR when the missing path lies under `site/`, `build/`, `dist/` or `docs/build/`, or is matched by the repository's root `.gitignore`. The matcher is deliberately simple: exact names, `dir/` prefixes, and `*` globs via `fnmatch`, matched against the whole path or any leading part of it (patterns containing a slash or starting with `/`) or any single path component (other patterns). Limitation: negation lines (`!pattern`) are not supported and are ignored, as are nested `.gitignore` files.
 
 **Fence titles:** an inline code span equal to the title of any code fence in the same document is never claimed. A title is `title="NAME"` (mkdocs/material) or a filename token after the language, as in ```` ```python main.py ````.
 
-**Test content:** markdown under `tests/`, `test/`, `fixtures/` or `testdata/` directories (relative to the root) is not scanned by default, since it is usually fixture input. Set `scan_tests = true` in the configuration to scan it.
+**Test content:** markdown below a `tests/`, `test/`, `fixtures/` or `testdata/` directory (at any depth under the root) is not scanned by default, since it is usually fixture input. Set `scan_tests = true` in the configuration to scan it.
 
 Example:
 
 ```markdown
-Entry point: `src/app/main.py`       <- ERROR if the file is missing
+Entry point: `src/app/main.py`       <- ERROR if src/app/ exists but the file is missing
+                                        (WARNING if src/app/ is missing too, or the file is found elsewhere)
 Config lives in `/etc/app/conf.toml` <- WARNING, absolute
 Run it with `make test`              <- not a path (contains whitespace)
+See `and/or` and `v1/v2`             <- not claimed (slash, no extension, no leading marker)
 ```
 
 Limitations:
 
 - A bare file name such as main.py is looked up in the root and in the document's own directory; if missing, the base name index gives a warning (not an error) when the file exists elsewhere.
-- Anything with a slash is treated as a path, so a span like "and/or" or "v1/v2" is reported. Use an ignore comment for these.
+- A slash token with a file extension is treated as a path even when it is not one (for example `owner/repo.js`), and a prose directory such as `foo/bar/` with a trailing slash may be claimed. Use an ignore comment for these. <!-- driftwatch: ignore=path -->
 - Globs (anything with an asterisk) and brace expansions are skipped, not checked.
 - A span without a slash and with an extension outside the list above is not seen.
 
@@ -102,7 +104,7 @@ Template placeholders are skipped: a target that is a single ALLCAPS_WITH_UNDERS
 
 Translation fallback: in a locale tree (`docs/<locale>/...`), a missing relative target that exists in the source locale (`en`, or the bare docs tree) is a WARNING (`missing in this locale, exists in source locale`) in every locale. Percent-escapes are decoded and tags such as `zh-Hans` are recognised as locales.
 
-Mirror README: an ERROR in the repository-root `README.md` whose relative target exists under `docs/` is downgraded to a WARNING saying the link works on the docs site but is broken on GitHub/PyPI. A target missing in both places stays an ERROR.
+Mirror README: a path or link ERROR in the repository-root `README.md` whose relative target exists under `docs/` is downgraded to a WARNING saying the link works on the docs site but is broken on GitHub/PyPI. A target missing in both places stays an ERROR.
 
 Mkdocs mode: mkdocs serves a page at a directory URL, so a relative extensionless link is resolved against that URL, not against the file. The mode is on for documents under the docs directory when a mkdocs.yml or mkdocs.yaml file exists at the scan root (the `mkdocs` option defaults to `"auto"`; `true` forces it on, `false` off). The docs directory comes from a `docs_dir:` line in that file if present, otherwise it is docs. For a page named sub/page.md the URL directory is sub/page/, and index.md and README.md map to their parent directory. The link is resolved against the URL directory, then mapped back to a file: the result with the markdown suffix appended, or the result as a directory containing index.md, inside the docs directory. For example, a link to ../advanced/transports from docs/async.md resolves to docs/advanced/transports.md. This is tried first; if it finds nothing, the chain above still applies. Targets with a file extension, and targets starting with a slash, always use the chain above. The anchor checker maps cross-document targets the same way.
 
@@ -159,16 +161,16 @@ How lines are read:
 
 - One leading `$ ` or `> ` prompt is removed.
 - In a `console` fence that has at least one prompted line, unprompted lines are treated as output and ignored.
-- Blank lines, comment lines and the continuation lines after a trailing backslash are skipped.
+- Blank lines and comment lines (starting with `#`) are skipped. A line ending in a backslash is joined with the lines that follow it, and only the first command word of the joined line is claimed.
 - Leading variable assignments are skipped to find the command word.
 - A first word is never claimed when it is all capitals (two or more characters, such as `DEBUG`), ends with `:` or `.`, contains a parenthesis, or is a dotted identifier (contains `.` but no `/`, such as `httpx.ProxyError:`).
 - Lines whose first word is a shell builtin or keyword (`cd`, `export`, `source`, `set`, `echo`, `exit`, `if`, `for`, `while` and similar) or starts with an operator such as a pipe, ampersand, semicolon, parenthesis or brace are skipped.
 
-Continuation lines are joined into one logical line before it is read, lines starting with box-drawing glyphs (`│ ├ └ ─`, tree output) or `$Env:` (PowerShell) are skipped, and a trailing `# (N)!` mkdocs annotation is stripped.
+Lines starting with box-drawing glyphs (`│ ├ └ ─`, tree output) or `$Env:` (PowerShell) are skipped, and a trailing `# (N)!` mkdocs annotation is stripped.
 
-**Output guards:** lines whose first command token starts with `-` (flags such as `--help`), starts with `//`, or contains `://` (a URL) are never claimed, nor are lines with a token containing `+=` (`fpath+=(...)`). The zsh configuration words `fpath`, `zstyle`, `autoload` and `compinit` count as shell builtins and are skipped. These guards apply in every fence, prompted or not.
+**Output guards:** lines whose first command token starts with `-` (flags such as `--help`), starts with `//`, or contains `://` (a URL) are never claimed, nor are lines whose first command token contains `+=` (`fpath+=(...)`). The zsh configuration words `fpath`, `zstyle`, `autoload` and `compinit` count as shell builtins and are skipped. These guards apply in every fence, prompted or not.
 
-Policy (v3): a command is an ERROR in exactly two cases, everything else unknown is at most INFO.
+Policy (v3): a command is an ERROR in exactly three cases, everything else unknown is at most INFO. The first two are described here, the third (`python -m` with an unknown module) below.
 
 - **A repo-defined command whose target is missing.** Repo-defined commands are `[project.scripts]`, `[project.gui-scripts]`, `[tool.poetry.scripts]`, `console_scripts` in setup.cfg, and `bin` in package.json. A defined command passes when its target exists (the `module` of `module:func` as a file or package under the root or `src/`, or the `bin` file) and is an ERROR when it does not.
 - **A `./` or `../` path that does not exist while its parent directory exists below the repository root.** A path whose parent is the repository root itself (such as `./traefik`, usually a downloaded binary) or whose parent does not exist is only INFO. A path without a `./` or `../` prefix (`scripts/x.sh`) is no longer an ERROR candidate.
@@ -177,7 +179,7 @@ A token is accepted without a finding when it exists relative to the repository 
 
 **Doc-defined CLIs:** a token is also silent when the same document mentions it (hyphens and underscores compare equal) within three lines of a definition marker: `pip install`, `console_scripts`, `[project.scripts]`, `entry_points`, `add_typer` or `Typer(`. Tutorials invent tools such as `rick-portal-gun` and show how to install or declare them. Otherwise the token is an INFO.
 
-For `python -m MODULE` the module is also checked: it must be a file or package under the root or under `src/`, a standard-library module, or have one of the well-known names above as its top-level package. A module that fails this check is only an INFO (`module built by this tutorial: ...`) when the same document shows packaging context: a `[project.scripts]` line, a code fence whose opening line names `pyproject.toml` (such as a `title="pyproject.toml"` fence), or a `pip install` line installing a name equal to the module's top-level package (hyphens and underscores compare equal, extras and version pins are dropped).
+For `python -m MODULE` the module is also checked: it must be a file or package under the root or under `src/`, a standard-library module, have one of the well-known names above as its top-level package, or have a top-level package that matches a dependency name declared in the scanned project's `pyproject.toml` (`dependencies` or any `optional-dependencies` group; hyphens and underscores compare equal). A module that fails this check is only an INFO (`module built by this tutorial: ...`) when the same document shows packaging context: a `[project.scripts]` line, a code fence whose opening line names `pyproject.toml` (such as a `title="pyproject.toml"` fence), or a `pip install` line installing a name equal to the module's top-level package (hyphens and underscores compare equal, extras and version pins are dropped).
 
 **ERROR:** `documented command not found: ...` (repo-local tokens only) or `documented python module not found: ...`. **INFO:** `command not found in repo or on PATH (external tool?)` or `module built by this tutorial: ...`. This checker produces no warnings.
 
@@ -191,7 +193,7 @@ mytool run
 ```
 ````
 
-The first line is an ERROR unless the module exists under the root or `src/`. The second is an ERROR if `scripts/` exists below the root but the script does not (INFO when `scripts/` is missing). The third is an INFO unless `mytool` is on the `PATH`, installed by an earlier line of the same fence, declared next to a definition marker in the document, or defined by the repo with an existing target.
+The first line is an ERROR unless the module exists under the root or `src/` (or is known as described above), and an INFO instead when the document shows packaging context. The second is an ERROR if `scripts/` exists below the root but the script does not (INFO when `scripts/` is missing). The third is an INFO unless `mytool` is on the `PATH`, installed by an earlier line of the same fence, declared next to a definition marker in the document, or defined by the repo with an existing target.
 
 Limitations:
 
@@ -199,7 +201,7 @@ Limitations:
 - Results depend on the machine: a tool that is installed locally but not in CI (or the reverse) changes the outcome.
 - Arguments are not checked, except the module in `python -m MODULE`. A script path passed to python is not verified.
 - Lines are read one at a time, so the body of a heredoc or a multi-line quoted string can be mistaken for commands.
-- Python modules are located by file name only, so a module provided by an installed third-party package is reported unless its top-level name is one of the well-known ones.
+- Python modules are located by file name only, so a module provided by an installed third-party package is reported unless its top-level name is one of the well-known ones or a dependency declared in `pyproject.toml`.
 
 ## Historical documents
 
@@ -207,7 +209,7 @@ Changelog-type files describe the past, not the present, so a dead path, command
 
 ## Env checker
 
-**Claims, documentation side:** environment variable names found in inline code and in shell-language fences (same languages as the command checker). A name must match the pattern of three or more upper-case letters, digits and underscores starting with a letter. It is claimed only in an explicit shell/env context: `export X`, an assignment `X=value` (at line start or before a command, including `env X=value`), or a `$X` / `${X}` reference. Inline code counts only when the span itself contains such an assignment or `$` usage. A bare upper-case token in prose or inline code (`CUSTOM_MESSAGES`, `DEFAULT_MAP`) is a constant name, not a claim. Names with an error-code prefix (`ERR_`, `FST_ERR_`, or `E` plus two or more capitals and an underscore, such as `EACCES_`) are never claimed, even in shell context. Common words (`TODO`, `GET`, `JSON`, `README` and similar) and OS-provided variables (`PATH`, `HOME`, `USER`, `SHELL`, `PWD`, `TERM`, `LANG` and similar) are ignored. Fences with an explicit non-shell language (`python`, `json`, `text` ...) are never mined. In fences with no language tag only lines starting with the prompt `$ ` or `> ` are read (prompt removed), because bare fences mostly show output. In shell-language fences, lines that look like output are skipped: lines containing `...`, lines whose first token ends with `:` (such as `ssl.SSLCertVerificationError: ...`), and every line from a `Traceback (most recent call last)` header to the end of the fence.
+**Claims, documentation side:** environment variable names found in inline code and in shell-language fences (same languages as the command checker). A name must match the pattern of three or more upper-case letters, digits and underscores starting with a letter. It is claimed only in an explicit shell/env context: `export X`, an assignment `X=value` anywhere in the text where the name is not preceded by a letter, digit or underscore (so `env X=value` and `X=value cmd` count), or a `$X` / `${X}` reference. Inline code counts only when the span itself contains such an assignment or `$` usage. A bare upper-case token in prose or inline code (`CUSTOM_MESSAGES`, `DEFAULT_MAP`) is a constant name, not a claim. Names with an error-code prefix (`ERR_`, `FST_ERR_`, or `E` plus two or more capitals and an underscore, such as `EACCES_`) are never claimed, even in shell context. Common words (`TODO`, `GET`, `JSON`, `README` and similar) and OS-provided variables (`PATH`, `HOME`, `USER`, `SHELL`, `PWD`, `TERM`, `LANG` and similar) are ignored. Fences with an explicit non-shell language (`python`, `json`, `text` ...) are never mined. In fences with no language tag only lines starting with the prompt `$ ` or `> ` are read (prompt removed), because bare fences mostly show output. In every mined fence (prompted lines of a bare fence included), lines that look like output are skipped: lines containing `...`, lines whose first token ends with `:` (such as `ssl.SSLCertVerificationError: ...`), and every line from a `Traceback (most recent call last)` header to the end of the fence.
 
 **Code side:** names read by source files anywhere under the root (not only the scanned paths), found with regular expressions:
 
@@ -238,11 +240,17 @@ Names listed in `env_stoplist_extra` are dropped in both directions. Disabling t
 
 Example:
 
-```markdown
-Set `DATABASE_URL` before starting the service.
+````markdown
+Set the database before starting the service.
+
+```bash
+export DATABASE_URL=postgres://localhost/app
 ```
 
-This is an ERROR if no source file reads that name, and clears once one does, for example through `os.environ["DATABASE_URL"]`.
+Mentioning DATABASE_URL in prose or as a bare inline code span makes no claim.
+````
+
+The `export` line is the claim. It is an ERROR if no source file reads that name, and clears once one does, for example through `os.environ["DATABASE_URL"]`. It is dropped entirely when the name is in `env_stoplist_extra`, and downgraded to INFO when it is ambient or has an external-tool prefix. It is suppressed when the document defines it on a second line (for example in a `.env` fence), when the line sets it in front of another command, or when a CI workflow mentions it. A lone `export` line that nothing else in the document mentions does not count as a definition, so the example above is still checked.
 
 Limitations:
 

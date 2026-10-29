@@ -67,6 +67,7 @@ Use `--format sarif` with `--output` to publish findings to code scanning. See [
 - [Checker reference](docs/checkers.md)
 - [CI integration](docs/ci.md)
 - [Changelog](CHANGELOG.md)
+- [Benchmark evidence](benchmark/2026-10-campaign/README.md): the verifiable benchmark evidence (pinned commits, raw outputs, per-finding verdicts)
 
 ## License
 
