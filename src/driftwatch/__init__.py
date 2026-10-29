@@ -1,3 +1,3 @@
 """DriftWatch: checks markdown documentation claims against repository reality."""
 
-__version__ = "0.4.0"
+__version__ = "0.5.0"

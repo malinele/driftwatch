@@ -5,6 +5,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.5.0] - 2026-10-30
+
+A noise-reduction release targeting the remaining path, command and environment-variable false-positive classes.
+
+### Added
+
+- Path policy v3: tree-diagram fences are skipped, creation phrasing is recognized more broadly, and workflow basenames are resolved.
+- Command policy v3: doc-defined CLI names are recognized, and output guards suppress commands shown as output.
+- Environment policy v3: click `auto_envvar_prefix` is supported, and `docs_src`/examples directories are scanned as code.
+- Anchor matching folds diacritics.
+
+### Changed
+
+- Identical findings are now deduplicated.
+- Directory claims with a trailing slash regain their recall.
+- Path severity ladder: ERROR only when the parent directory exists; ecosystem filenames are reported as INFO.
+- Link text of external URLs is no longer claimed as a path.
+- Command severity is consistent: ERROR only for repo-defined or repo-path commands.
+- Environment variables defined in a doc-local `.env` or inline are treated as user-set, and variables set in CI workflows are suppressed.
+- Locale fallbacks are applied uniformly.
+- Link targets that are template placeholders are skipped.
+- Findings in mirror READMEs are downgraded to WARNING, with a note about site versus GitHub rendering.
+
+Validation: hand-verification of the previous release across 13 repositories measured 70 true findings among 493 errors (14.2% precision), concentrated in anchors and links; this release targets the remaining path, command and environment noise classes.
+
 ## [0.4.0] - 2026-10-30
 
 A campaign-driven precision release.
