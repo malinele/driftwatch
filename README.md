@@ -20,9 +20,11 @@ All four checkers run in a normal scan; see the [checker reference](docs/checker
 
 ## Quickstart
 
-Install from source for now:
+Install from the repository:
 
 ```bash
+git clone https://github.com/malinele/driftwatch.git
+cd driftwatch
 pip install -e .
 driftwatch scan .
 ```

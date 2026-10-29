@@ -6,9 +6,11 @@ Related pages: [checker reference](checkers.md), [CI integration](ci.md).
 
 ## Install
 
-DriftWatch is not published yet. Install it from a source checkout (Python 3.12 or newer):
+Install DriftWatch from the repository (Python 3.12 or newer):
 
 ```bash
+git clone https://github.com/malinele/driftwatch.git
+cd driftwatch
 pip install -e .
 ```
 
