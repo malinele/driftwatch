@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import re
+import shlex
 from urllib.parse import unquote
 
-from driftwatch.markdown import MarkdownDocument
+from driftwatch.markdown import CodeFence, MarkdownDocument
 from driftwatch.models import Claim, ClaimKind, Location
 
 PATH_EXTENSIONS = (
@@ -85,5 +86,81 @@ def extract_link_claims(doc: MarkdownDocument) -> list[Claim]:
         if anchor:
             claims.append(
                 Claim(kind=ClaimKind.ANCHOR, value=f"{file_part}#{anchor}", location=location, context=context)
+            )
+    return claims
+
+
+SHELL_LANGUAGES = frozenset({"bash", "sh", "shell", "zsh", "console", ""})
+SHELL_BUILTINS = frozenset({
+    "cd", "export", "source", "set", "echo", "exit", "if", "then", "fi", "for", "while", "do",
+    "done", "case", "esac", "alias", "unset", "true", "false", ".", "elif", "else", "in",
+})  # fmt: skip
+_PROMPTS = ("$ ", "> ")
+_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
+_CONTROL_START = re.compile(r"^[|&;<>(){}!]")
+
+
+def _strip_prompt(line: str) -> tuple[str, bool]:
+    """Return ``(line, had_prompt)`` with one leading ``$ `` or ``> `` prompt removed."""
+    for prompt in _PROMPTS:
+        if line.startswith(prompt):
+            return line[len(prompt) :].strip(), True
+    return line, False
+
+
+def _tokens(line: str) -> list[str]:
+    try:
+        return shlex.split(line, comments=False, posix=True)
+    except ValueError:  # unbalanced quotes: fall back to naive splitting
+        return line.split()
+
+
+def _command_token(line: str) -> str | None:
+    """First command word of ``line`` after leading ``VAR=value`` assignments, or None to skip."""
+    for token in _tokens(line):
+        if _ASSIGNMENT.match(token):
+            continue
+        if _CONTROL_START.match(token) or token in SHELL_BUILTINS:
+            return None
+        return token
+    return None
+
+
+def _fence_commands(fence: CodeFence) -> list[tuple[int, str, str]]:
+    """``(line, command, stripped_line)`` for each command line in a shell fence."""
+    stripped = [_strip_prompt(line.strip()) for line in fence.content.splitlines()]
+    # In console transcripts, unprompted lines are program output, not commands.
+    require_prompt = fence.language == "console" and any(had for _, had in stripped)
+    results: list[tuple[int, str, str]] = []
+    continued = False
+    for offset, (line, had_prompt) in enumerate(stripped):
+        was_continued, continued = continued, line.endswith("\\")
+        if was_continued or not line or line.startswith("#") or (require_prompt and not had_prompt):
+            continue
+        command = _command_token(line)
+        if command is not None:
+            results.append((fence.start_line + 1 + offset, command, line))
+    return results
+
+
+def extract_command_claims(doc: MarkdownDocument) -> list[Claim]:
+    """Return a COMMAND claim for the first command of each line in shell-like code fences.
+
+    v1 limitation: only the first command of a line is claimed; anything after a pipe,
+    ``&&``, ``||`` or ``;`` is ignored. Nothing is ever executed. The claim context is the
+    line with its prompt removed, so checkers can inspect arguments (e.g. ``python -m``).
+    """
+    claims: list[Claim] = []
+    for fence in doc.code_fences:
+        if fence.language.strip().lower() not in SHELL_LANGUAGES:
+            continue
+        for line_no, command, line in _fence_commands(fence):
+            claims.append(
+                Claim(
+                    kind=ClaimKind.COMMAND,
+                    value=command,
+                    location=Location(file=doc.path, line=line_no),
+                    context=line,
+                )
             )
     return claims

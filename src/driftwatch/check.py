@@ -4,6 +4,9 @@ from __future__ import annotations
 
 import difflib
 import re
+import shlex
+import shutil
+import sys
 from pathlib import Path
 from typing import Protocol
 
@@ -138,8 +141,74 @@ class AnchorChecker:
         return message
 
 
+KNOWN_COMMON = frozenset({"git", "docker", "make", "curl", "pip", "npm", "node", "uvicorn", "pytest"})
+_ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
+
+
+def _is_python(token: str) -> bool:
+    return token in ("python", "python3") or token.endswith("/python")
+
+
+def _python_module(claim: Claim) -> str | None:
+    """The MODULE in ``python -m MODULE`` taken from the claim's source line, if present."""
+    try:
+        tokens = shlex.split(claim.context)
+    except ValueError:
+        tokens = claim.context.split()
+    tokens = [t for t in tokens if not _ASSIGNMENT.match(t)]
+    if len(tokens) >= 3 and tokens[0] == claim.value and tokens[1] == "-m":
+        return tokens[2]
+    return None
+
+
+def _module_in_repo(module: str, root: Path) -> bool:
+    rel = Path(*module.split("."))
+    for base in (root, root / "src"):
+        if (base / rel).with_suffix(".py").is_file() or (base / rel / "__init__.py").is_file():
+            return True
+    return False
+
+
+def _module_known(module: str, root: Path) -> bool:
+    """Repo module, or a stdlib / well-known tool module (resolved statically, never imported)."""
+    top = module.split(".")[0]
+    return _module_in_repo(module, root) or top in sys.stdlib_module_names or top in KNOWN_COMMON
+
+
+class CommandChecker:
+    """Statically verifies documented shell commands; nothing is ever executed."""
+
+    name = "command"
+
+    def check(self, claims: list[Claim], root: Path) -> list[Finding]:
+        findings: list[Finding] = []
+        for claim in claims:
+            if claim.kind is not ClaimKind.COMMAND:
+                continue
+            finding = self._check_one(claim, root)
+            if finding is not None:
+                findings.append(finding)
+        return findings
+
+    def _check_one(self, claim: Claim, root: Path) -> Finding | None:
+        token = claim.value
+        if _is_python(token):
+            module = _python_module(claim)
+            if module is not None and not _module_known(module, root):
+                return Finding(claim, Severity.ERROR, f"documented python module not found: {module}", self.name)
+        if (
+            (root / token).exists()
+            or shutil.which(token) is not None
+            or _is_python(token)
+            or token in KNOWN_COMMON
+        ):
+            return None
+        return Finding(claim, Severity.ERROR, f"documented command not found: {token}", self.name)
+
+
 CHECKERS: dict[str, Checker] = {
     PathChecker.name: PathChecker(),
     LinkChecker.name: LinkChecker(),
     AnchorChecker.name: AnchorChecker(),
+    CommandChecker.name: CommandChecker(),
 }
