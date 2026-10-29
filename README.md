@@ -64,3 +64,9 @@ Use `--format sarif` with `--output` to publish findings to code scanning. See [
 - [Checker reference](docs/checkers.md)
 - [CI integration](docs/ci.md)
 - [Changelog](CHANGELOG.md)
+
+## License
+
+DriftWatch is licensed under the [PolyForm Noncommercial License 1.0.0](LICENSE).
+For commercial use, see [COMMERCIAL-LICENSE.md](COMMERCIAL-LICENSE.md).
+For contributions, see [CONTRIBUTING.md](CONTRIBUTING.md).
