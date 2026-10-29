@@ -19,6 +19,17 @@ TRAILING_PUNCTUATION = ".,;:!?)]}'\""
 _SCHEME = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:(//|[^/\s]*@)")
 _WHITESPACE = re.compile(r"\s")
 _ANY_SCHEME = re.compile(r"^([a-zA-Z][a-zA-Z0-9+.-]*:|//)")
+COMMON_SOURCE_DIRS = frozenset({"docs", "src", "tests", "scripts", "app"})
+_LEADING_MARKERS = ("./", "../", "~/", "/")
+_EXTENSION = re.compile(r"^.+\.[A-Za-z0-9]+$")
+_BARE_EXTENSION = re.compile(r"^\.[a-z0-9]+$")
+_REGEX_OR_REDIRECT = re.compile(r"[\^$|]|\d?>")
+_MEDIA_TYPE = re.compile(
+    r"^(application|audio|font|image|message|model|multipart|text|video)/[A-Za-z0-9.+_-]+$", re.IGNORECASE
+)
+_CIDR = re.compile(
+    r"^\[?(\d{1,3}(\.\d{1,3}){3}|[0-9a-fA-F:.]*:[0-9a-fA-F:.]*)\]?/\d{1,3}$"
+)
 
 
 def _looks_like_path(token: str) -> bool:
@@ -31,7 +42,27 @@ def _looks_like_path(token: str) -> bool:
     # String literals such as b"HTTP/1.1" are code, not paths.
     if "'" in token or '"' in token:
         return False
-    return "/" in token or token.lower().endswith(PATH_EXTENSIONS)
+    if token.startswith("@") or _BARE_EXTENSION.match(token):
+        return False
+    if _REGEX_OR_REDIRECT.search(token) or _CIDR.match(token):
+        return False
+    if "/" not in token:
+        return token.lower().endswith(PATH_EXTENSIONS)
+    return _slash_token_is_path(token)
+
+
+def _slash_token_is_path(token: str) -> bool:
+    """Decide whether a token containing a slash is a repo path rather than MIME/owner-repo/prose."""
+    first, _, rest = token.partition("/")
+    if ":" in rest:
+        return False
+    has_marker = token.startswith(_LEADING_MARKERS)
+    last = token.rstrip("/").rsplit("/", 1)[-1]
+    if token.endswith("/"):
+        return has_marker or first in COMMON_SOURCE_DIRS
+    if _EXTENSION.search(last):
+        return not (_MEDIA_TYPE.match(token) and not last.lower().endswith(PATH_EXTENSIONS))
+    return has_marker and not _MEDIA_TYPE.match(token)
 
 
 def _source_lines(doc: MarkdownDocument) -> list[str]:

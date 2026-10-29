@@ -25,6 +25,16 @@ A span counts as a path when, after trimming whitespace and trailing punctuation
 - contains no asterisk or opening brace and does not start with a URL scheme (`https://`, `git@host:` and similar),
 - and either contains a slash or ends in one of: `.py .md .toml .yaml .yml .json .txt .sh .cfg .ini .html .css .js .ts .png .lock` (case-insensitive).
 
+Further filters remove tokens that only look like paths:
+
+- A token with a slash whose last segment has no file extension is claimed only with a leading marker (`./`, `../`, `~/` or an absolute `/`). A trailing-slash directory form is claimed with a marker, or when its first segment is one of `docs src tests scripts app`. This drops media types, `owner/repo` names and prose such as `async/await`.
+- Tokens starting with `@` (npm scopes) are never claimed.
+- Media types under the IANA top-level types (`application audio font image message model multipart text video`) are not claimed, unless the last segment ends in a known file extension (so a file such as `image/logo.png` <!-- driftwatch: ignore=path --> is still checked).
+- CIDR and IP forms (IPv4 or colon-hex groups with a `/N` suffix, optionally in square brackets) are not claimed.
+- Bare extensions such as `.json` or `.py` are not claimed.
+- Tokens containing `^`, `$`, `|` or a shell redirection like `2>/` are not claimed.
+- A colon after the first segment (as in `owner/repo:HEAD`) disqualifies the token.
+
 Spans containing a single or double quote character (string literals such as `b"HTTP/1.1"`) are never claimed.
 
 **ERROR:** `path does not exist: ...` when the path exists neither relative to the repository root (the working directory) nor relative to the directory of the document that mentions it, and neither downgrade below applies.
