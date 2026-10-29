@@ -13,6 +13,7 @@ import shutil
 import sys
 import tomllib
 from collections.abc import Collection, Sequence
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Protocol
 
@@ -163,11 +164,23 @@ class PathChecker:
 MAX_SUGGESTIONS = 3
 _MD_LINK = re.compile(r"!?\[([^\]]*)\]\([^)]*\)")
 _NON_SLUG_CHARS = re.compile(r"[^\w\- ]")
+_ATTR_LIST = re.compile(r"\s*\{:?[^{}]*\}\s*$")
+_HTML_TAG = re.compile(r"</?[A-Za-z][^<>]*>")
+_HTML_ENTITY = re.compile(r"&(?:#\d+|#x[0-9A-Fa-f]+|\w+);")
+_EMPHASIS = re.compile(r"\*+|(?<!\w)_+|_+(?!\w)")
 
 
 def slugify(text: str) -> str:
-    """GitHub-style heading slug: lowercase, punctuation dropped (hyphens kept), spaces to hyphens."""
-    text = _MD_LINK.sub(r"\1", text).strip().lower()
+    """GitHub-style heading slug of the rendered text.
+
+    Drops a trailing attr_list, HTML tags and entities, and emphasis markers (``*``, and ``_`` at word
+    edges, so ``snake_case`` survives); lowercases, drops punctuation (apostrophes included, hyphens
+    kept) and turns spaces into hyphens.
+    """
+    text = _ATTR_LIST.sub("", text)
+    text = _MD_LINK.sub(r"\1", text)
+    text = _HTML_ENTITY.sub("", _HTML_TAG.sub("", text))
+    text = _EMPHASIS.sub("", text).strip().lower()
     return _NON_SLUG_CHARS.sub("", text).replace(" ", "-")
 
 
@@ -271,6 +284,16 @@ class LinkChecker:
         ]
 
 
+DYNAMIC_ANCHOR_MESSAGE = "anchor target is plugin-generated or included content, cannot verify statically"
+
+
+@dataclass(frozen=True)
+class _AnchorTargets:
+    slugs: list[str]  # heading slugs in document order (used for suggestions)
+    ids: frozenset[str]  # every valid anchor id: slugs, attr_list ids, HTML id/name values
+    dynamic: bool
+
+
 class AnchorChecker:
     """Verifies that ``path#anchor`` fragments match a heading slug in the target markdown document."""
 
@@ -278,7 +301,7 @@ class AnchorChecker:
 
     def check(self, claims: list[Claim], root: Path, mkdocs: MkdocsSetting = "auto") -> list[Finding]:
         findings: list[Finding] = []
-        cache: dict[Path, list[str] | None] = {}
+        cache: dict[Path, _AnchorTargets | None] = {}
         docs_dir = mkdocs_docs_dir(root, mkdocs)
         for claim in claims:
             if claim.kind is not ClaimKind.ANCHOR:
@@ -289,7 +312,7 @@ class AnchorChecker:
         return findings
 
     def _check_one(
-        self, claim: Claim, root: Path, cache: dict[Path, list[str] | None], docs_dir: Path | None
+        self, claim: Claim, root: Path, cache: dict[Path, _AnchorTargets | None], docs_dir: Path | None
     ) -> Finding | None:
         file_part, _, anchor = claim.value.partition("#")
         target = claim.location.file if not file_part else _resolve(file_part, claim.location.file, root, docs_dir)
@@ -297,19 +320,22 @@ class AnchorChecker:
         if target is None or not target.is_file() or target.suffix.lower() != ".md":
             return None
         if target not in cache:
-            cache[target] = self._slugs(target)
-        slugs = cache[target]
-        if slugs is None or anchor.lower() in slugs:
+            cache[target] = self._targets(target)
+        targets = cache[target]
+        if targets is None or anchor in targets.ids or anchor.lower() in targets.ids:
             return None
-        return Finding(claim, Severity.ERROR, self._message(claim.value, slugs), self.name)
+        if targets.dynamic:
+            return Finding(claim, Severity.INFO, DYNAMIC_ANCHOR_MESSAGE, self.name)
+        return Finding(claim, Severity.ERROR, self._message(claim.value, targets.slugs), self.name)
 
     @staticmethod
-    def _slugs(target: Path) -> list[str] | None:
+    def _targets(target: Path) -> _AnchorTargets | None:
         try:
             doc = parse_markdown(target, target.read_text(encoding="utf-8"))
         except (OSError, UnicodeDecodeError):
             return None
-        return heading_slugs([h.text for h in doc.headings])
+        slugs = heading_slugs([h.text for h in doc.headings])
+        return _AnchorTargets(slugs=slugs, ids=frozenset(slugs) | frozenset(doc.anchor_ids), dynamic=doc.dynamic)
 
     @staticmethod
     def _message(value: str, slugs: list[str]) -> str:

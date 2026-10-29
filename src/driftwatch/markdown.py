@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from pathlib import Path
 
 from markdown_it import MarkdownIt
@@ -45,8 +45,13 @@ class MarkdownDocument:
     inline_codes: list[InlineCode]
     links: list[MdLink]
     headings: list[Heading]
+    anchor_ids: list[str] = field(default_factory=list)  # attr_list ``{#id}`` and HTML ``id=``/``name=`` values
+    dynamic: bool = False  # content generated or included by plugins (``:::``, ``{{ }}``, ``--8<--``)
 
 
+_ATTR_ID = re.compile(r"\{:?[^{}\n]*?#([\w:.\-]+)[^{}\n]*\}")
+_HTML_ID = re.compile(r"""<[A-Za-z][^<>]*?\s(?:id|name)\s*=\s*(?:"([^"]+)"|'([^']+)')""")
+_DYNAMIC = re.compile(r"^\s*:::\s|(?<!\$)\{\{|--8<--", re.MULTILINE)
 _TITLE_ATTR = re.compile(r"""\btitle\s*=\s*(?:"([^"]*)"|'([^']*)')""")
 
 
@@ -129,4 +134,14 @@ def parse_markdown(path: Path, text: str) -> MarkdownDocument:
         elif token.type == "inline":
             _walk_inline(token, codes, links)
 
-    return MarkdownDocument(path=path, code_fences=fences, inline_codes=codes, links=links, headings=headings)
+    anchor_ids = [m.group(1) for m in _ATTR_ID.finditer(text)]
+    anchor_ids += [m.group(1) or m.group(2) for m in _HTML_ID.finditer(text)]
+    return MarkdownDocument(
+        path=path,
+        code_fences=fences,
+        inline_codes=codes,
+        links=links,
+        headings=headings,
+        anchor_ids=anchor_ids,
+        dynamic=_DYNAMIC.search(text) is not None,
+    )

@@ -6,7 +6,7 @@ DriftWatch has five checkers, covering four kinds of claim: paths, links and anc
 |---------|-------------------|--------|
 | `path` | error, warning | Inline code spans that look like file paths exist. |
 | `link` | error | Relative link and image targets exist. |
-| `anchor` | error | Fragments (`#heading`) match a heading in the target markdown file. |
+| `anchor` | error, info | Fragments (`#heading`) match a heading, explicit id or HTML anchor in the target markdown file. |
 | `command` | error | Repo-local command paths in shell code fences exist; unknown bare tools are only INFO. |
 | `env` | error, warning | Environment variables in docs and in code agree. |
 
@@ -98,9 +98,19 @@ Limitations:
 
 **Claims:** the fragment of a link, either alone (`[x](#heading)`, same document) or after a file (`[x](other.md#heading)`).
 
-The target must be an existing markdown file. If the file is missing (that is the link checker's finding) or is not markdown, the claim is skipped silently. Heading slugs follow the GitHub convention: lower-case, punctuation removed except hyphens and underscores, spaces turned into hyphens, link syntax in the heading reduced to its text, and repeated headings suffixed with `-1`, `-2` and so on. The fragment is compared lower-cased.
+The target must be an existing markdown file. If the file is missing (that is the link checker's finding) or is not markdown, the claim is skipped silently. A document defines these anchor ids:
+
+- Heading slugs, following the GitHub convention: a trailing attr_list, HTML tags and HTML entities are dropped, emphasis markers are removed (`*`, and `_` at word edges, so `snake_case` is kept), then lower-case, punctuation removed (apostrophes, straight or curly, included) except hyphens and underscores, spaces turned into hyphens, link syntax reduced to its text, and repeated headings suffixed with `-1`, `-2` and so on. `### How _Black_ wraps lines` gives `how-black-wraps-lines`.
+- attr_list ids (`## Installation { #installation }`, a standalone `[](){#typeddict}` or `{#id}` line) anywhere in the file.
+- HTML `id=` and `name=` values (`<a id="x"></a>`, `<a name="y"></a>`) anywhere in the file.
+
+The fragment is compared as written and lower-cased.
+
+A document is *dynamic* when it contains a mkdocstrings `::: module.path` directive, a `{{ macro }}` template (not `${{ }}`) or a `--8<--` snippet include. Its content is generated or included at build time, so an unmatched anchor into it cannot be judged.
 
 **ERROR:** `anchor does not match any heading: ...`, followed by up to three available slugs (closest matches first).
+
+**INFO:** `anchor target is plugin-generated or included content, cannot verify statically`, for an unmatched anchor into a dynamic document.
 
 Example:
 
@@ -113,7 +123,7 @@ Jump to [exit codes](#exit-code).      <- ERROR, lists #exit-codes
 
 Limitations:
 
-- Only headings define anchors. Explicit HTML ids and names are not recognised.
+- Ids are collected from the raw text, including code fences, so an id shown in an example still counts. Anchors produced by plugins are only recognised as a whole (the dynamic INFO), never individually.
 - The slug rules approximate GitHub's. Other renderers may slug differently.
 - Fragments into non-markdown files are not verified.
 
