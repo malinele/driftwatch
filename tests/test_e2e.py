@@ -16,6 +16,9 @@ EXPECTED_ERRORS = {
     ("README.md", 3, "path"),
     ("docs/setup.md", 5, "path"),
     ("docs/setup.md", 9, "env"),
+    ("README.md", 5, "link"),
+    ("README.md", 6, "anchor"),
+    ("README.md", 10, "command"),
 }
 EXPECTED_WARNINGS = {("README.md", 1, "env")}
 IGNORED_LINE = ("docs/setup.md", 14, "path")
@@ -69,7 +72,7 @@ def test_fixture_reports_expected_findings_and_exits_one(repo: Path, capsys: pyt
     assert _findings(out, "WARNING") == EXPECTED_WARNINGS
     assert IGNORED_LINE not in _findings(out, "ERROR")
     assert "docs/legacy.md" not in out
-    assert "3 error(s), 1 warning(s)" in out
+    assert "6 error(s), 1 warning(s)" in out
 
 
 def test_baseline_suppresses_existing_findings(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -80,7 +83,7 @@ def test_baseline_suppresses_existing_findings(repo: Path, capsys: pytest.Captur
 
     out = capsys.readouterr().out
     assert code == 0
-    assert "0 error(s), 0 warning(s), 4 suppressed by baseline" in out
+    assert "0 error(s), 0 warning(s), 7 suppressed by baseline" in out
 
 
 def test_fully_fixed_copy_is_clean(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -96,11 +99,6 @@ def test_fully_fixed_copy_is_clean(repo: Path, capsys: pytest.CaptureFixture[str
     assert "0 error(s), 0 warning(s) in 2 file(s) scanned" in capsys.readouterr().out
 
 
-@pytest.mark.xfail(
-    strict=True,
-    reason="scanner.scan_files only runs extract_path_claims/extract_env_claims: link, anchor and command "
-    "claims are never extracted, so those checkers cannot fire in the real pipeline",
-)
 def test_link_anchor_and_command_drift_is_detected(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
     main(["scan", "."])
 

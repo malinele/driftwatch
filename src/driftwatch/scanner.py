@@ -10,7 +10,12 @@ from pathlib import Path
 
 from driftwatch.check import CHECKERS, EnvChecker
 from driftwatch.config import Config
-from driftwatch.extract import extract_env_claims, extract_path_claims
+from driftwatch.extract import (
+    extract_command_claims,
+    extract_env_claims,
+    extract_link_claims,
+    extract_path_claims,
+)
 from driftwatch.markdown import parse_markdown
 from driftwatch.models import Claim, Finding
 
@@ -93,7 +98,7 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
         text = file.read_text(encoding="utf-8", errors="replace")
         ignores[file] = parse_ignores(text)
         doc = parse_markdown(file, text)
-        claims = extract_path_claims(doc)
+        claims = [*extract_path_claims(doc), *extract_link_claims(doc), *extract_command_claims(doc)]
         env_claims.extend(extract_env_claims(doc))
         for name, checker in CHECKERS.items():
             if name in cfg.enabled_checkers and not isinstance(checker, EnvChecker):

@@ -10,9 +10,9 @@ DriftWatch has five checkers, covering four kinds of claim: paths, links and anc
 | `command` | error | The first word of shell lines in code fences is a known command. |
 | `env` | error, warning | Environment variables in docs and in code agree. |
 
-## Current wiring status
+## Wiring
 
-`scan` currently extracts only path claims and environment variable claims from documents (`src/driftwatch/scanner.py`). The link, anchor and command checkers are implemented and unit-tested, but a normal scan does not hand them any claims, so today they report nothing. The end-to-end test that expects them to fire is marked as an expected failure in `tests/test_e2e.py`. The sections below describe what each checker does once it receives claims.
+A normal `scan` extracts path, link, anchor, command and environment variable claims from every document (`src/driftwatch/scanner.py`) and runs all enabled checkers on them. The end-to-end test in `tests/test_e2e.py` asserts that the demo fixture produces link, anchor and command errors. The command checker also treats names declared in the scanned project's `pyproject.toml` (`[project.scripts]` entries and dependency names, for `python -m`) as known.
 
 ## Path checker
 

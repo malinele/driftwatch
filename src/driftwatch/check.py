@@ -8,6 +8,7 @@ import re
 import shlex
 import shutil
 import sys
+import tomllib
 from collections.abc import Sequence
 from pathlib import Path
 from typing import Protocol
@@ -168,6 +169,22 @@ KNOWN_COMMON = frozenset({"git", "docker", "make", "curl", "pip", "npm", "node",
 _ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 
 
+_REQUIREMENT_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]*")
+
+
+def _declared_names(root: Path) -> tuple[frozenset[str], frozenset[str]]:
+    """Console-script names and dependency names declared in ``pyproject.toml`` (read statically)."""
+    try:
+        project = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8")).get("project", {})
+    except (OSError, UnicodeDecodeError, tomllib.TOMLDecodeError):
+        return frozenset(), frozenset()
+    requirements = list(project.get("dependencies", []))
+    for extra in project.get("optional-dependencies", {}).values():
+        requirements.extend(extra)
+    names = {m.group(0).lower().replace("-", "_") for r in requirements if (m := _REQUIREMENT_NAME.match(r))}
+    return frozenset(project.get("scripts", {})), frozenset(names)
+
+
 def _is_python(token: str) -> bool:
     return token in ("python", "python3") or token.endswith("/python")
 
@@ -197,7 +214,12 @@ def _module_in_repo(module: str, root: Path) -> bool:
 def _module_known(module: str, root: Path) -> bool:
     """Repo module, or a stdlib / well-known tool module (resolved statically, never imported)."""
     top = module.split(".")[0]
-    return _module_in_repo(module, root) or top in sys.stdlib_module_names or top in KNOWN_COMMON
+    return (
+        _module_in_repo(module, root)
+        or top in sys.stdlib_module_names
+        or top in KNOWN_COMMON
+        or top.lower() in _declared_names(root)[1]
+    )
 
 
 class CommandChecker:
@@ -226,6 +248,7 @@ class CommandChecker:
             or shutil.which(token) is not None
             or _is_python(token)
             or token in KNOWN_COMMON
+            or token in _declared_names(root)[0]
         ):
             return None
         return Finding(claim, Severity.ERROR, f"documented command not found: {token}", self.name)
