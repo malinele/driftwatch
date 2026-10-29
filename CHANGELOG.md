@@ -5,6 +5,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.3.0] - 2026-10-30
+
+### Added
+
+- mkdocs mode: directory-URL link and anchor resolution, enabled automatically when `mkdocs.yml` is present and via a mkdocs config key.
+
+### Changed
+
+- Environment-variable extraction ignores program-output fences: bare fences claim only prompt-prefixed lines, and error/traceback lines in shell fences are skipped.
+
+Validated on a real-world repository: scan precision reached 7/7 true findings (from 70 findings with 91 percent noise in 0.1.0).
+
 ## [0.2.0] - 2026-10-30
 
 ### Added

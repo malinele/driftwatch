@@ -10,7 +10,7 @@ def test_version_flag_prints_version(capsys: pytest.CaptureFixture[str]) -> None
         main(["--version"])
 
     assert excinfo.value.code == 0
-    assert "0.2.0" in capsys.readouterr().out
+    assert "0.3.0" in capsys.readouterr().out
 
 
 def test_scan_empty_directory_returns_zero(tmp_path: Path, capsys: pytest.CaptureFixture[str]) -> None:

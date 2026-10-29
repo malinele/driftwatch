@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "driftwatch"
-version = "0.2.0"
+version = "0.3.0"
 description = "Docs that lie are bugs. DriftWatch checks markdown claims against repository reality."
 requires-python = ">=3.12"
 dependencies = ["markdown-it-py"]
