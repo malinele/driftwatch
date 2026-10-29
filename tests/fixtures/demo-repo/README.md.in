@@ -4,6 +4,7 @@ Start the app with `scripts/run.sh`; the old launcher `scripts/old_run.sh` is go
 
 See the [setup guide](docs/setup.md#installation) and the [missing guide](docs/missing.md).
 Also the [bad anchor](docs/setup.md#nope).
+Jump [back to top](#demo-repo) or to the [same-doc ghost](#no-such-section).
 
 ```bash
 ./scripts/run.sh

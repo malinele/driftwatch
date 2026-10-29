@@ -18,7 +18,8 @@ EXPECTED_ERRORS = {
     ("docs/setup.md", 9, "env"),
     ("README.md", 5, "link"),
     ("README.md", 6, "anchor"),
-    ("README.md", 10, "command"),
+    ("README.md", 7, "anchor"),
+    ("README.md", 11, "command"),
 }
 EXPECTED_WARNINGS = {("README.md", 1, "env")}
 IGNORED_LINE = ("docs/setup.md", 14, "path")
@@ -28,6 +29,7 @@ FIXES = (
     ("README.md", "`scripts/old_run.sh`", "`scripts/run.sh`"),
     ("README.md", "docs/missing.md", "docs/setup.md"),
     ("README.md", "#nope", "#installation"),
+    ("README.md", "#no-such-section", "#demo-repo"),
     ("README.md", "./scripts/deploy.sh", "./scripts/run.sh"),
     ("README.md", "is gone.\n", "is gone. Optionally set `DEMO_FLAG`.\n"),
     ("docs/setup.md", "`config/settings.yaml`", "`app.py`"),
@@ -72,7 +74,7 @@ def test_fixture_reports_expected_findings_and_exits_one(repo: Path, capsys: pyt
     assert _findings(out, "WARNING") == EXPECTED_WARNINGS
     assert IGNORED_LINE not in _findings(out, "ERROR")
     assert "docs/legacy.md" not in out
-    assert "6 error(s), 1 warning(s)" in out
+    assert "7 error(s), 1 warning(s)" in out
 
 
 def test_baseline_suppresses_existing_findings(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:
@@ -83,7 +85,7 @@ def test_baseline_suppresses_existing_findings(repo: Path, capsys: pytest.Captur
 
     out = capsys.readouterr().out
     assert code == 0
-    assert "0 error(s), 0 warning(s), 7 suppressed by baseline" in out
+    assert "0 error(s), 0 warning(s), 8 suppressed by baseline" in out
 
 
 def test_fully_fixed_copy_is_clean(repo: Path, capsys: pytest.CaptureFixture[str]) -> None:

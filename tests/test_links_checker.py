@@ -107,6 +107,18 @@ def test_same_doc_anchors(tmp_path: Path) -> None:
     assert [(f.claim.value, f.severity, f.checker) for f in findings] == [("#nope", Severity.ERROR, "anchor")]
 
 
+def test_same_doc_missing_anchor_is_exactly_one_error(tmp_path: Path) -> None:
+    _, findings = _run(tmp_path, "# Intro\n\n[x](#missing)\n")
+
+    assert [(f.claim.value, f.severity, f.checker) for f in findings] == [("#missing", Severity.ERROR, "anchor")]
+
+
+def test_same_doc_present_anchor_has_no_findings(tmp_path: Path) -> None:
+    _, findings = _run(tmp_path, "# Intro\n\n## Present\n\n[x](#present)\n")
+
+    assert findings == []
+
+
 def test_missing_anchor_suggests_up_to_three_headings(tmp_path: Path) -> None:
     _, findings = _run(tmp_path, "# One\n## Two\n## Three\n## Four\n\n[x](#nope)\n")
 
