@@ -12,6 +12,7 @@ import shlex
 import shutil
 import sys
 import tomllib
+import unicodedata
 from collections.abc import Collection, Sequence
 from dataclasses import dataclass
 from pathlib import Path
@@ -241,6 +242,12 @@ def heading_slugs(headings: list[str]) -> list[str]:
     return slugs
 
 
+def fold_diacritics(text: str) -> str:
+    """``text`` with accents stripped (NFKD, combining marks dropped), as VitePress slugs do."""
+    decomposed = unicodedata.normalize("NFKD", text)
+    return "".join(c for c in decomposed if not unicodedata.combining(c))
+
+
 MKDOCS_FILES = ("mkdocs.yml", "mkdocs.yaml")
 DEFAULT_DOCS_DIR = "docs"
 _DOCS_DIR = re.compile(r"""^docs_dir:[ \t]*['"]?([^'"#\r\n]*?)['"]?[ \t]*(?:#.*)?$""", re.MULTILINE)
@@ -324,6 +331,21 @@ def _with_conventions(base: Path, file_part: str) -> list[Path]:
     return [base, base.with_name(base.name + ".md"), base / "index.md", base / "README.md"]
 
 
+_PLACEHOLDER_TARGET = re.compile(r"[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+")
+SCRIPTS_DIR = "scripts"
+
+
+def _is_template_placeholder(claim: Claim, root: Path) -> bool:
+    """ALLCAPS_WITH_UNDERSCORES link targets, or a bare ``url`` in a file under ``scripts/``."""
+    if _PLACEHOLDER_TARGET.fullmatch(claim.value):
+        return True
+    if claim.value != "url":
+        return False
+    base = Path(os.path.abspath(root))
+    file = Path(os.path.abspath(claim.location.file))
+    return file.is_relative_to(base) and SCRIPTS_DIR in file.relative_to(base).parts[:-1]
+
+
 class LinkChecker:
     """Verifies that relative link and image targets exist."""
 
@@ -342,6 +364,7 @@ class LinkChecker:
             Finding(claim, Severity.ERROR, f"link target does not exist: {claim.value}", self.name)
             for claim in claims
             if claim.kind is ClaimKind.LINK
+            and not _is_template_placeholder(claim, root)
             and claim.value not in known
             and _resolve(claim.value, claim.location.file, root, docs_dir) is None
         ]
@@ -369,6 +392,7 @@ DYNAMIC_ANCHOR_MESSAGE = "anchor target is plugin-generated or included content,
 class _AnchorTargets:
     slugs: list[str]  # heading slugs in document order (used for suggestions)
     ids: frozenset[str]  # every valid anchor id: slugs, attr_list ids, HTML id/name values
+    folded_ids: frozenset[str]  # ``ids`` with diacritics stripped
     dynamic: bool
 
 
@@ -402,6 +426,8 @@ class AnchorChecker:
         targets = cache[target]
         if targets is None or anchor in targets.ids or anchor.lower() in targets.ids:
             return None
+        if fold_diacritics(anchor.lower()) in targets.folded_ids:
+            return None
         if targets.dynamic:
             return Finding(claim, Severity.INFO, DYNAMIC_ANCHOR_MESSAGE, self.name)
         return Finding(claim, Severity.ERROR, self._message(claim.value, targets.slugs), self.name)
@@ -413,7 +439,9 @@ class AnchorChecker:
         except (OSError, UnicodeDecodeError):
             return None
         slugs = heading_slugs([h.text for h in doc.headings])
-        return _AnchorTargets(slugs=slugs, ids=frozenset(slugs) | frozenset(doc.anchor_ids), dynamic=doc.dynamic)
+        ids = frozenset(slugs) | frozenset(doc.anchor_ids)
+        folded = frozenset(fold_diacritics(i.lower()) for i in ids)
+        return _AnchorTargets(slugs=slugs, ids=ids, folded_ids=folded, dynamic=doc.dynamic)
 
     @staticmethod
     def _message(value: str, slugs: list[str]) -> str:

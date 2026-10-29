@@ -94,6 +94,12 @@ MyST labels: a line of the form `(name)=` in any scanned document defines a glob
 
 **ERROR:** `link target does not exist: ...`.
 
+Template placeholders are skipped: a target that is a single ALLCAPS_WITH_UNDERSCORES token (for example `ENGLISH_VERSION_URL`), or the bare word `url` in a file under a `scripts/` directory.
+
+Translation fallback: in a locale tree (`docs/<locale>/...`), a missing relative target that exists in the source locale (`en`, or the bare docs tree) is a WARNING (`missing in this locale, exists in source locale`) in every locale. Percent-escapes are decoded and tags such as `zh-Hans` are recognised as locales.
+
+Mirror README: an ERROR in the repository-root `README.md` whose relative target exists under `docs/` is downgraded to a WARNING saying the link works on the docs site but is broken on GitHub/PyPI. A target missing in both places stays an ERROR.
+
 Mkdocs mode: mkdocs serves a page at a directory URL, so a relative extensionless link is resolved against that URL, not against the file. The mode is on for documents under the docs directory when a mkdocs.yml or mkdocs.yaml file exists at the scan root (the `mkdocs` option defaults to `"auto"`; `true` forces it on, `false` off). The docs directory comes from a `docs_dir:` line in that file if present, otherwise it is docs. For a page named sub/page.md the URL directory is sub/page/, and index.md and README.md map to their parent directory. The link is resolved against the URL directory, then mapped back to a file: the result with the markdown suffix appended, or the result as a directory containing index.md, inside the docs directory. For example, a link to ../advanced/transports from docs/async.md resolves to docs/advanced/transports.md. This is tried first; if it finds nothing, the chain above still applies. Targets with a file extension, and targets starting with a slash, always use the chain above. The anchor checker maps cross-document targets the same way.
 
 Example:
@@ -118,7 +124,7 @@ The target must be an existing markdown file. If the file is missing (that is th
 - attr_list ids (`## Installation { #installation }`, a standalone `[](){#typeddict}` or `{#id}` line) anywhere in the file.
 - HTML `id=` and `name=` values (`<a id="x"></a>`, `<a name="y"></a>`) anywhere in the file.
 
-The fragment is compared as written and lower-cased.
+The fragment is compared as written and lower-cased. Diacritics are also folded (NFKD, combining marks removed) on both sides, and a match in either form is accepted: `#duracion-de-la-respuesta` is valid for the heading `Duración de la respuesta`, as on VitePress.
 
 A document is *dynamic* when it contains a mkdocstrings `::: module.path` directive, a `{{ macro }}` template (not `${{ }}`) or a `--8<--` snippet include. Its content is generated or included at build time, so an unmatched anchor into it cannot be judged.
 

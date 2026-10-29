@@ -10,8 +10,9 @@ from collections import defaultdict
 from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, replace
 from pathlib import Path
+from urllib.parse import unquote
 
-from driftwatch.check import CHECKERS, AnchorChecker, EnvChecker, LinkChecker
+from driftwatch.check import CHECKERS, AnchorChecker, EnvChecker, LinkChecker, is_within
 from driftwatch.config import Config
 from driftwatch.extract import (
     extract_command_claims,
@@ -185,7 +186,28 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
                 )
                 findings.extend(f for f in checked if f.claim.value not in extra)
     kept = _dedupe_findings(f for f in findings if not _is_ignored(f, ignores))
-    return dedupe_locales(kept, root) if cfg.locales else kept
+    localized = dedupe_locales(kept, root) if cfg.locales else kept
+    return [_mirror_readme_downgrade(f, root) for f in localized]
+
+
+README_MIRROR_MESSAGE = (
+    "link works on the docs site (target exists under docs/) but is broken on GitHub/PyPI: {value}"
+)
+
+
+def _mirror_readme_downgrade(finding: Finding, root: Path) -> Finding:
+    """Root README link whose target only exists under ``docs/``: true on the site, broken on GitHub."""
+    if finding.checker not in _FALLBACK_CHECKERS or finding.severity is not Severity.ERROR:
+        return finding
+    if _relative_posix(finding.claim.location.file, root) != "README.md":
+        return finding
+    value = unquote(finding.claim.value.split("#", 1)[0].split("?", 1)[0])
+    if not value or value.startswith(("/", "~")) or "://" in value:
+        return finding
+    target = Path(posixpath.normpath((root / "docs" / value).as_posix()))
+    if not is_within(target, root / "docs") or not target.exists():
+        return finding
+    return replace(finding, severity=Severity.WARNING, message=README_MIRROR_MESSAGE.format(value=finding.claim.value))
 
 
 ISO_639_1 = frozenset(
@@ -196,7 +218,7 @@ ISO_639_1 = frozenset(
     "se sg si sk sl sm sn so sq sr ss st su sv sw ta te tg th ti tk tl tn to tr ts tt tw ty ug uk ur uz ve vi "
     "vo wa wo xh yi yo za zh zu".split()
 )
-_LOCALE_DIR = re.compile(r"^([a-z]{2})(?:[-_][A-Za-z]{2})?$")
+_LOCALE_DIR = re.compile(r"^([a-z]{2})(?:[-_][A-Za-z]{2,4})?$")
 _LOCALE_PARENTS = frozenset({"docs", "i18n", "locales"})
 SOURCE_LOCALE = "en"
 LOCALE_FALLBACK_MESSAGE = "missing in this locale, exists in source locale"
@@ -247,7 +269,7 @@ def _is_source(info: LocaleFile, root: Path) -> bool:
 
 
 def _target_exists_in_source(finding: Finding, info: LocaleFile, source_dir: Path) -> bool:
-    value = finding.claim.value.split("#", 1)[0].split("?", 1)[0]
+    value = unquote(finding.claim.value.split("#", 1)[0].split("?", 1)[0])
     if not value or value.startswith(("/", "~")) or "://" in value:
         return False
     here = source_dir.joinpath(*info.rest[:-1])
