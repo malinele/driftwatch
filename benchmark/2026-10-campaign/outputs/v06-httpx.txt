@@ -1,0 +1,14 @@
+docs/advanced/clients.md:154: ERROR [anchor] anchor does not match any heading: #client-instances (available: #request-instances, #why-use-a-client, #usage)
+docs/advanced/clients.md:162: ERROR [anchor] anchor does not match any heading: #merging-of-parameters (available: #merging-of-configuration, #monitoring-upload-progress, #making-requests)
+docs/advanced/clients.md:319: WARNING [path] placeholder path in docs
+docs/advanced/clients.md:319: WARNING [path] placeholder path in docs
+docs/advanced/proxies.md:29: ERROR [anchor] anchor does not match any heading: #routing (available: #troubleshooting-proxies, #http-proxies, #authentication)
+docs/async.md:194: ERROR [anchor] anchor does not match any heading: ../advanced/transports#asgitransport (available: #asgi-transport, #wsgi-transport, #http-transport)
+docs/compatibility.md:200: ERROR [anchor] anchor does not match any heading: advanced/clients.md#client-instances (available: #request-instances, #why-use-a-client, #usage)
+docs/contributing.md:166: WARNING [path] path does not exist at the stated location; found at: httpx/__version__.py
+docs/environment_variables.md:18: ERROR [anchor] anchor does not match any heading: advanced/proxies.md#http-proxying (available: #http-proxies, #troubleshooting-proxies, #proxy-mechanisms)
+docs/environment_variables.md:27: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): HTTP_PROXY
+docs/environment_variables.md:44: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): HTTP_PROXY
+docs/environment_variables.md:45: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): NO_PROXY
+docs/third_party_packages.md:19: ERROR [anchor] anchor does not match any heading: advanced/authentication.md#customizing-authentication (available: #custom-authentication-schemes, #basic-authentication, #digest-authentication)
+7 error(s), 3 warning(s) in 26 file(s) scanned

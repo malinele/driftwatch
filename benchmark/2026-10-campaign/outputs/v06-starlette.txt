@@ -1,0 +1,9 @@
+README.md:112: WARNING [path] placeholder path in docs
+docs/config.md:32: INFO [command] command not found in repo or on PATH (external tool?)
+docs/contributing.md:156: WARNING [path] path does not exist and its parent directory is not in the repo: __version__.py
+docs/middleware.md:166: WARNING [path] absolute path in docs is machine-specific
+docs/routing.md:40: WARNING [path] absolute path in docs is machine-specific
+docs/routing.md:48: WARNING [path] absolute path in docs is machine-specific
+docs/staticfiles.md:10: INFO [path] common ecosystem file, not present in this repo
+docs/staticfiles.md:32: INFO [path] common ecosystem file, not present in this repo
+0 error(s), 5 warning(s) in 31 file(s) scanned

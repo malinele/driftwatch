@@ -1,0 +1,67 @@
+[
+  {
+    "name": "axios",
+    "url": "https://github.com/axios/axios",
+    "commit": "9d11464a75ee5c644c0308d742f58755c0482594"
+  },
+  {
+    "name": "black",
+    "url": "https://github.com/psf/black",
+    "commit": "7d21b9b08db23a4a19792bc8bf35f38956ce8cae"
+  },
+  {
+    "name": "click",
+    "url": "https://github.com/pallets/click",
+    "commit": "2247b35ea1c47c727d7a06e51fa280e12a863ff6"
+  },
+  {
+    "name": "express",
+    "url": "https://github.com/expressjs/express",
+    "commit": "1c6f1b0fe4000977b9a7b4f34097e4d527dd9824"
+  },
+  {
+    "name": "fastapi",
+    "url": "https://github.com/tiangolo/fastapi",
+    "commit": "79cab5bed28b24d92c185d236feb33f5783dfeb3"
+  },
+  {
+    "name": "fastify",
+    "url": "https://github.com/fastify/fastify",
+    "commit": "5df959f3af698823dd582f1c3661f3e80df0b5da"
+  },
+  {
+    "name": "httpx",
+    "url": "https://github.com/encode/httpx",
+    "commit": "b5addb64f0161ff6bfe94c124ef76f6a1fba5254"
+  },
+  {
+    "name": "mkdocs",
+    "url": "https://github.com/mkdocs/mkdocs",
+    "commit": "2862536793b3c67d9d83c33e0dd6d50a791928f8"
+  },
+  {
+    "name": "pydantic",
+    "url": "https://github.com/pydantic/pydantic",
+    "commit": "0a7887305ad11709a6f8362eb90fc908f0171398"
+  },
+  {
+    "name": "rich",
+    "url": "https://github.com/Textualize/rich",
+    "commit": "9d8f9a372cc5916fd4781fec207ced7ddac2f08f"
+  },
+  {
+    "name": "starlette",
+    "url": "https://github.com/encode/starlette",
+    "commit": "2745bbc5afa2f8ce900d290bedca2bc5d3f3cfe8"
+  },
+  {
+    "name": "typer",
+    "url": "https://github.com/fastapi/typer",
+    "commit": "a5882dedf0bc7a46cd861fdfca020f88519e0f21"
+  },
+  {
+    "name": "uvicorn",
+    "url": "https://github.com/encode/uvicorn",
+    "commit": "9d81c12a2c411d3bf104368472b708a3218d9b4e"
+  }
+]

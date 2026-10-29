@@ -1,0 +1,74 @@
+AGENTS.md:34: INFO [path] generated or ignored artifact
+README.md:1: WARNING [env] env var read by code but undocumented: NODE_TLS_REJECT_UNAUTHORIZED
+README.md:1555: WARNING [path] absolute path in docs is machine-specific
+README.md:1555: INFO [path] file the reader is asked to create
+README.md:1835: INFO [path] file the reader is asked to create
+THREATMODEL.md:292: WARNING [path] path does not exist at the stated location; found at: .github/workflows/publish.yml
+THREATMODEL.md:294: INFO [path] user-local path, not checked
+THREATMODEL.md:326: WARNING [path] absolute path in docs is machine-specific
+THREATMODEL.md:337: INFO [path] user-local path, not checked
+THREATMODEL.md:337: INFO [path] user-local path, not checked
+THREATMODEL.md:337: INFO [path] user-local path, not checked
+THREATMODEL.md:337: INFO [path] user-local path, not checked
+THREATMODEL.md:340: WARNING [path] path does not exist at the stated location; found at: .github/workflows/publish.yml
+THREATMODEL.md:346: INFO [path] user-local path, not checked
+THREATMODEL.md:359: INFO [path] user-local path, not checked
+THREATMODEL.md:360: INFO [path] user-local path, not checked
+THREATMODEL.md:361: INFO [path] user-local path, not checked
+THREATMODEL.md:362: INFO [path] user-local path, not checked
+THREATMODEL.md:362: INFO [path] user-local path, not checked
+THREATMODEL.md:367: INFO [path] user-local path, not checked
+THREATMODEL.md:405: INFO [path] generated or ignored artifact
+THREATMODEL.md:408: WARNING [path] path does not exist at the stated location; found at: .github/workflows/publish.yml
+THREATMODEL.md:420: WARNING [path] absolute path in docs is machine-specific
+THREATMODEL.md:420: WARNING [path] absolute path in docs is machine-specific
+THREATMODEL.md:458: WARNING [path] absolute path in docs is machine-specific
+THREATMODEL.md:472: WARNING [path] absolute path in docs is machine-specific
+THREATMODEL.md:472: WARNING [path] absolute path in docs is machine-specific
+THREATMODEL.md:481: INFO [path] user-local path, not checked
+THREATMODEL.md:481: INFO [path] user-local path, not checked
+THREATMODEL.md:481: INFO [path] user-local path, not checked
+THREATMODEL.md:481: INFO [path] user-local path, not checked
+THREATMODEL.md:488: INFO [path] user-local path, not checked
+THREATMODEL.md:488: INFO [path] user-local path, not checked
+docs/es/pages/advanced/error-handling.md:59: INFO [path] same finding repeated in 2 locale copies (es, fr)
+docs/es/pages/advanced/error-handling.md:59: INFO [path] same finding repeated in 2 locale copies (es, fr)
+docs/es/pages/advanced/request-config.md:22: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:22: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:34: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:155: ERROR [anchor] anchor does not match any heading: /pages/advanced/type-script#configuracion-de-solicitud-personalizada-con-claves-de-tipo-simbolo (available: #typescript, #module-resolution-caveats, #type-guards-for-axios-errors)
+docs/es/pages/advanced/request-config.md:347: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:350: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:350: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:350: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:395: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/request-config.md:399: INFO [env] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/advanced/x-www-form-urlencoded-format.md:84: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/getting-started/upgrade-guide.md:37: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/getting-started/upgrade-guide.md:37: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/es/pages/misc/security.md:29: INFO [path] same finding repeated in 3 locale copies (es, fr, zh)
+docs/fr/pages/advanced/config-defaults.md:13: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/fr/pages/advanced/config-defaults.md:18: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/fr/pages/advanced/request-config.md:155: ERROR [anchor] anchor does not match any heading: /pages/advanced/type-script#configuration-de-requete-personnalisee-avec-des-cles-symboles (available: #typescript, #module-resolution-caveats, #type-guards-for-axios-errors)
+docs/fr/pages/advanced/request-config.md:179: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/fr/pages/advanced/request-config.md:475: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/fr/pages/advanced/response-schema.md:79: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/pages/advanced/error-handling.md:59: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/error-handling.md:59: INFO [path] file the reader is asked to create
+docs/pages/advanced/request-config.md:22: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:22: WARNING [path] placeholder path in docs
+docs/pages/advanced/request-config.md:34: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:347: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:350: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:350: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:350: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:395: WARNING [path] absolute path in docs is machine-specific
+docs/pages/advanced/request-config.md:399: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): NODE_OPTIONS
+docs/pages/advanced/x-www-form-urlencoded-format.md:84: INFO [path] file the reader is asked to create
+docs/pages/getting-started/upgrade-guide.md:37: WARNING [path] absolute path in docs is machine-specific
+docs/pages/getting-started/upgrade-guide.md:37: WARNING [path] placeholder path in docs
+docs/pages/misc/security.md:29: WARNING [path] absolute path in docs is machine-specific
+docs/zh/pages/advanced/error-handling.md:57: WARNING [path] absolute path in docs is machine-specific
+docs/zh/pages/advanced/error-handling.md:57: WARNING [path] placeholder path in docs
+docs/zh/pages/advanced/request-config.md:155: ERROR [anchor] anchor does not match any heading: /pages/advanced/type-script#使用-symbol-键的自定义请求配置 (available: #typescript, #module-resolution-caveats, #type-guards-for-axios-errors)
+3 error(s), 25 warning(s) in 160 file(s) scanned

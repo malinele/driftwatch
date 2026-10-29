@@ -1,0 +1,87 @@
+docs/about/release-notes.md:335: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/about/release-notes.md:634: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/about/release-notes.md:1003: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/themes.md:24: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+docs/dev-guide/themes.md:27: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+docs/dev-guide/themes.md:56: INFO [path] file the reader is asked to create
+docs/dev-guide/themes.md:64: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/mkdocs_theme.yml
+docs/dev-guide/themes.md:70: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/mkdocs_theme.yml
+docs/dev-guide/themes.md:83: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+docs/dev-guide/themes.md:117: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/base.html
+docs/dev-guide/themes.md:117: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+docs/dev-guide/themes.md:199: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/mkdocs_theme.yml
+docs/dev-guide/themes.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/dev-guide/themes.md:432: INFO [path] file the reader is asked to create
+docs/dev-guide/themes.md:434: WARNING [path] absolute path in docs is machine-specific
+docs/dev-guide/themes.md:434: WARNING [path] placeholder path in docs
+docs/dev-guide/themes.md:742: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/mkdocs_theme.yml
+docs/dev-guide/themes.md:747: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/readthedocs/search.html
+docs/dev-guide/themes.md:750: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/readthedocs/search.html
+docs/dev-guide/themes.md:771: INFO [path] common ecosystem file, not present in this repo
+docs/dev-guide/themes.md:831: INFO [path] file the reader is asked to create
+docs/dev-guide/themes.md:832: INFO [path] file the reader is asked to create
+docs/dev-guide/themes.md:895: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+docs/dev-guide/themes.md:896: WARNING [path] path does not exist at the stated location; found at: mkdocs/__init__.py
+docs/dev-guide/themes.md:902: INFO [path] file the reader is asked to create
+docs/dev-guide/themes.md:905: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/mkdocs_theme.yml
+docs/dev-guide/themes.md:911: INFO [path] file the reader is asked to create
+docs/dev-guide/themes.md:942: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/mkdocs_theme.yml
+docs/dev-guide/themes.md:1046: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:10: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:34: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:35: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:57: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:76: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:79: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:126: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/dev-guide/translations.md:137: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/getting-started.md:133: WARNING [link] link target not found at the stated location; found at: mkdocs/themes/mkdocs/img/favicon.ico
+docs/getting-started.md:159: INFO [path] file the reader is asked to create
+docs/getting-started.md:159: INFO [path] file the reader is asked to create
+docs/getting-started.md:161: INFO [path] common ecosystem file, not present in this repo
+docs/user-guide/configuration.md:37: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:121: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:125: WARNING [path] path does not exist and its parent directory is not in the repo: src/default/docs/
+docs/user-guide/configuration.md:134: WARNING [path] path does not exist and its parent directory is not in the repo: edit/master/docs/
+docs/user-guide/configuration.md:138: WARNING [path] path does not exist and its parent directory is not in the repo: blob/master/docs/
+docs/user-guide/configuration.md:141: WARNING [path] path does not exist and its parent directory is not in the repo: edit/master/docs/
+docs/user-guide/configuration.md:142: WARNING [path] path does not exist and its parent directory is not in the repo: src/default/docs/
+docs/user-guide/configuration.md:160: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:165: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:283: WARNING [path] absolute path in docs is machine-specific
+docs/user-guide/configuration.md:468: WARNING [path] absolute path in docs is machine-specific
+docs/user-guide/configuration.md:470: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:470: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:685: INFO [path] common ecosystem file, not present in this repo
+docs/user-guide/configuration.md:686: WARNING [path] path does not exist and its parent directory is not in the repo: X.html
+docs/user-guide/configuration.md:835: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:876: WARNING [path] placeholder path in docs
+docs/user-guide/configuration.md:1159: INFO [path] file the reader is asked to create
+docs/user-guide/configuration.md:1174: WARNING [path] path does not exist at the stated location; found at: mkdocs.yml
+docs/user-guide/configuration.md:1182: WARNING [path] path does not exist at the stated location; found at: mkdocs.yml
+docs/user-guide/configuration.md:1184: WARNING [path] path does not exist and its parent directory is not in the repo: base.yml
+docs/user-guide/configuration.md:1219: WARNING [path] path does not exist and its parent directory is not in the repo: base.yml
+docs/user-guide/customizing-your-theme.md:21: INFO [path] file the reader is asked to create
+docs/user-guide/customizing-your-theme.md:133: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+docs/user-guide/customizing-your-theme.md:134: INFO [path] file the reader is asked to create
+docs/user-guide/customizing-your-theme.md:135: INFO [path] file the reader is asked to create
+docs/user-guide/customizing-your-theme.md:135: INFO [path] file the reader is asked to create
+docs/user-guide/customizing-your-theme.md:136: INFO [path] file the reader is asked to create
+docs/user-guide/customizing-your-theme.md:147: INFO [path] file the reader is asked to create
+docs/user-guide/deploying-your-docs.md:127: INFO [path] file the reader is asked to create
+docs/user-guide/deploying-your-docs.md:143: WARNING [path] absolute path in docs is machine-specific
+docs/user-guide/deploying-your-docs.md:206: INFO [path] file the reader is asked to create
+docs/user-guide/installation.md:97: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:23: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:30: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:30: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:81: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:83: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:83: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:88: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:91: INFO [path] file the reader is asked to create
+docs/user-guide/writing-your-docs.md:93: WARNING [path] path does not exist at the stated location; found at: docs/index.md
+docs/user-guide/writing-your-docs.md:94: WARNING [path] path does not exist at the stated location; found at: docs/index.md
+docs/user-guide/writing-your-docs.md:120: ERROR [path] path does not exist: docs/about.md
+docs/user-guide/writing-your-docs.md:368: WARNING [path] path does not exist at the stated location; found at: mkdocs/themes/mkdocs/main.html
+1 error(s), 37 warning(s) in 37 file(s) scanned

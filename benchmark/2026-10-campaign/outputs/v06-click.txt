@@ -1,0 +1,26 @@
+README.md:1: WARNING [env] env var read by code but undocumented: APP_DEBUG
+README.md:1: WARNING [env] env var read by code but undocumented: LESS
+README.md:1: WARNING [env] env var read by code but undocumented: TEST_CLICK_ENV
+docs/api.md:327: WARNING [path] absolute path in docs is machine-specific
+docs/faqs.md:99: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): PYTHONUTF8
+docs/faqs.md:101: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): PYTHONIOENCODING
+docs/faqs.md:123: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): PYTHONIOENCODING
+docs/faqs.md:168: INFO [command] command not found in repo or on PATH (external tool?)
+docs/faqs.md:228: INFO [command] command not found in repo or on PATH (external tool?)
+docs/faqs.md:235: INFO [command] command not found in repo or on PATH (external tool?)
+docs/options.md:355: WARNING [path] absolute path in docs is machine-specific
+docs/options.md:356: WARNING [path] absolute path in docs is machine-specific
+docs/options.md:754: WARNING [path] absolute path in docs is machine-specific
+docs/options.md:772: WARNING [path] absolute path in docs is machine-specific
+docs/shell-completion.md:15: INFO [command] command not found in repo or on PATH (external tool?)
+docs/shell-completion.md:17: INFO [command] command not found in repo or on PATH (external tool?)
+docs/shell-completion.md:276: INFO [command] command not found in repo or on PATH (external tool?)
+docs/standalone-apps.md:96: WARNING [path] path does not exist and its parent directory is not in the repo: __main__.py
+docs/standalone-apps.md:99: WARNING [path] path does not exist and its parent directory is not in the repo: __main__.py
+docs/standalone-apps.md:143: INFO [command] command not found in repo or on PATH (external tool?)
+docs/standalone-apps.md:145: INFO [command] command not found in repo or on PATH (external tool?)
+docs/unicode-support.md:67: INFO [command] command not found in repo or on PATH (external tool?)
+docs/unicode-support.md:70: INFO [command] command not found in repo or on PATH (external tool?)
+docs/unicode-support.md:81: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): LC_ALL
+docs/unicode-support.md:89: INFO [env] ambient environment variable (read by the OS/stdlib, not this codebase): LC_ALL
+0 error(s), 10 warning(s) in 39 file(s) scanned

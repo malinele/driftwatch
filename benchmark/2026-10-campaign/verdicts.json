@@ -1,0 +1,538 @@
+[
+  {
+    "repo": "axios",
+    "location": "docs/es/pages/advanced/request-config.md:155",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: /pages/advanced/type-script#configuracion-de-solicitud-personalizada-con-claves-de-tipo-simbolo (available: #typescript, #module-resolution-caveats, #type-guards-for-axios-errors)",
+    "verdict": "true_positive",
+    "basis": "locale page links missing the locale prefix resolve to the English page which lacks the localized anchor; sibling links carry the prefix"
+  },
+  {
+    "repo": "axios",
+    "location": "docs/fr/pages/advanced/request-config.md:155",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: /pages/advanced/type-script#configuration-de-requete-personnalisee-avec-des-cles-symboles (available: #typescript, #module-resolution-caveats, #type-guards-for-axios-errors)",
+    "verdict": "true_positive",
+    "basis": "locale page links missing the locale prefix resolve to the English page which lacks the localized anchor; sibling links carry the prefix"
+  },
+  {
+    "repo": "axios",
+    "location": "docs/zh/pages/advanced/request-config.md:155",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: /pages/advanced/type-script#\u4f7f\u7528-symbol-\u952e\u7684\u81ea\u5b9a\u4e49\u8bf7\u6c42\u914d\u7f6e (available: #typescript, #module-resolution-caveats, #type-guards-for-axios-errors)",
+    "verdict": "true_positive",
+    "basis": "locale page links missing the locale prefix resolve to the English page which lacks the localized anchor; sibling links carry the prefix"
+  },
+  {
+    "repo": "fastapi",
+    "location": "README.md:143",
+    "checker": "link",
+    "message": "link target does not exist: tutorial/",
+    "verdict": "true_positive_low",
+    "basis": "root README mirrors docs/index.md; link valid on the docs site, broken on GitHub/PyPI"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:99",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:937",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawrequestdefaultexpressionrawserver (available: #fastifyrawrequestdefaultexpressionrawserverrawservergeneric, #fastifyrawreplydefaultexpression-rawserverrawservergeneric, #fastifyrequestgenericinterface)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:946",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawreplydefaultexpression (available: #fastifyrawreplydefaultexpression-rawserverrawservergeneric, #fastifyrawserverdefault, #fastifyrawrequestdefaultexpressionrawserverrawservergeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:955",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyloggeroptions (available: #fastifyfastifyregisteroptions, #fastifyfastifypluginoptions, #fastifyfastifylogfn)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:968",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyinstance (available: #fastifyfastifypluginoptions, #fastifyfastifylogfn, #fastifyfastifyerror)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:968",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyserveroptions-rawserver-logger (available: #fastifyfastifyserveroptions-rawserverrawservergeneric-loggerloggergeneric, #fastifyfastifyschemavalidationerror, #fastifyfastifyregisteroptions)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1128",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1131",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1139",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1150",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1169",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1257",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1268",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1319",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1329",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1335",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1341",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1349",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyplugincallbackoptions (available: #fastifyfastifypluginoptions, #fastifyfastifyplugincallback-optionsfastifypluginoptions, #fastifyfastifyregisteroptions)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1349",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifytregisteroptions (available: #fastifyfastifyregisteroptions, #fastifyfastifypluginoptions, #fastifyfastifyerror)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1351",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifypluginasyncoptions (available: #fastifyfastifypluginoptions, #fastifyfastifyregisteroptions, #fastifyfastifypluginasync-optionsfastifypluginoptions)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1351",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifytregisteroptions (available: #fastifyfastifyregisteroptions, #fastifyfastifypluginoptions, #fastifyfastifyerror)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1425",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1435",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1454",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1462",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1533",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1533",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1533",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1543",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1543",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1543",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1558",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1558",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1558",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1565",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1565",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1565",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1572",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1572",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1572",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1583",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1583",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1583",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1595",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1595",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1595",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1606",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1606",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1606",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1621",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1621",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyrouteoptionsrawserver-rawrequest-rawreply-requestgeneric-contextconfig (available: #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric, #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1629",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyinstance (available: #fastifyfastifypluginoptions, #fastifyfastifylogfn, #fastifyfastifyerror)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "fastify",
+    "location": "docs/Reference/TypeScript.md:1642",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #fastifyfastifyinstance (available: #fastifyfastifypluginoptions, #fastifyfastifylogfn, #fastifyfastifyerror)",
+    "verdict": "true_positive",
+    "basis": "footer reference-link targets without matching heading slug (generic-suffix slugs, dead ContextConfigGeneric, one typo); root causes verified manually"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/advanced/clients.md:154",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #client-instances (available: #request-instances, #why-use-a-client, #usage)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/advanced/clients.md:162",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #merging-of-parameters (available: #merging-of-configuration, #monitoring-upload-progress, #making-requests)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/advanced/proxies.md:29",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: #routing (available: #troubleshooting-proxies, #http-proxies, #authentication)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/async.md:194",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: ../advanced/transports#asgitransport (available: #asgi-transport, #wsgi-transport, #http-transport)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/compatibility.md:200",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: advanced/clients.md#client-instances (available: #request-instances, #why-use-a-client, #usage)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/environment_variables.md:18",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: advanced/proxies.md#http-proxying (available: #http-proxies, #troubleshooting-proxies, #proxy-mechanisms)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "httpx",
+    "location": "docs/third_party_packages.md:19",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: advanced/authentication.md#customizing-authentication (available: #custom-authentication-schemes, #basic-authentication, #digest-authentication)",
+    "verdict": "true_positive",
+    "basis": "stale anchor verified by reading the target document headings"
+  },
+  {
+    "repo": "mkdocs",
+    "location": "docs/user-guide/writing-your-docs.md:120",
+    "checker": "path",
+    "message": "path does not exist: docs/about.md",
+    "verdict": "false_positive",
+    "basis": "docs/about.md is an illustrative example in the writing-your-docs tutorial, not a claim about this repo"
+  },
+  {
+    "repo": "pydantic",
+    "location": "SECURITY.md:49",
+    "checker": "anchor",
+    "message": "anchor does not match any heading: ##user-controlled-input (available: #user-controlled-input, #1-super-linear-growth-in-scope, #supported-versions)",
+    "verdict": "true_positive",
+    "basis": "SECURITY.md double-hash fragment; valid #user-controlled-input exists"
+  },
+  {
+    "repo": "pydantic",
+    "location": "docs/contributing.md:99",
+    "checker": "path",
+    "message": "path does not exist: tests/pydantic-core/",
+    "verdict": "true_positive",
+    "basis": "docs/contributing.md names tests/pydantic-core/; the real symlink is tests/pydantic_core (underscore)"
+  }
+]

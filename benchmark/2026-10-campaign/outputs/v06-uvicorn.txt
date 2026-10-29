@@ -1,0 +1,7 @@
+README.md:60: WARNING [path] placeholder path in docs
+docs/concepts/logging.md:72: INFO [path] file the reader is asked to create
+docs/concepts/logging.md:127: INFO [path] file the reader is asked to create
+docs/contributing.md:165: WARNING [path] path does not exist at the stated location; found at: tests/__init__.py
+docs/deployment/docker.md:23: INFO [command] command not found in repo or on PATH (external tool?)
+docs/deployment/index.md:268: WARNING [path] absolute path in docs is machine-specific
+0 error(s), 3 warning(s) in 19 file(s) scanned

@@ -1,0 +1,87 @@
+README.md:1: WARNING [env] env var read by code but undocumented: COMMIT_SHA
+README.md:1: WARNING [env] env var read by code but undocumented: COMP_CWORD
+README.md:1: WARNING [env] env var read by code but undocumented: COMP_WORDS
+README.md:1: WARNING [env] env var read by code but undocumented: DEPLOY_URL
+README.md:1: WARNING [env] env var read by code but undocumented: DYLD_FALLBACK_LIBRARY_PATH
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_REPOSITORY
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_TOKEN
+README.md:1: WARNING [env] env var read by code but undocumented: RUN_ID
+README.md:1: WARNING [env] env var read by code but undocumented: STATE
+README.md:57: WARNING [link] link works on the docs site (target exists under docs/) but is broken on GitHub/PyPI: tutorial/install.md
+README.md:59: WARNING [link] link works on the docs site (target exists under docs/) but is broken on GitHub/PyPI: tutorial/install.md
+README.md:65: INFO [path] file the reader is asked to create
+README.md:122: INFO [path] file the reader is asked to create
+README.md:184: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/contributing.md:13: WARNING [path] path does not exist at the stated location; found at: scripts/docker/compose.yaml
+docs/contributing.md:21: WARNING [path] absolute path in docs is machine-specific
+docs/contributing.md:86: INFO [path] file the reader is asked to create
+docs/contributing.md:119: INFO [command] command not found in repo or on PATH (external tool?)
+docs/contributing.md:120: INFO [command] command not found in repo or on PATH (external tool?)
+docs/contributing.md:123: INFO [path] file the reader is asked to create
+docs/index.md:73: INFO [path] file the reader is asked to create
+docs/index.md:130: INFO [path] file the reader is asked to create
+docs/index.md:192: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/app-dir.md:29: WARNING [path] absolute path in docs is machine-specific
+docs/tutorial/app-dir.md:31: WARNING [path] absolute path in docs is machine-specific
+docs/tutorial/commands/options.md:35: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/commands/options.md:36: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/commands/options.md:37: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/commands/options.md:38: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/first-steps.md:9: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/first-steps.md:53: WARNING [path] path does not exist and its parent directory is not in the repo: ./myproject
+docs/tutorial/first-steps.md:56: WARNING [path] path does not exist and its parent directory is not in the repo: ./myproject
+docs/tutorial/first-steps.md:172: WARNING [path] path does not exist and its parent directory is not in the repo: ./myproject
+docs/tutorial/first-steps.md:175: WARNING [path] path does not exist and its parent directory is not in the repo: ./myproject
+docs/tutorial/first-steps.md:198: WARNING [path] path does not exist and its parent directory is not in the repo: ./my-super-awesome-project
+docs/tutorial/first-steps.md:198: WARNING [path] path does not exist and its parent directory is not in the repo: ./myproject
+docs/tutorial/index.md:47: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/install.md:24: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/one-file-per-command.md:127: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/one-file-per-command.md:131: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/options/help.md:25: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/package.md:435: INFO [command] module built by this tutorial: rick_portal_gun
+docs/tutorial/package.md:505: INFO [env] variable of an external tool (not read by this codebase): UV_PUBLISH_TOKEN
+docs/tutorial/parameter-types/bool.md:59: WARNING [path] absolute path in docs is machine-specific
+docs/tutorial/parameter-types/bool.md:136: WARNING [path] absolute path in docs is machine-specific
+docs/tutorial/parameter-types/bool.md:142: WARNING [path] absolute path in docs is machine-specific
+docs/tutorial/parameter-types/datetime.md:58: WARNING [path] absolute path in docs is machine-specific
+docs/tutorial/parameter-types/file.md:30: INFO [path] file the reader is asked to create
+docs/tutorial/parameter-types/path.md:56: INFO [path] user-local path, not checked
+docs/tutorial/subcommands/add-typer.md:11: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/items.py
+docs/tutorial/subcommands/add-typer.md:31: INFO [path] file the reader is asked to create
+docs/tutorial/subcommands/add-typer.md:49: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/items.py
+docs/tutorial/subcommands/add-typer.md:49: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/users.py
+docs/tutorial/subcommands/add-typer.md:55: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/subcommands/add-typer.md:59: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/subcommands/add-typer.md:61: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/items.py
+docs/tutorial/subcommands/add-typer.md:61: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/users.py
+docs/tutorial/subcommands/add-typer.md:63: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/items.py
+docs/tutorial/subcommands/add-typer.md:63: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/users.py
+docs/tutorial/subcommands/add-typer.md:68: INFO [path] file the reader is asked to create
+docs/tutorial/subcommands/add-typer.md:69: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/items.py
+docs/tutorial/subcommands/nested-subcommands.md:13: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/reigns.py
+docs/tutorial/subcommands/nested-subcommands.md:50: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/towns.py
+docs/tutorial/subcommands/nested-subcommands.md:87: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/lands.py
+docs/tutorial/subcommands/nested-subcommands.md:167: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/lands.py
+docs/tutorial/subcommands/nested-subcommands.md:188: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/subcommands/nested-subcommands.md:239: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/reigns.py
+docs/tutorial/subcommands/nested-subcommands.md:243: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/towns.py
+docs/tutorial/subcommands/nested-subcommands.md:247: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial003_py310/lands.py
+docs/tutorial/subcommands/nested-subcommands.md:251: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/users.py
+docs/tutorial/subcommands/nested-subcommands.md:255: WARNING [path] path does not exist at the stated location; found at: docs_src/subcommands/tutorial001_py310/items.py
+docs/tutorial/subcommands/nested-subcommands.md:259: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/subcommands/nested-subcommands.md:267: INFO [path] file the reader is asked to create
+docs/tutorial/testing.md:5: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/testing.md:22: WARNING [path] path does not exist at the stated location; found at: docs_src/app_dir/__init__.py
+docs/tutorial/testing.md:30: WARNING [path] path does not exist at the stated location; found at: docs_src/testing/app01_py310/test_main.py
+docs/tutorial/testing.md:154: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/testing.md:214: WARNING [path] path does not exist at the stated location; found at: docs_src/one_file_per_command/app_py310/main.py
+docs/tutorial/typer-app.md:108: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/typer-command.md:72: WARNING [path] path does not exist and its parent directory is not in the repo: my_custom_script.py
+docs/tutorial/typer-command.md:183: INFO [path] file the reader is asked to create
+docs/tutorial/typer-command.md:324: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/typer-command.md:347: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/typer-command.md:363: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/typer-command.md:380: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tutorial/typer-command.md:395: INFO [command] command not found in repo or on PATH (external tool?)
+0 error(s), 58 warning(s) in 79 file(s) scanned

@@ -1,0 +1,850 @@
+README.md:1: WARNING [env] env var read by code but undocumented: COMMIT_SHA
+README.md:1: WARNING [env] env var read by code but undocumented: DEPLOY_URL
+README.md:1: WARNING [env] env var read by code but undocumented: DYLD_FALLBACK_LIBRARY_PATH
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_REPOSITORY
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_TOKEN
+README.md:1: WARNING [env] env var read by code but undocumented: HTTPX_TIMEOUT
+README.md:1: WARNING [env] env var read by code but undocumented: ITEMS_PER_USER
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_BLRP_SCHEDULE_DELAY
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_BSP_SCHEDULE_DELAY
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_EXPORTER_OTLP_LOGS_ENDPOINT
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_EXPORTER_OTLP_PROTOCOL
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_INSTRUMENTATION_HTTP_KNOWN_METHODS
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_METRIC_EXPORT_INTERVAL
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_RESOURCE_ATTRIBUTES
+README.md:1: WARNING [env] env var read by code but undocumented: OTEL_SDK_DISABLED
+README.md:1: WARNING [env] env var read by code but undocumented: PYDANTIC_AI_NO_BANNER
+README.md:1: WARNING [env] env var read by code but undocumented: RUN_ID
+README.md:1: WARNING [env] env var read by code but undocumented: SPONSORS_TOKEN
+README.md:1: WARNING [env] env var read by code but undocumented: STATE
+README.md:143: ERROR [link] link target does not exist: tutorial/
+README.md:149: INFO [path] file the reader is asked to create
+README.md:228: INFO [path] file the reader is asked to create
+README.md:248: WARNING [path] absolute path in docs is machine-specific
+README.md:271: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/de/docs/_llm-test.md:10: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/_llm-test.md:444: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:112: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:114: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:124: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/de/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/de/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/de/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/de/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/events.md:121: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk)
+docs/de/docs/advanced/generate-clients.md:33: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/generate-clients.md:51: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/generate-clients.md:152: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/generate-clients.md:168: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/json-base64-bytes.md:21: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/openapi-callbacks.md:61: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/openapi-webhooks.md:45: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/opentelemetry.md:30: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/opentelemetry.md:56: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/opentelemetry.md:56: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/opentelemetry.md:56: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/path-operation-advanced-configuration.md:95: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/security/oauth2-scopes.md:105: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, uk, zh, zh-hant)
+docs/de/docs/advanced/security/oauth2-scopes.md:242: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, uk, zh, zh-hant)
+docs/de/docs/advanced/security/oauth2-scopes.md:242: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, uk, zh, zh-hant)
+docs/de/docs/advanced/security/oauth2-scopes.md:242: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, uk, zh, zh-hant)
+docs/de/docs/advanced/security/oauth2-scopes.md:244: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, uk, zh, zh-hant)
+docs/de/docs/advanced/security/oauth2-scopes.md:244: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, uk, zh, zh-hant)
+docs/de/docs/advanced/settings.md:129: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/settings.md:133: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/settings.md:139: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/settings.md:151: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/settings.md:218: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/sub-applications.md:27: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/sub-applications.md:53: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/de/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/de/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/advanced/websockets.md:67: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/deployment/docker.md:185: INFO [path] same finding repeated in 10 locale copies (de, fr, hi, ja, ko, pt, ru, tr, uk, zh-hant)
+docs/de/docs/deployment/docker.md:189: INFO [path] same finding repeated in 10 locale copies (de, fr, hi, ja, ko, pt, ru, tr, uk, zh-hant)
+docs/de/docs/deployment/docker.md:211: INFO [path] same finding repeated in 10 locale copies (de, fr, hi, ja, ko, pt, ru, tr, uk, zh-hant)
+docs/de/docs/deployment/docker.md:221: INFO [path] same finding repeated in 10 locale copies (de, fr, hi, ja, ko, pt, ru, tr, uk, zh-hant)
+docs/de/docs/deployment/docker.md:404: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ko, pt, ru, tr, uk, zh-hant)
+docs/de/docs/deployment/manually.md:120: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/deployment/manually.md:121: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/deployment/versions.md:17: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/de/docs/help-fastapi.md:10: WARNING [link] missing in this locale, exists in source locale
+docs/de/docs/how-to/conditional-openapi.md:50: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/how-to/conditional-openapi.md:50: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/how-to/conditional-openapi.md:50: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/how-to/extending-openapi.md:13: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/index.md:197: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/index.md:276: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/index.md:296: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/index.md:319: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/background-tasks.md:58: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh-hant)
+docs/de/docs/tutorial/bigger-applications.md:136: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/bigger-applications.md:145: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/bigger-applications.md:154: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/cookie-param-models.md:29: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/cookie-param-models.md:39: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/cookie-params.md:37: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/debugging.md:31: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ja, ko, pt, ru, tr, zh)
+docs/de/docs/tutorial/debugging.md:57: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ja, ko, pt, ru, tr, zh)
+docs/de/docs/tutorial/debugging.md:65: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ja, ko, pt, ru, tr, zh)
+docs/de/docs/tutorial/debugging.md:107: INFO [path] same finding repeated in 9 locale copies (de, fr, hi, ja, ko, pt, ru, tr, zh)
+docs/de/docs/tutorial/dependencies/index.md:215: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/dependencies/index.md:216: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/dependencies/index.md:218: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/first-steps.md:115: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, uk, zh-hant)
+docs/de/docs/tutorial/first-steps.md:257: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, uk, zh-hant)
+docs/de/docs/tutorial/first-steps.md:320: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, uk, zh-hant)
+docs/de/docs/tutorial/first-steps.md:331: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, uk, zh-hant)
+docs/de/docs/tutorial/first-steps.md:366: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, uk, zh-hant)
+docs/de/docs/tutorial/first-steps.md:374: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ja, ko, pt, ru, uk, zh-hant)
+docs/de/docs/tutorial/frontend.md:47: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/frontend.md:69: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/frontend.md:75: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/frontend.md:79: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/frontend.md:91: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/handling-errors.md:94: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/handling-errors.md:132: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/header-param-models.md:23: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/index.md:13: INFO [path] same finding repeated in 11 locale copies (de, es, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/index.md:85: INFO [path] same finding repeated in 11 locale copies (de, es, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/metadata.md:97: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/metadata.md:101: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/metadata.md:111: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/metadata.md:114: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/metadata.md:118: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:115: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:119: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:123: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:206: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:208: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:234: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:234: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:236: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/path-params.md:236: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/query-param-models.md:23: INFO [path] same finding repeated in 12 locale copies (de, es, fr, hi, ja, ko, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/de/docs/tutorial/schema-extra-example.md:65: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ko, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/schema-extra-example.md:118: INFO [path] same finding repeated in 10 locale copies (de, es, fr, hi, ko, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/first-steps.md:19: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/first-steps.md:21: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/first-steps.md:139: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/first-steps.md:147: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/oauth2-jwt.md:171: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/oauth2-jwt.md:224: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/simple-oauth2.md:53: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, ko, pt, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/simple-oauth2.md:239: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, ko, pt, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/security/simple-oauth2.md:271: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, ko, pt, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/sql-databases.md:162: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/docs/tutorial/sql-databases.md:347: INFO [path] same finding repeated in 11 locale copies (de, es, fr, hi, ja, pt, ru, tr, uk, zh, zh-hant)
+docs/de/llm-prompt.md:229: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/_llm-test.md:10: INFO [path] file the reader is asked to create
+docs/en/docs/_llm-test.md:444: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/advanced/behind-a-proxy.md:43: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:47: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:47: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:110: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:110: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:118: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:118: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:145: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:231: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/behind-a-proxy.md:243: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/en/docs/advanced/behind-a-proxy.md:251: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/en/docs/advanced/behind-a-proxy.md:276: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:285: INFO [command] command not found in repo or on PATH (external tool?)
+docs/en/docs/advanced/behind-a-proxy.md:315: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:330: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:332: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:348: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:403: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/behind-a-proxy.md:421: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/events.md:121: INFO [path] generated or ignored artifact
+docs/en/docs/advanced/generate-clients.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/generate-clients.md:51: WARNING [path] path does not exist and its parent directory is not in the repo: ./src/client
+docs/en/docs/advanced/generate-clients.md:152: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/advanced/generate-clients.md:168: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/json-base64-bytes.md:21: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/openapi-callbacks.md:61: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/openapi-webhooks.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/opentelemetry.md:30: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/opentelemetry.md:56: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/opentelemetry.md:56: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/opentelemetry.md:56: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/path-operation-advanced-configuration.md:95: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/security/oauth2-scopes.md:105: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/security/oauth2-scopes.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/security/oauth2-scopes.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/security/oauth2-scopes.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/security/oauth2-scopes.md:244: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/security/oauth2-scopes.md:244: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/settings.md:129: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/settings.md:133: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/advanced/settings.md:139: WARNING [path] path does not exist at the stated location; found at: docs_src/additional_responses/__init__.py
+docs/en/docs/advanced/settings.md:151: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/settings.md:218: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/sub-applications.md:27: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/sub-applications.md:53: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/templates.md:60: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/templates.md:108: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/templates.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/templates.md:142: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/en/docs/advanced/templates.md:148: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/advanced/websockets.md:67: INFO [path] file the reader is asked to create
+docs/en/docs/advanced/wsgi.md:35: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/deployment/docker.md:185: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/deployment/docker.md:189: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/deployment/docker.md:211: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/deployment/docker.md:221: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/deployment/docker.md:404: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/deployment/manually.md:120: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/deployment/manually.md:121: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/deployment/versions.md:17: INFO [path] file the reader is asked to create
+docs/en/docs/how-to/conditional-openapi.md:50: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/how-to/conditional-openapi.md:50: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/how-to/conditional-openapi.md:50: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/how-to/extending-openapi.md:13: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/index.md:197: INFO [path] file the reader is asked to create
+docs/en/docs/index.md:276: INFO [path] file the reader is asked to create
+docs/en/docs/index.md:296: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/index.md:319: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/reference/openapi/docs.md:3: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/reference/openapi/docs.md:3: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/translations.md:7: WARNING [path] path does not exist at the stated location; found at: docs/de/llm-prompt.md
+docs/en/docs/tutorial/background-tasks.md:58: INFO [path] generated or ignored artifact
+docs/en/docs/tutorial/bigger-applications.md:136: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:145: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:154: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:161: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:163: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:177: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:277: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:424: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:434: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:522: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/bigger-applications.md:522: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/cookie-param-models.md:29: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/cookie-param-models.md:39: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/cookie-params.md:37: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/debugging.md:31: INFO [path] file the reader is asked to create
+docs/en/docs/tutorial/debugging.md:57: WARNING [path] path does not exist and its parent directory is not in the repo: importer.py
+docs/en/docs/tutorial/debugging.md:65: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/en/docs/tutorial/debugging.md:107: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/tutorial/dependencies/index.md:216: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/dependencies/index.md:217: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/dependencies/index.md:219: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/first-steps.md:115: INFO [path] file the reader is asked to create
+docs/en/docs/tutorial/first-steps.md:257: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/first-steps.md:320: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/first-steps.md:331: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/first-steps.md:366: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/first-steps.md:374: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/frontend.md:47: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/frontend.md:69: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/tutorial/frontend.md:75: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/tutorial/frontend.md:79: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/tutorial/frontend.md:91: INFO [path] common ecosystem file, not present in this repo
+docs/en/docs/tutorial/handling-errors.md:94: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/handling-errors.md:132: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/header-param-models.md:23: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/index.md:13: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/tutorial/index.md:85: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/tutorial/metadata.md:97: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/metadata.md:101: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/metadata.md:111: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/metadata.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/metadata.md:118: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:115: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:119: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:123: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:206: WARNING [path] placeholder path in docs
+docs/en/docs/tutorial/path-params.md:208: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:234: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:234: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:236: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/path-params.md:236: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/query-param-models.md:23: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/request-form-models.md:35: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/schema-extra-example.md:65: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/schema-extra-example.md:118: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/security/first-steps.md:19: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/tutorial/security/first-steps.md:21: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/en/docs/tutorial/security/first-steps.md:139: WARNING [path] path does not exist and its parent directory is not in the repo: ./token
+docs/en/docs/tutorial/security/first-steps.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/security/oauth2-jwt.md:171: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/security/oauth2-jwt.md:224: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/security/simple-oauth2.md:53: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/security/simple-oauth2.md:239: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/security/simple-oauth2.md:271: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/sql-databases.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/en/docs/tutorial/sql-databases.md:347: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/es/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/es/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/es/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/es/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/security/oauth2-scopes.md:106: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/security/oauth2-scopes.md:245: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/security/oauth2-scopes.md:245: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/es/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/es/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/deployment/docker.md:186: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/deployment/docker.md:190: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/deployment/docker.md:212: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/deployment/docker.md:222: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/deployment/docker.md:405: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/es/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/es/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/es/docs/tutorial/debugging.md:32: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/es/docs/tutorial/debugging.md:58: WARNING [path] path does not exist and its parent directory is not in the repo: importer.py
+docs/es/docs/tutorial/debugging.md:66: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/es/docs/tutorial/debugging.md:108: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/es/docs/tutorial/dependencies/index.md:216: INFO [path] same finding repeated in 10 locale copies (es, fr, hi, ja, ko, pt, ru, tr, uk, zh)
+docs/es/docs/tutorial/dependencies/index.md:217: INFO [path] same finding repeated in 10 locale copies (es, fr, hi, ja, ko, pt, ru, tr, uk, zh)
+docs/es/docs/tutorial/dependencies/index.md:219: INFO [path] same finding repeated in 10 locale copies (es, fr, hi, ja, ko, pt, ru, tr, uk, zh)
+docs/es/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/fr/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/fr/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/fr/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/fr/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/fr/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/fr/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/fr/docs/help-fastapi.md:10: WARNING [link] missing in this locale, exists in source locale
+docs/fr/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/fr/docs/tutorial/index.md:14: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/fr/docs/tutorial/index.md:86: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/fr/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/hi/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/hi/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/hi/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/hi/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/hi/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/hi/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/advanced/wsgi.md:35: INFO [path] same finding repeated in 4 locale copies (hi, ko, ru, tr)
+docs/hi/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/hi/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/hi/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/hi/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/_llm-test.md:11: WARNING [path] path does not exist at the stated location; found at: scripts/translate.py
+docs/ja/docs/_llm-test.md:445: INFO [path] common ecosystem file, not present in this repo
+docs/ja/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/ja/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/ja/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/ja/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/ja/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/security/oauth2-scopes.md:106: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/security/oauth2-scopes.md:245: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/security/oauth2-scopes.md:245: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/ja/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/ja/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/deployment/docker.md:406: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/ja/docs/help-fastapi.md:10: WARNING [link] missing in this locale, exists in source locale
+docs/ja/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/handling-errors.md:95: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/handling-errors.md:133: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/schema-extra-example.md:66: WARNING [path] absolute path in docs is machine-specific
+docs/ja/docs/tutorial/schema-extra-example.md:119: WARNING [path] absolute path in docs is machine-specific
+docs/ja/llm-prompt.md:35: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/ko/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/ko/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/ko/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/ko/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/ko/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/ko/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/ko/docs/help-fastapi.md:10: WARNING [link] missing in this locale, exists in source locale
+docs/ko/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/handling-errors.md:95: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/handling-errors.md:133: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/security/first-steps.md:20: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/ko/docs/tutorial/security/first-steps.md:22: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/ko/docs/tutorial/security/first-steps.md:140: WARNING [path] path does not exist and its parent directory is not in the repo: ./token
+docs/ko/docs/tutorial/security/first-steps.md:148: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/security/oauth2-jwt.md:172: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/security/oauth2-jwt.md:225: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/sql-databases.md:163: WARNING [path] absolute path in docs is machine-specific
+docs/ko/docs/tutorial/sql-databases.md:348: WARNING [path] absolute path in docs is machine-specific
+docs/ko/llm-prompt.md:40: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/pt/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/pt/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/pt/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/pt/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/pt/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/pt/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/pt/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/pt/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/schema-extra-example.md:66: WARNING [path] absolute path in docs is machine-specific
+docs/pt/docs/tutorial/schema-extra-example.md:119: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/ru/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/ru/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/ru/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/ru/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/ru/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/ru/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/ru/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/ru/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/security/simple-oauth2.md:51: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/security/simple-oauth2.md:223: WARNING [path] absolute path in docs is machine-specific
+docs/ru/docs/tutorial/security/simple-oauth2.md:255: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/tr/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/tr/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/tr/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/tr/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/security/oauth2-scopes.md:106: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/security/oauth2-scopes.md:243: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/security/oauth2-scopes.md:245: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/security/oauth2-scopes.md:245: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/tr/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/tr/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/tr/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/tr/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/first-steps.md:116: INFO [path] common ecosystem file, not present in this repo
+docs/tr/docs/tutorial/first-steps.md:258: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/first-steps.md:321: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/first-steps.md:332: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/first-steps.md:367: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/first-steps.md:375: WARNING [path] absolute path in docs is machine-specific
+docs/tr/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/tr/llm-prompt.md:56: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/uk/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/uk/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/uk/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/uk/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/uk/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/uk/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/uk/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/uk/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/uk/docs/tutorial/debugging.md:32: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/uk/docs/tutorial/debugging.md:58: WARNING [path] path does not exist and its parent directory is not in the repo: importer.py
+docs/uk/docs/tutorial/debugging.md:66: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/uk/docs/tutorial/debugging.md:108: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/uk/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/uk/llm-prompt.md:102: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/zh-hant/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/zh-hant/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/zh-hant/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/zh-hant/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/events.md:122: INFO [path] generated or ignored artifact
+docs/zh-hant/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/zh-hant/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/zh-hant/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/zh-hant/docs/help-fastapi.md:10: WARNING [link] missing in this locale, exists in source locale
+docs/zh-hant/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/debugging.md:32: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/zh-hant/docs/tutorial/debugging.md:58: WARNING [path] path does not exist and its parent directory is not in the repo: importer.py
+docs/zh-hant/docs/tutorial/debugging.md:66: WARNING [path] path does not exist and its parent directory is not in the repo: myapp.py
+docs/zh-hant/docs/tutorial/debugging.md:108: WARNING [path] path does not exist at the stated location; found at: docs_src/app_testing/app_a_py310/main.py
+docs/zh-hant/docs/tutorial/dependencies/index.md:214: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/dependencies/index.md:215: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/dependencies/index.md:217: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/llm-prompt.md:41: WARNING [path] absolute path in docs is machine-specific
+docs/zh-hant/llm-prompt.md:44: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:45: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:49: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:112: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:114: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:116: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:120: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:124: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:126: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:128: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:147: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:242: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:258: WARNING [path] path does not exist and its parent directory is not in the repo: traefik.toml
+docs/zh/docs/advanced/behind-a-proxy.md:270: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/zh/docs/advanced/behind-a-proxy.md:278: WARNING [path] path does not exist and its parent directory is not in the repo: routes.toml
+docs/zh/docs/advanced/behind-a-proxy.md:303: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:312: INFO [command] command not found in repo or on PATH (external tool?)
+docs/zh/docs/advanced/behind-a-proxy.md:344: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:359: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:361: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:377: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:432: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/behind-a-proxy.md:450: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/events.md:122: INFO [path] generated or ignored artifact
+docs/zh/docs/advanced/templates.md:56: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/templates/item.html
+docs/zh/docs/advanced/templates.md:116: WARNING [path] path does not exist at the stated location; found at: docs_src/templates/static/styles.css
+docs/zh/docs/advanced/templates.md:122: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/advanced/wsgi.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/deployment/docker.md:186: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/deployment/docker.md:190: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/deployment/docker.md:212: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/deployment/docker.md:222: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/deployment/docker.md:405: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/deployment/versions.md:37: WARNING [link] missing in this locale, exists in source locale
+docs/zh/docs/help-fastapi.md:9: WARNING [link] missing in this locale, exists in source locale
+docs/zh/docs/tutorial/background-tasks.md:56: INFO [path] generated or ignored artifact
+docs/zh/docs/tutorial/bigger-applications.md:162: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:164: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:178: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:278: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:425: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:435: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/bigger-applications.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/first-steps.md:116: INFO [path] common ecosystem file, not present in this repo
+docs/zh/docs/tutorial/first-steps.md:258: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/first-steps.md:321: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/first-steps.md:332: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/first-steps.md:367: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/first-steps.md:375: WARNING [path] absolute path in docs is machine-specific
+docs/zh/docs/tutorial/request-form-models.md:33: WARNING [path] absolute path in docs is machine-specific
+docs/zh/llm-prompt.md:37: WARNING [path] absolute path in docs is machine-specific
+1 error(s), 696 warning(s) in 1698 file(s) scanned

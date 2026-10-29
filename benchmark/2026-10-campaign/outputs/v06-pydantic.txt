@@ -1,0 +1,38 @@
+README.md:1: WARNING [env] env var read by code but undocumented: ALGOLIA_WRITE_API_KEY
+README.md:1: WARNING [env] env var read by code but undocumented: BAR
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_REF
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_SHA
+README.md:1: WARNING [env] env var read by code but undocumented: HYPOTHESIS_PROFILE
+README.md:1: WARNING [env] env var read by code but undocumented: PYCHARM_HOSTED
+README.md:1: WARNING [env] env var read by code but undocumented: PYDANTIC_DISABLE_PLUGINS
+README.md:1: WARNING [env] env var read by code but undocumented: PYDANTIC_ERRORS_INCLUDE_URL
+README.md:1: WARNING [env] env var read by code but undocumented: PYDANTIC_PRIVATE_ALLOW_UNHANDLED_SCHEMA_TYPES
+README.md:1: WARNING [env] env var read by code but undocumented: PYDANTIC_VERSION
+README.md:1: WARNING [env] env var read by code but undocumented: PY_DEVTOOLS_HIGHLIGHT
+README.md:1: WARNING [env] env var read by code but undocumented: TEST_PLUGIN
+SECURITY.md:49: ERROR [anchor] anchor does not match any heading: ##user-controlled-input (available: #user-controlled-input, #1-super-linear-growth-in-scope, #supported-versions)
+docs/concepts/models.md:1852: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/contributing.md:99: ERROR [path] path does not exist: tests/pydantic-core/
+docs/contributing.md:103: INFO [path] file the reader is asked to create
+docs/examples/requests.md:71: WARNING [path] absolute path in docs is machine-specific
+docs/integrations/aws_lambda.md:92: INFO [path] file the reader is asked to create
+docs/integrations/datamodel_code_generator.md:24: INFO [command] command not found in repo or on PATH (external tool?)
+docs/integrations/llms.md:9: INFO [path] common ecosystem file, not present in this repo
+docs/integrations/llms.md:13: INFO [path] common ecosystem file, not present in this repo
+docs/integrations/llms.md:16: INFO [path] common ecosystem file, not present in this repo
+docs/integrations/mypy.md:61: INFO [path] common ecosystem file, not present in this repo
+docs/integrations/mypy.md:124: INFO [path] common ecosystem file, not present in this repo
+docs/migration.md:168: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:169: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:170: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:329: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:394: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:701: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:809: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:824: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:829: INFO [anchor] anchor target is plugin-generated or included content, cannot verify statically
+docs/migration.md:911: INFO [path] common ecosystem file, not present in this repo
+pydantic-core/README.md:128: INFO [command] command not found in repo or on PATH (external tool?)
+release/README.md:13: WARNING [path] path does not exist at the stated location; found at: pydantic/version.py
+release/README.md:15: WARNING [path] path does not exist at the stated location; found at: pydantic/version.py
+2 error(s), 15 warning(s) in 102 file(s) scanned

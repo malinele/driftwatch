@@ -1,0 +1,3 @@
+README.md:1: WARNING [env] env var read by code but undocumented: NO_DEPRECATION
+Readme.md:102: INFO [command] command not found in repo or on PATH (external tool?)
+0 error(s), 1 warning(s) in 4 file(s) scanned

@@ -1,0 +1,32 @@
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_ACTION_PATH
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_EVENT_NAME
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_OUTPUT
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_REF
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_REPOSITORY
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_RUN_ID
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_SHA
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_TOKEN
+README.md:1: WARNING [env] env var read by code but undocumented: INPUT_BLACK_ARGS
+README.md:1: WARNING [env] env var read by code but undocumented: INPUT_JUPYTER
+README.md:1: WARNING [env] env var read by code but undocumented: INPUT_OPTIONS
+README.md:1: WARNING [env] env var read by code but undocumented: INPUT_SRC
+README.md:1: WARNING [env] env var read by code but undocumented: INPUT_USE_PYPROJECT
+README.md:1: WARNING [env] env var read by code but undocumented: INPUT_VERSION
+README.md:1: WARNING [env] env var read by code but undocumented: OUTPUT_FILE
+README.md:1: WARNING [env] env var read by code but undocumented: PYTHONUSERBASE
+docs/contributing/gauging_changes.md:54: WARNING [path] path does not exist and its parent directory is not in the repo: .preview.pr-comment.md
+docs/contributing/gauging_changes.md:54: WARNING [path] path does not exist and its parent directory is not in the repo: .stable.pr-comment.md
+docs/contributing/the_basics.md:77: WARNING [path] path does not exist at the stated location; found at: src/black/mode.py
+docs/guides/using_black_with_other_tools.md:42: INFO [path] file the reader is asked to create
+docs/integrations/editors.md:227: INFO [path] user-local path, not checked
+docs/integrations/editors.md:227: INFO [path] user-local path, not checked
+docs/integrations/editors.md:453: INFO [env] variable of an external tool (not read by this codebase): GEDIT_CURRENT_DOCUMENT_NAME
+docs/integrations/github_actions.md:16: INFO [path] file the reader is asked to create
+docs/usage_and_configuration/black_as_a_server.md:60: WARNING [path] absolute path in docs is machine-specific
+docs/usage_and_configuration/the_basics.md:325: WARNING [path] absolute path in docs is machine-specific
+docs/usage_and_configuration/the_basics.md:327: INFO [path] file the reader is asked to create
+docs/usage_and_configuration/the_basics.md:502: INFO [path] common ecosystem file, not present in this repo
+docs/usage_and_configuration/the_basics.md:503: WARNING [path] path does not exist at the stated location; found at: docs/compatible_configs/flake8/setup.cfg
+docs/usage_and_configuration/the_basics.md:522: INFO [path] user-local path, not checked
+docs/usage_and_configuration/the_basics.md:528: INFO [path] user-local path, not checked
+0 error(s), 22 warning(s) in 33 file(s) scanned

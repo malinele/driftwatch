@@ -1,0 +1,165 @@
+README.md:1: WARNING [env] env var read by code but undocumented: CITGM
+README.md:1: WARNING [env] env var read by code but undocumented: GITHUB_TOKEN
+README.md:1: WARNING [env] env var read by code but undocumented: PREPUBLISH
+docs/Guides/Benchmarking.md:37: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Benchmarking.md:42: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Benchmarking.md:47: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Benchmarking.md:58: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Contributing.md:94: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Contributing.md:131: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Contributing.md:133: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Contributing.md:134: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Contributing.md:142: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Contributing.md:156: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Delay-Accepting-Requests.md:125: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Delay-Accepting-Requests.md:127: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Delay-Accepting-Requests.md:133: WARNING [path] path does not exist and its parent directory is not in the repo: provider.js
+docs/Guides/Delay-Accepting-Requests.md:179: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Delay-Accepting-Requests.md:389: WARNING [path] path does not exist and its parent directory is not in the repo: delay-incoming-requests.js
+docs/Guides/Delay-Accepting-Requests.md:459: INFO [path] file the reader is asked to create
+docs/Guides/Delay-Accepting-Requests.md:531: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Ecosystem.md:505: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Migration-Guide-V4.md:232: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Migration-Guide-V5.md:165: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:57: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:63: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:77: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:78: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:79: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:95: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Prototype-Poisoning.md:96: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Serverless.md:78: INFO [path] file the reader is asked to create
+docs/Guides/Serverless.md:106: WARNING [path] path does not exist and its parent directory is not in the repo: app.js
+docs/Guides/Serverless.md:241: INFO [env] variable of an external tool (not read by this codebase): GOOGLE_REGION
+docs/Guides/Serverless.md:249: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Serverless.md:251: INFO [env] variable of an external tool (not read by this codebase): GOOGLE_PROJECT
+docs/Guides/Serverless.md:251: INFO [env] variable of an external tool (not read by this codebase): GOOGLE_REGION
+docs/Guides/Serverless.md:275: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Serverless.md:276: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Serverless.md:560: INFO [path] file the reader is asked to create
+docs/Guides/Serverless.md:561: INFO [path] file the reader is asked to create
+docs/Guides/Style-Guide.md:205: WARNING [path] absolute path in docs is machine-specific
+docs/Guides/Style-Guide.md:213: WARNING [path] path does not exist and its parent directory is not in the repo: hook-and-plugins.md
+docs/Guides/Style-Guide.md:215: WARNING [path] path does not exist and its parent directory is not in the repo: adding-test-plugins.md
+docs/Guides/Style-Guide.md:217: WARNING [path] path does not exist and its parent directory is not in the repo: removing-requests.md
+docs/Guides/Testing.md:104: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Guides/Testing.md:408: INFO [command] command not found in repo or on PATH (external tool?)
+docs/Reference/Encapsulation.md:36: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Encapsulation.md:37: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Encapsulation.md:37: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Encapsulation.md:186: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Encapsulation.md:186: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Errors.md:279: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Errors.md:283: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Hooks.md:310: WARNING [path] path does not exist at the stated location; found at: docs/Guides/Detecting-When-Clients-Abort.md
+docs/Reference/Reply.md:667: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Reply.md:668: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Reply.md:668: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Reply.md:683: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Reply.md:689: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Reply.md:694: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Reply.md:699: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Request.md:114: INFO [path] file the reader is asked to create
+docs/Reference/Request.md:148: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Request.md:149: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Request.md:220: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:133: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:135: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:135: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:136: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:137: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:327: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:327: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:339: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:437: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:472: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:473: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:520: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:521: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:521: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:522: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:522: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:522: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Routes.md:523: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:904: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:905: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1023: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1023: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1045: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1045: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1046: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1046: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Server.md:1170: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/TypeScript.md:62: WARNING [path] path does not exist at the stated location; found at: test/types/tsconfig.json
+docs/Reference/TypeScript.md:65: WARNING [path] path does not exist and its parent directory is not in the repo: index.ts
+docs/Reference/TypeScript.md:84: WARNING [path] path does not exist and its parent directory is not in the repo: index.ts
+docs/Reference/TypeScript.md:84: WARNING [path] path does not exist at the stated location; found at: test/bundler/esbuild/src/index.js
+docs/Reference/TypeScript.md:99: ERROR [anchor] anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:110: WARNING [path] path does not exist and its parent directory is not in the repo: index.ts
+docs/Reference/TypeScript.md:288: INFO [path] file the reader is asked to create
+docs/Reference/TypeScript.md:289: INFO [path] file the reader is asked to create
+docs/Reference/TypeScript.md:331: WARNING [path] path does not exist and its parent directory is not in the repo: index.ts
+docs/Reference/TypeScript.md:511: WARNING [path] path does not exist and its parent directory is not in the repo: index.ts
+docs/Reference/TypeScript.md:512: WARNING [path] path does not exist and its parent directory is not in the repo: index.ts
+docs/Reference/TypeScript.md:572: WARNING [path] path does not exist and its parent directory is not in the repo: index.d.ts
+docs/Reference/TypeScript.md:572: WARNING [path] path does not exist at the stated location; found at: test/bundler/esbuild/src/index.js
+docs/Reference/TypeScript.md:582: WARNING [path] path does not exist at the stated location; found at: test/bundler/esbuild/src/index.js
+docs/Reference/TypeScript.md:601: WARNING [path] path does not exist and its parent directory is not in the repo: index.d.ts
+docs/Reference/TypeScript.md:937: ERROR [anchor] anchor does not match any heading: #fastifyrawrequestdefaultexpressionrawserver (available: #fastifyrawrequestdefaultexpressionrawserverrawservergeneric, #fastifyrawreplydefaultexpression-rawserverrawservergeneric, #fastifyrequestgenericinterface)
+docs/Reference/TypeScript.md:946: ERROR [anchor] anchor does not match any heading: #fastifyrawreplydefaultexpression (available: #fastifyrawreplydefaultexpression-rawserverrawservergeneric, #fastifyrawserverdefault, #fastifyrawrequestdefaultexpressionrawserverrawservergeneric)
+docs/Reference/TypeScript.md:955: ERROR [anchor] anchor does not match any heading: #fastifyfastifyloggeroptions (available: #fastifyfastifyregisteroptions, #fastifyfastifypluginoptions, #fastifyfastifylogfn)
+docs/Reference/TypeScript.md:968: ERROR [anchor] anchor does not match any heading: #fastifyfastifyinstance (available: #fastifyfastifypluginoptions, #fastifyfastifylogfn, #fastifyfastifyerror)
+docs/Reference/TypeScript.md:968: ERROR [anchor] anchor does not match any heading: #fastifyfastifyserveroptions-rawserver-logger (available: #fastifyfastifyserveroptions-rawserverrawservergeneric-loggerloggergeneric, #fastifyfastifyschemavalidationerror, #fastifyfastifyregisteroptions)
+docs/Reference/TypeScript.md:1128: ERROR [anchor] anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1131: ERROR [anchor] anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1139: ERROR [anchor] anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1150: ERROR [anchor] anchor does not match any heading: #fastifyrawserver-rawrequest-rawreply-loggeropts-fastifyserveroptions-fastifyinstance (available: #fastify-rawrequestrawrequestgeneric-rawreplyrawreplygeneric-loggerloggergenericopts-fastifyserveroptionsfastifyserveroptions-fastifyinstancefastifyinstance, #fastifyfastifypluginasync-optionsfastifypluginoptions, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1169: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1257: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1268: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1319: ERROR [anchor] anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)
+docs/Reference/TypeScript.md:1329: ERROR [anchor] anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)
+docs/Reference/TypeScript.md:1335: ERROR [anchor] anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)
+docs/Reference/TypeScript.md:1341: ERROR [anchor] anchor does not match any heading: #fastifyfastifyregisterrawserver-rawrequest-requestgenericplugin-fastifyplugin-opts-fastifyregisteroptions (available: #fastifyfastifyregisterplugin-fastifypluginasyncfastifypluginasync-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyregisterplugin-fastifyplugincallbackfastifyplugincallback-opts-fastifyregisteroptionsfastifyregisteroptions, #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric)
+docs/Reference/TypeScript.md:1349: ERROR [anchor] anchor does not match any heading: #fastifyfastifyplugincallbackoptions (available: #fastifyfastifypluginoptions, #fastifyfastifyplugincallback-optionsfastifypluginoptions, #fastifyfastifyregisteroptions)
+docs/Reference/TypeScript.md:1349: ERROR [anchor] anchor does not match any heading: #fastifyfastifytregisteroptions (available: #fastifyfastifyregisteroptions, #fastifyfastifypluginoptions, #fastifyfastifyerror)
+docs/Reference/TypeScript.md:1351: ERROR [anchor] anchor does not match any heading: #fastifyfastifypluginasyncoptions (available: #fastifyfastifypluginoptions, #fastifyfastifyregisteroptions, #fastifyfastifypluginasync-optionsfastifypluginoptions)
+docs/Reference/TypeScript.md:1351: ERROR [anchor] anchor does not match any heading: #fastifyfastifytregisteroptions (available: #fastifyfastifyregisteroptions, #fastifyfastifypluginoptions, #fastifyfastifyerror)
+docs/Reference/TypeScript.md:1425: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1435: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1454: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1462: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1533: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1533: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1533: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1543: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1543: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1543: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1558: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1558: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1558: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1565: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1565: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1565: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1572: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1572: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1572: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1583: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1583: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1583: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1595: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1595: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1595: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1606: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1606: ERROR [anchor] anchor does not match any heading: #fastifyfastifyreplyrawserver-rawreply-contextconfig (available: #fastifyfastifyregisteroptions, #fastifyfastifyerror, #fastifyrawserverbase)
+docs/Reference/TypeScript.md:1606: ERROR [anchor] anchor does not match any heading: #fastifyfastifyrequestrawserver-rawrequest-requestgeneric (available: #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyfastifybodyparser-rawbodyrawbodygeneric-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1621: ERROR [anchor] anchor does not match any heading: #ContextConfigGeneric (available: #using-generics, #generics, #typescript)
+docs/Reference/TypeScript.md:1621: ERROR [anchor] anchor does not match any heading: #fastifyrouteoptionsrawserver-rawrequest-rawreply-requestgeneric-contextconfig (available: #fastifyfastifyloggeroptions-rawserverrawservergeneric-rawrequestrawrequestgeneric-rawreplyrawreplygeneric, #fastifyfastifycontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric, #fastifyaddcontenttypeparser-rawserverrawservergeneric-rawrequestrawrequestgeneric)
+docs/Reference/TypeScript.md:1629: ERROR [anchor] anchor does not match any heading: #fastifyfastifyinstance (available: #fastifyfastifypluginoptions, #fastifyfastifylogfn, #fastifyfastifyerror)
+docs/Reference/TypeScript.md:1642: ERROR [anchor] anchor does not match any heading: #fastifyfastifyinstance (available: #fastifyfastifypluginoptions, #fastifyfastifylogfn, #fastifyfastifyerror)
+docs/Reference/Validation-and-Serialization.md:1094: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Validation-and-Serialization.md:1096: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Validation-and-Serialization.md:1122: WARNING [path] absolute path in docs is machine-specific
+docs/Reference/Validation-and-Serialization.md:1167: WARNING [path] absolute path in docs is machine-specific
+53 error(s), 81 warning(s) in 51 file(s) scanned
