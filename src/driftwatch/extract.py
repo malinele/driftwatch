@@ -218,13 +218,41 @@ def _env_claims(names: list[str], doc: MarkdownDocument, line: int, context: str
     return [Claim(kind=ClaimKind.ENV_VAR, value=n, location=location, context=context) for n in names]
 
 
+_TRACEBACK_HEADER = "Traceback (most recent call last)"
+
+
+def _looks_like_output(line: str) -> bool:
+    """True for error-message style lines: an ellipsis or a first token ending in ``:``."""
+    tokens = line.split()
+    return "..." in line or bool(tokens and tokens[0].endswith(":"))
+
+
+def _fence_env_lines(fence: CodeFence) -> list[tuple[int, str]]:
+    """``(line, text)`` for fence lines that may carry env claims, skipping program output.
+
+    Bare fences only count prompted lines (prompt removed). Shell-language fences skip
+    output-looking lines and everything after a traceback header.
+    """
+    bare = fence.language.strip() == ""
+    results: list[tuple[int, str]] = []
+    in_traceback = False
+    for offset, raw in enumerate(fence.content.splitlines()):
+        line, had_prompt = _strip_prompt(raw.strip())
+        in_traceback = in_traceback or _TRACEBACK_HEADER in line
+        if in_traceback or (bare and not had_prompt) or _looks_like_output(line):
+            continue
+        results.append((fence.start_line + 1 + offset, line))
+    return results
+
+
 def extract_env_claims(doc: MarkdownDocument) -> list[Claim]:
     """Return an ENV_VAR claim for each env-var-looking name in inline code and shell fences.
 
     Names match ``^[A-Z][A-Z0-9_]{2,}$`` and must contain ``_`` or appear in an assignment
     (``VAR=...``), ``export VAR`` or ``$VAR`` / ``${VAR}`` context. A small stoplist (``TODO``,
     ``GET``, ``JSON`` ...) and OS-provided variables (``PATH``, ``HOME`` ...) are ignored.
-    Inline code only yields a bare name when it is the whole span.
+    Inline code only yields a bare name when it is the whole span. Fences follow the command
+    extractor's output discipline (see ``_fence_env_lines``).
     """
     lines = _source_lines(doc)
     claims: list[Claim] = []
@@ -234,7 +262,6 @@ def extract_env_claims(doc: MarkdownDocument) -> list[Claim]:
     for fence in doc.code_fences:
         if fence.language.strip().lower() not in SHELL_LANGUAGES:
             continue
-        for offset, line in enumerate(fence.content.splitlines()):
-            names = _env_names(line, whole_span=False)
-            claims.extend(_env_claims(names, doc, fence.start_line + 1 + offset, line.strip()))
+        for line_no, line in _fence_env_lines(fence):
+            claims.extend(_env_claims(_env_names(line, whole_span=False), doc, line_no, line))
     return claims
