@@ -5,6 +5,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.6.0] - 2026-10-30
+
+A noise-reduction release targeting the last diagnosed false-positive classes. Across 13 popular repositories the error count went from 3,857 (0.1.0) to 493 (0.4.0) to 98 (0.5.0), with hand-verified precision rising from under 2 percent toward a large majority of true findings.
+
+### Added
+
+- Historical docs are matched by basename anywhere in the tree, covering nested `docs/<locale>/docs` trees.
+- User-defined environment variables from `.env`-style and `export` definitions suppress findings document-wide.
+- Environment variables with external-tool prefixes are downgraded to INFO; the prefixes are configurable.
+- Link targets that exist elsewhere in the tree are reported as found-at warnings.
+
+### Changed
+
+- Python modules built in a tutorial are downgraded, with packaging context in the message.
+- `search_index.json` is treated as a generated file.
+
+### Fixed
+
+- Duplicate findings are no longer reported.
+
 ## [0.5.0] - 2026-10-30
 
 A noise-reduction release targeting the remaining path, command and environment-variable false-positive classes.
