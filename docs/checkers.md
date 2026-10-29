@@ -205,7 +205,16 @@ Changelog-type files describe the past, not the present, so a dead path, command
 - JavaScript and TypeScript (extensions js, jsx, ts, tsx, mjs, cjs): `process.env.X` and `process.env["X"]`.
 - Shell scripts (extension sh): a dollar-sign reference, with or without braces, minus variables assigned in the same script (plain, `export` or `local` assignment, `for` loop variable, `read` target). Comment lines are ignored.
 
-Hidden directories, `venv`, `node_modules`, `dist` and `__pycache__` are not searched.
+Hidden directories, `venv`, `node_modules`, `dist` and `__pycache__` are not searched. Example code (`docs_src/`, `examples/`, `example/`) is ordinary code: its reads count, so a variable read only by a documentation example is not reported as unread.
+
+**Policy (v3): documented-but-not-read is suppressed** (no finding at all, not even INFO) for a non-ambient variable when any of these holds:
+
+- **Auto env prefix.** Python code contains `auto_envvar_prefix="PREFIX"` (keyword or `"auto_envvar_prefix": "PREFIX"` dict form, the click convention). Every documented `PREFIX_*` name counts as read.
+- **Defined in the document.** The same document has a line that starts with an assignment (`.env` style, optional `$ ` prompt, optional `export`) to that name, on a different line than the claim. The reader is shown how to define it. A lone export line is the claim itself and is still checked.
+- **Set inline for another program.** The claim's line assigns the name directly before a command word, as in running python with a hash-seed variable set in front. The variable is set for that program's environment.
+- **Set in CI.** The name appears as an upper-case word in any `.github/workflows/*.yml` or `*.yaml` of the repository.
+
+Ambient names keep their INFO regardless. A variable the code reads but no document mentions still gets the WARNING below, and a documented non-ambient variable matching none of the rules above is still an ERROR.
 
 **ERROR:** `documented env var is not read by the code: ...`.
 

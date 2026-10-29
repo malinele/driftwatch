@@ -37,6 +37,7 @@ _JS_READS = (
 _SH_READ = re.compile(r"\$(?:\{([A-Z][A-Z0-9_]*)(?:[:#%/^,@\-+=?][^}]*)?\}|([A-Z][A-Z0-9_]*)\b)")
 _SH_LOCAL = re.compile(r"(?:^|[\s;&|(])(?:export\s+|local\s+|readonly\s+)?([A-Z][A-Z0-9_]*)=")
 _SH_LOOP_VAR = re.compile(r"\b(?:for|read(?:\s+-\w+)*)\s+([A-Z][A-Z0-9_]*)\b")
+_AUTO_PREFIX = re.compile(r"""auto_envvar_prefix["']?\s*[=:]\s*["']([A-Z][A-Z0-9_]*)["']""")
 _SETTINGS_CLASS = re.compile(r"^class\s+\w+\s*\(([^)]*)\)\s*:", re.MULTILINE)
 _SETTINGS_BASE = re.compile(r"(?:^|[\s,.])BaseSettings\s*(?:$|[,\[])")
 _FIELD = re.compile(r"^(\s+)([A-Za-z][A-Za-z0-9_]*)\s*:")
@@ -112,6 +113,28 @@ def _source_files(root: Path) -> list[Path]:
     return files
 
 
+def _read_text(path: Path) -> str | None:
+    try:
+        return path.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return None
+
+
+def scan_auto_envvar_prefixes(root: Path) -> set[str]:
+    """Prefixes declared as ``auto_envvar_prefix="PREFIX"`` (click convention) in Python sources.
+
+    Click reads ``PREFIX_<OPTION>`` for every option, so any documented ``PREFIX_*`` name counts as read.
+    Example directories (``docs_src/``, ``examples/``, ``example/``) are ordinary directories and are
+    included in this and the read scan, as they are not skipped.
+    """
+    prefixes: set[str] = set()
+    for path in _source_files(root):
+        text = _read_text(path) if path.suffix == _PY_SUFFIX else None
+        if text:
+            prefixes.update(m.group(1) for m in _AUTO_PREFIX.finditer(text))
+    return prefixes
+
+
 def scan_code_env_reads(root: Path) -> set[str]:
     """Names of environment variables read by source files under ``root``.
 
@@ -122,9 +145,7 @@ def scan_code_env_reads(root: Path) -> set[str]:
     """
     reads: set[str] = set()
     for path in _source_files(root):
-        try:
-            text = path.read_text(encoding="utf-8")
-        except (OSError, UnicodeDecodeError):
-            continue
-        reads |= _reads_for(path, text)
+        text = _read_text(path)
+        if text is not None:
+            reads |= _reads_for(path, text)
     return {n for n in reads if ENV_NAME.match(n) and n not in SYSTEM_ENV_VARS}

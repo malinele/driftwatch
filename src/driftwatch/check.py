@@ -17,7 +17,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Protocol
 
-from driftwatch.envscan import scan_code_env_reads
+from driftwatch.envscan import scan_auto_envvar_prefixes, scan_code_env_reads
 from driftwatch.extract import extract_myst_labels
 from driftwatch.markdown import parse_markdown
 from driftwatch.models import Claim, ClaimKind, Finding, Location, Severity
@@ -661,6 +661,7 @@ class CommandChecker:
         return Finding(claim, Severity.ERROR, f"documented command not found: {claim.value}", self.name)
 
 
+_ENV_DEFINITION = re.compile(r"^[ \t]*(?:\$ )?(?:export\s+)?([A-Z][A-Z0-9_]{2,})=")
 _ENV_WORD = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")
 
 
@@ -686,6 +687,48 @@ AMBIENT_ENV = frozenset({
 })  # fmt: skip
 
 
+def _user_defined_lines(doc: Path) -> dict[str, set[int]]:
+    """Name -> lines where the document defines it: ``VAR=value`` at line start (``.env`` style) or ``export VAR=``."""
+    try:
+        text = doc.read_text(encoding="utf-8")
+    except (OSError, UnicodeDecodeError):
+        return {}
+    lines: dict[str, set[int]] = {}
+    for number, line in enumerate(text.splitlines(), start=1):
+        match = _ENV_DEFINITION.match(line)
+        if match:
+            lines.setdefault(match.group(1), set()).add(number)
+    return lines
+
+
+def _defined_elsewhere(claim: Claim, cache: dict[Path, dict[str, set[int]]]) -> bool:
+    """True when the claim's document defines the variable on a line other than the claim's own.
+
+    A lone ``export X=1`` is the claim itself, so it is still checked; a ``.env`` example that the
+    document shows separately makes the variable user-defined.
+    """
+    file = claim.location.file
+    if file not in cache:
+        cache[file] = _user_defined_lines(file)
+    return bool(cache[file].get(claim.value, set()) - {claim.location.line})
+
+
+def _set_inline_for_others(claim: Claim) -> bool:
+    """True for ``VAR=x cmd``: the variable is set for another program's environment."""
+    pattern = r"(?<![A-Za-z0-9_])" + re.escape(claim.value) + r"=[^\s`]*\s+[A-Za-z./~]"
+    return re.search(pattern, claim.context) is not None
+
+
+def _ci_text(root: Path) -> str:
+    texts: list[str] = []
+    for workflow in sorted((root / ".github" / "workflows").glob("*.y*ml")):
+        try:
+            texts.append(workflow.read_text(encoding="utf-8"))
+        except (OSError, UnicodeDecodeError):
+            continue
+    return "\n".join(texts)
+
+
 class EnvChecker:
     """Bidirectional env var check between documented ``ENV_VAR`` claims and what the code reads.
 
@@ -705,7 +748,23 @@ class EnvChecker:
         reads = scan_code_env_reads(root)
         ambient = AMBIENT_ENV | frozenset(ambient_extra)
         env_claims = [c for c in claims if c.kind is ClaimKind.ENV_VAR]
-        findings = [self._unread(c, ambient) for c in env_claims if c.value not in reads]
+        prefixes = tuple(p + "_" for p in scan_auto_envvar_prefixes(root))
+        ci_words = frozenset(_ENV_WORD.findall(_ci_text(root)))
+        defined: dict[Path, dict[str, set[int]]] = {}
+        findings = [
+            self._unread(c, ambient)
+            for c in env_claims
+            if c.value not in reads
+            and (
+                c.value in ambient  # still reported as INFO
+                or not (
+                    c.value.startswith(prefixes)
+                    or c.value in ci_words
+                    or _set_inline_for_others(c)
+                    or _defined_elsewhere(c, defined)
+                )
+            )
+        ]
         if docs:
             findings.extend(self._undocumented(reads - ambient, env_claims, root, docs))
         return findings
