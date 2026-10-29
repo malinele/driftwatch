@@ -16,7 +16,7 @@ Documentation that lies is a bug. A wrong install command or a documented-but-de
 | commands | Shell commands in fences refer to real entry points. | A documented command that no longer exists. |
 | env | Documented and code-read environment variables agree, in both directions. | A documented variable that no code reads. |
 
-Today a normal scan feeds only path and env claims to the checkers; see the [checker reference](docs/checkers.md) for the current status of the others.
+All four checkers run in a normal scan; see the [checker reference](docs/checkers.md) for details.
 
 ## Quickstart
 
