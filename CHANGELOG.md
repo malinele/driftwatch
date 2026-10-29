@@ -5,6 +5,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
 ## [Unreleased]
 
+## [0.4.0] - 2026-10-30
+
+A campaign-driven precision release.
+
+### Added
+
+- Command checker policy: commands defined by the repository itself (`console_scripts` entry points, `package.json` `bin`) and a built-in list of known tools are accepted; install-step context is recognized; unknown bare commands are demoted to INFO.
+- Path token filters: MIME types, CIDR/IP addresses, npm scopes, `owner/repo` references, bare file extensions and regex-like tokens are no longer treated as paths.
+- Path context policies: files the reader is asked to create, fence title attributes, gitignored and build artifacts are not reported as missing; `tests` directories are skipped by default.
+- Anchor overhaul: `attr_list` `{ #id }` and `[](){#id}` ids, HTML `id`/`name` anchors, and slug fidelity for emphasis, entities and apostrophes; anchors on plugin-generated pages are downgraded to INFO.
+- Site-absolute link roots and MyST `(label)=` targets.
+- Locale-aware dedup of findings repeated across translation directories, with translation-fallback downgrades.
+
+### Changed
+
+- Environment-variable claims now require an explicit shell context, and error-code prefixes are skipped.
+- The ambient variable list is extended with interpreter and runtime variables.
+
+Validated across 12 popular open-source repositories: the error count dropped from about 3,800 to under 500, while all previously verified real findings remained.
+
 ## [0.3.0] - 2026-10-30
 
 ### Added
