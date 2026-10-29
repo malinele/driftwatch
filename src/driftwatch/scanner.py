@@ -88,6 +88,32 @@ def is_excluded(file: Path, root: Path, patterns: tuple[str, ...]) -> bool:
     return any(fnmatch.fnmatch(relative, p) or fnmatch.fnmatch(file.name, p) for p in patterns)
 
 
+# Changelog-type files describe the past, so only their links and anchors are checked.
+HISTORICAL_PATTERNS = ("CHANGELOG*.md", "HISTORY*.md", "CHANGES*.md", "RELEASES*.md", "docs/release-notes*.md")
+HISTORICAL_CHECKERS = frozenset({"link", "anchor"})
+
+
+def _relative_posix(file: Path, root: Path) -> str:
+    try:
+        return file.resolve().relative_to(root.resolve()).as_posix()
+    except ValueError:
+        return file.as_posix()
+
+
+def is_historical(file: Path, root: Path, extra: tuple[str, ...] = ()) -> bool:
+    """True for changelog-type files (built-in patterns plus ``extra``), matched case-insensitively."""
+    relative = _relative_posix(file, root).lower()
+    name = file.name.lower()
+    for pattern in (*HISTORICAL_PATTERNS, *extra):
+        lowered = pattern.lower()
+        if "/" in lowered:
+            if fnmatch.fnmatchcase(relative, lowered):
+                return True
+        elif fnmatch.fnmatchcase(name, lowered) or fnmatch.fnmatchcase(relative, lowered):
+            return True
+    return False
+
+
 def scan_files(root: Path, files: list[Path], config: Config | None = None) -> list[Finding]:
     cfg = config if config is not None else Config()
     files = [f for f in files if not is_excluded(f, root, cfg.exclude)]
@@ -98,9 +124,15 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
         text = file.read_text(encoding="utf-8", errors="replace")
         ignores[file] = parse_ignores(text)
         doc = parse_markdown(file, text)
-        claims = [*extract_path_claims(doc), *extract_link_claims(doc), *extract_command_claims(doc)]
-        env_claims.extend(extract_env_claims(doc))
+        historical = not cfg.historical_full_scan and is_historical(file, root, cfg.historical)
+        if historical:
+            claims = extract_link_claims(doc)
+        else:
+            claims = [*extract_path_claims(doc), *extract_link_claims(doc), *extract_command_claims(doc)]
+            env_claims.extend(extract_env_claims(doc))
         for name, checker in CHECKERS.items():
+            if historical and name not in HISTORICAL_CHECKERS:
+                continue
             if name in cfg.enabled_checkers and not isinstance(checker, EnvChecker):
                 findings.extend(checker.check(claims, root))
     # The env checker is bidirectional, so it needs every claim and the whole doc corpus at once.
@@ -108,7 +140,9 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
         extra = set(cfg.env_stoplist_extra)
         for name, checker in CHECKERS.items():
             if name in cfg.enabled_checkers and isinstance(checker, EnvChecker):
-                checked = checker.check([c for c in env_claims if c.value not in extra], root, files)
+                checked = checker.check(
+                    [c for c in env_claims if c.value not in extra], root, files, cfg.ambient_extra
+                )
                 findings.extend(f for f in checked if f.claim.value not in extra)
     return [f for f in findings if not _is_ignored(f, ignores)]
 

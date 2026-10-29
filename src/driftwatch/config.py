@@ -12,7 +12,10 @@ from driftwatch.models import Severity
 
 PYPROJECT = "pyproject.toml"
 DRIFTWATCH_TOML = "driftwatch.toml"
-KNOWN_KEYS = frozenset({"enabled_checkers", "exclude", "env_stoplist_extra", "fail_on"})
+KNOWN_KEYS = frozenset({
+    "enabled_checkers", "exclude", "env_stoplist_extra", "fail_on",
+    "ambient_extra", "historical", "historical_full_scan",
+})  # fmt: skip
 _SEVERITY_RANK = {Severity.INFO: 0, Severity.WARNING: 1, Severity.ERROR: 2}
 
 
@@ -34,6 +37,9 @@ class Config:
     exclude: tuple[str, ...] = ()
     env_stoplist_extra: tuple[str, ...] = ()
     fail_on: Severity = Severity.ERROR
+    ambient_extra: tuple[str, ...] = ()
+    historical: tuple[str, ...] = ()
+    historical_full_scan: bool = False
 
 
 def _read_toml(path: Path) -> dict[str, Any]:
@@ -65,6 +71,12 @@ def _string_list(key: str, value: object) -> tuple[str, ...]:
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         raise ConfigError(f"driftwatch config: '{key}' must be a list of strings")
     return tuple(value)
+
+
+def _parse_bool(key: str, value: object) -> bool:
+    if not isinstance(value, bool):
+        raise ConfigError(f"driftwatch config: '{key}' must be true or false")
+    return value
 
 
 def _parse_fail_on(value: object) -> Severity:
@@ -104,4 +116,19 @@ def load_config(root: Path) -> Config:
         else defaults.env_stoplist_extra
     )
     fail_on = _parse_fail_on(raw["fail_on"]) if "fail_on" in raw else defaults.fail_on
-    return Config(enabled_checkers=checkers, exclude=exclude, env_stoplist_extra=stoplist, fail_on=fail_on)
+    ambient = _string_list("ambient_extra", raw["ambient_extra"]) if "ambient_extra" in raw else defaults.ambient_extra
+    historical = _string_list("historical", raw["historical"]) if "historical" in raw else defaults.historical
+    full_scan = (
+        _parse_bool("historical_full_scan", raw["historical_full_scan"])
+        if "historical_full_scan" in raw
+        else defaults.historical_full_scan
+    )
+    return Config(
+        enabled_checkers=checkers,
+        exclude=exclude,
+        env_stoplist_extra=stoplist,
+        fail_on=fail_on,
+        ambient_extra=ambient,
+        historical=historical,
+        historical_full_scan=full_scan,
+    )

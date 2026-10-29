@@ -9,7 +9,7 @@ import shlex
 import shutil
 import sys
 import tomllib
-from collections.abc import Sequence
+from collections.abc import Collection, Sequence
 from pathlib import Path
 from typing import Protocol
 
@@ -268,6 +268,15 @@ def _mentioned_words(docs: Sequence[Path]) -> set[str]:
     return words
 
 
+# Variables the OS, shell or stdlib/HTTP libraries read on their own; docs mention them without the code reading them.
+AMBIENT_ENV = frozenset({
+    "HTTP_PROXY", "HTTPS_PROXY", "ALL_PROXY", "NO_PROXY", "PATH", "HOME", "USER", "SHELL", "TMPDIR",
+    "TEMP", "TMP", "LANG", "LC_ALL", "TZ", "TERM", "SSLKEYLOGFILE", "SSL_CERT_FILE", "SSL_CERT_DIR",
+    "REQUESTS_CA_BUNDLE", "CURL_CA_BUNDLE", "PYTHONPATH", "VIRTUAL_ENV", "CI", "EDITOR", "PAGER",
+    "XDG_CONFIG_HOME", "XDG_CACHE_HOME",
+})  # fmt: skip
+
+
 class EnvChecker:
     """Bidirectional env var check between documented ``ENV_VAR`` claims and what the code reads.
 
@@ -277,17 +286,26 @@ class EnvChecker:
 
     name = "env"
 
-    def check(self, claims: list[Claim], root: Path, docs: Sequence[Path] = ()) -> list[Finding]:
+    def check(
+        self,
+        claims: list[Claim],
+        root: Path,
+        docs: Sequence[Path] = (),
+        ambient_extra: Collection[str] = (),
+    ) -> list[Finding]:
         reads = scan_code_env_reads(root)
+        ambient = AMBIENT_ENV | frozenset(ambient_extra)
         env_claims = [c for c in claims if c.kind is ClaimKind.ENV_VAR]
-        findings = [
-            Finding(c, Severity.ERROR, f"documented env var is not read by the code: {c.value}", self.name)
-            for c in env_claims
-            if c.value not in reads
-        ]
+        findings = [self._unread(c, ambient) for c in env_claims if c.value not in reads]
         if docs:
-            findings.extend(self._undocumented(reads, env_claims, root, docs))
+            findings.extend(self._undocumented(reads - ambient, env_claims, root, docs))
         return findings
+
+    def _unread(self, claim: Claim, ambient: frozenset[str]) -> Finding:
+        if claim.value in ambient:
+            message = f"ambient environment variable (read by the OS/stdlib, not this codebase): {claim.value}"
+            return Finding(claim, Severity.INFO, message, self.name)
+        return Finding(claim, Severity.ERROR, f"documented env var is not read by the code: {claim.value}", self.name)
 
     def _undocumented(
         self, reads: set[str], claims: list[Claim], root: Path, docs: Sequence[Path]

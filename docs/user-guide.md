@@ -118,6 +118,9 @@ Settings come from the `[tool.driftwatch]` table in `pyproject.toml`, from a `dr
 | `exclude` | list of strings | empty | Glob patterns of markdown files to skip. |
 | `fail_on` | string | `"error"` | Lowest severity that makes the exit code 1: `"error"`, `"warning"` or `"info"` (case-insensitive). |
 | `env_stoplist_extra` | list of strings | empty | Environment variable names to ignore entirely, both when found in docs and when read by code. |
+| `ambient_extra` | list of strings | empty | Extra environment variable names treated as ambient (merged with the built-in ambient set). A documented ambient variable that the code does not read is INFO, not ERROR, and is never reported as undocumented. |
+| `historical` | list of strings | empty | Extra glob patterns for changelog-type files, which only get the link and anchor checkers. Built in: `CHANGELOG*.md`, `HISTORY*.md`, `CHANGES*.md`, `RELEASES*.md`, `docs/release-notes*.md`. |
+| `historical_full_scan` | boolean | `false` | When `true`, historical files are checked by every checker like any other document. |
 
 Example:
 

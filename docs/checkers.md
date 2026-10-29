@@ -127,6 +127,10 @@ Limitations:
 - Lines are read one at a time, so the body of a heredoc or a multi-line quoted string can be mistaken for commands.
 - Python modules are located by file name only, so a module provided by an installed third-party package is reported unless its top-level name is one of the well-known ones.
 
+## Historical documents
+
+Changelog-type files describe the past, not the present, so a dead path, command or variable in them is not drift. Files whose base name matches `CHANGELOG*.md`, `HISTORY*.md`, `CHANGES*.md` or `RELEASES*.md`, or whose path matches `docs/release-notes*.md` (case-insensitive), run only the link and anchor checkers. Path, command and env claims are not extracted from them. The `historical` option adds glob patterns (matched against the base name and the root-relative path, case-insensitive); `historical_full_scan = true` turns the policy off. These files still count as documentation for the undocumented-variable warning.
+
 ## Env checker
 
 **Claims, documentation side:** environment variable names found in inline code and in shell-language fences (same languages as the command checker). A name must match the pattern of three or more upper-case letters, digits and underscores starting with a letter. It must contain an underscore or appear in an assignment, an export statement or a dollar-sign reference. Common words (`TODO`, `GET`, `JSON`, `README` and similar) and OS-provided variables (`PATH`, `HOME`, `USER`, `SHELL`, `PWD`, `TERM`, `LANG` and similar) are ignored. In inline code a bare name only counts when it is the entire span.
@@ -140,6 +144,8 @@ Limitations:
 Hidden directories, `venv`, `node_modules`, `dist` and `__pycache__` are not searched.
 
 **ERROR:** `documented env var is not read by the code: ...`.
+
+**INFO:** `ambient environment variable (read by the OS/stdlib, not this codebase): ...` replaces the ERROR when the documented name is in the built-in ambient set and no source file reads it. The set holds variables that the OS, the shell, the standard library or HTTP libraries read on their own: `HTTP_PROXY`, `HTTPS_PROXY`, `ALL_PROXY`, `NO_PROXY`, `PATH`, `HOME`, `USER`, `SHELL`, `TMPDIR`, `TEMP`, `TMP`, `LANG`, `LC_ALL`, `TZ`, `TERM`, `SSLKEYLOGFILE`, `SSL_CERT_FILE`, `SSL_CERT_DIR`, `REQUESTS_CA_BUNDLE`, `CURL_CA_BUNDLE`, `PYTHONPATH`, `VIRTUAL_ENV`, `CI`, `EDITOR`, `PAGER`, `XDG_CONFIG_HOME` and `XDG_CACHE_HOME`. Add project-specific names with `ambient_extra`. Ambient names are also never reported by the undocumented warning below, even when the code reads them.
 
 **WARNING:** `env var read by code but undocumented: ...` when the code reads a variable whose name does not appear as an upper-case word anywhere in the scanned documents. The raw text is searched, so a mention in prose or in an HTML comment is enough. These warnings are attached to README.md line 1 when that file exists, otherwise to line 1 of the first scanned document.
 
