@@ -32,9 +32,12 @@ Sample output:
 ```text
 README.md:1: WARNING [env] env var read by code but undocumented: DEMO_FLAG
 README.md:3: ERROR [path] path does not exist: scripts/old_run.sh
+README.md:5: ERROR [link] link target does not exist: docs/missing.md
+README.md:6: ERROR [anchor] anchor does not match any heading: docs/setup.md#nope (available: #setup, #installation)
+README.md:10: ERROR [command] documented command not found: ./scripts/deploy.sh
 docs/setup.md:5: ERROR [path] path does not exist: config/settings.yaml
 docs/setup.md:9: ERROR [env] documented env var is not read by the code: APP_SECRET_KEY
-3 error(s), 1 warning(s) in 2 file(s) scanned
+6 error(s), 1 warning(s) in 2 file(s) scanned
 ```
 
 ## Exit codes
