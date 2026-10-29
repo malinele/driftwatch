@@ -149,26 +149,31 @@ def test_known_tool_has_no_finding(tmp_path: Path) -> None:
 
 
 def test_missing_relative_script_is_error(tmp_path: Path) -> None:
+    _write(tmp_path, "scripts/run.sh")  # policy v3: ERROR needs an existing parent directory
     findings = _run(tmp_path, _fence("./scripts/missing.sh"))
     assert [(f.severity, f.message) for f in findings] == [
         (Severity.ERROR, "documented command not found: ./scripts/missing.sh")
     ]
 
 
-def test_missing_path_with_separator_is_error(tmp_path: Path) -> None:
+def test_missing_path_without_dot_prefix_is_info(tmp_path: Path) -> None:
+    # Policy v3: only ./ and ../ paths are ERROR candidates; a bare slash path is just unknown.
     findings = _run(tmp_path, _fence("scripts/missing.sh"))
-    assert [f.severity for f in findings] == [Severity.ERROR]
+    assert [f.severity for f in findings] == [Severity.INFO]
 
 
 def test_repo_defined_console_script_passes(tmp_path: Path) -> None:
     _write(tmp_path, "pyproject.toml", _SCRIPTS_TOML)
+    _write(tmp_path, "x.py")  # the entry point target exists; a missing target is an ERROR (v3)
     assert _run(tmp_path, _fence("mycli --help")) == []
 
 
-def test_unlisted_command_with_scripts_defined_is_error(tmp_path: Path) -> None:
+def test_unlisted_command_with_scripts_defined_is_info(tmp_path: Path) -> None:
+    # Policy v3: an unknown name is INFO even when the repo defines other commands.
     _write(tmp_path, "pyproject.toml", _SCRIPTS_TOML)
+    _write(tmp_path, "x.py")
     findings = _run(tmp_path, _fence("othercli --help"))
-    assert [f.severity for f in findings] == [Severity.ERROR]
+    assert [f.severity for f in findings] == [Severity.INFO]
 
 
 def test_known_tool_passes_even_when_scripts_defined(tmp_path: Path) -> None:
@@ -178,12 +183,14 @@ def test_known_tool_passes_even_when_scripts_defined(tmp_path: Path) -> None:
 
 def test_package_json_bin_defines_commands(tmp_path: Path) -> None:
     _write(tmp_path, "package.json", '{"name": "pkg", "bin": {"hello": "cli.js"}}')
+    _write(tmp_path, "cli.js")
     findings = _run(tmp_path, _fence("hello\nnope"))
-    assert [(f.claim.value, f.severity) for f in findings] == [("nope", Severity.ERROR)]
+    assert [(f.claim.value, f.severity) for f in findings] == [("nope", Severity.INFO)]
 
 
 def test_package_json_bin_string_uses_package_name(tmp_path: Path) -> None:
     _write(tmp_path, "package.json", '{"name": "@scope/tool", "bin": "cli.js"}')
+    _write(tmp_path, "cli.js")
     assert _run(tmp_path, _fence("tool run")) == []
 
 

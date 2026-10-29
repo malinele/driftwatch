@@ -195,6 +195,7 @@ SHELL_LANGUAGES = frozenset({"bash", "sh", "shell", "zsh", "console", ""})
 SHELL_BUILTINS = frozenset({
     "cd", "export", "source", "set", "echo", "exit", "if", "then", "fi", "for", "while", "do",
     "done", "case", "esac", "alias", "unset", "true", "false", ".", "elif", "else", "in",
+    "fpath", "zstyle", "autoload", "compinit",
 })  # fmt: skip
 _PROMPTS = ("$ ", "> ")
 _ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
@@ -225,12 +226,17 @@ def _is_output_token(token: str) -> bool:
     return "." in token and "/" not in token
 
 
+def _is_output_guard_token(token: str) -> bool:
+    """Flags (``--help``), ``//`` comments, URLs and shell append assignments (``fpath+=``) are not commands."""
+    return token.startswith(("-", "//")) or "://" in token or "+=" in token
+
+
 def _command_token(line: str) -> str | None:
     """First command word of ``line`` after leading ``VAR=value`` assignments, or None to skip."""
     for token in _tokens(line):
         if _ASSIGNMENT.match(token):
             continue
-        if _CONTROL_START.match(token) or token in SHELL_BUILTINS:
+        if _CONTROL_START.match(token) or token in SHELL_BUILTINS or _is_output_guard_token(token):
             return None
         return None if _is_output_token(token) else token
     return None
