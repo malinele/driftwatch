@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "driftwatch"
+version = "0.1.0"
+description = "Docs that lie are bugs. DriftWatch checks markdown claims against repository reality."
+requires-python = ">=3.12"
+dependencies = ["markdown-it-py"]
+
+[project.optional-dependencies]
+dev = ["pytest", "mypy", "ruff"]
+
+[project.scripts]
+driftwatch = "driftwatch.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B"]
+
+[tool.mypy]
+strict = true
+files = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
