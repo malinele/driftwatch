@@ -34,7 +34,7 @@ def display_path(path: Path, root: Path) -> str:
     try:
         return path.resolve().relative_to(root.resolve()).as_posix()
     except ValueError:
-        return str(path)
+        return path.as_posix()
 
 
 def finding_key(finding: Finding, root: Path) -> BaselineKey:
@@ -42,9 +42,8 @@ def finding_key(finding: Finding, root: Path) -> BaselineKey:
     return (display_path(claim.location.file, root), claim.location.line, finding.checker, claim.value)
 
 
-def write_baseline(findings: list[Finding], path: Path, root: Path | None = None) -> None:
-    base = root if root is not None else Path.cwd()
-    keys = sorted({finding_key(f, base) for f in findings})
+def write_baseline(findings: list[Finding], path: Path, root: Path) -> None:
+    keys = sorted({finding_key(f, root) for f in findings})
     entries = [{"file": k[0], "line": k[1], "checker": k[2], "value": k[3]} for k in keys]
     payload = {"version": BASELINE_VERSION, "findings": entries}
     path.write_text(json.dumps(payload, indent=2) + "\n", encoding="utf-8")

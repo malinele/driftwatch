@@ -72,10 +72,8 @@ def summary_line(findings: list[Finding], scanned_files: int, suppressed: int = 
     return f"{errors} error(s), {warnings} warning(s){note} in {scanned_files} file(s) scanned"
 
 
-def render_text(
-    findings: list[Finding], scanned_files: int, suppressed: int = 0, root: Path | None = None
-) -> str:
-    base = root or Path.cwd()
+def render_text(findings: list[Finding], scanned_files: int, suppressed: int, root: Path) -> str:
+    base = root
     lines: list[str] = []
     if scanned_files == 0:
         lines.append("no markdown files found: nothing to check yet")
@@ -86,8 +84,8 @@ def render_text(
     return "\n".join(lines)
 
 
-def render_json(findings: list[Finding], root: Path | None = None) -> str:
-    base = root or Path.cwd()
+def render_json(findings: list[Finding], root: Path) -> str:
+    base = root
     ordered = _ordered(findings, base)
     payload = {
         "version": __version__,

@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import difflib
+import os
 import re
 import shlex
 import shutil
@@ -20,6 +21,22 @@ class Checker(Protocol):
     name: str
 
     def check(self, claims: list[Claim], root: Path) -> list[Finding]: ...
+
+
+def is_within(candidate: Path, root: Path) -> bool:
+    """True if ``candidate`` stays inside ``root``, lexically and after symlink resolution.
+
+    The lexical test runs first and touches no filesystem entry, so a ``../..`` claim is rejected
+    without ever being stat-ed; the realpath test then catches symlinks that point out of the root.
+    """
+    lexical = Path(os.path.abspath(candidate))
+    base = Path(os.path.abspath(root))
+    if not lexical.is_relative_to(base):
+        return False
+    return Path(os.path.realpath(lexical)).is_relative_to(Path(os.path.realpath(base)))
+
+
+ESCAPE_MESSAGE = "path escapes the scanned repository"
 
 
 class PathChecker:
@@ -41,7 +58,11 @@ class PathChecker:
         if Path(claim.value).is_absolute():
             return Finding(claim, Severity.WARNING, "absolute path in docs is machine-specific", self.name)
         doc_dir = claim.location.file.parent
-        if (root / claim.value).exists() or (doc_dir / claim.value).exists():
+        candidates = [root / claim.value, doc_dir / claim.value]
+        inside = [c for c in candidates if is_within(c, root)]
+        if not inside:
+            return Finding(claim, Severity.WARNING, f"{ESCAPE_MESSAGE}: {claim.value}", self.name)
+        if any(c.exists() for c in inside):
             return None
         return Finding(claim, Severity.ERROR, f"path does not exist: {claim.value}", self.name)
 
@@ -79,7 +100,7 @@ def _resolve(file_part: str, doc_file: Path, root: Path) -> Path | None:
         candidates = [root / file_part.lstrip("/")]
     else:
         candidates = [doc_file.parent / file_part, root / file_part]
-    return next((c for c in candidates if c.exists()), None)
+    return next((c for c in candidates if is_within(c, root) and c.exists()), None)
 
 
 class LinkChecker:
@@ -166,6 +187,8 @@ def _python_module(claim: Claim) -> str | None:
 def _module_in_repo(module: str, root: Path) -> bool:
     rel = Path(*module.split("."))
     for base in (root, root / "src"):
+        if not is_within(base / rel, root):
+            continue
         if (base / rel).with_suffix(".py").is_file() or (base / rel / "__init__.py").is_file():
             return True
     return False
@@ -199,7 +222,7 @@ class CommandChecker:
             if module is not None and not _module_known(module, root):
                 return Finding(claim, Severity.ERROR, f"documented python module not found: {module}", self.name)
         if (
-            (root / token).exists()
+            (is_within(root / token, root) and (root / token).exists())
             or shutil.which(token) is not None
             or _is_python(token)
             or token in KNOWN_COMMON

@@ -60,13 +60,31 @@ def _render(args: argparse.Namespace, findings: list[Finding], file_count: int, 
     return render_text(findings, file_count, suppressed, root)
 
 
+ROOT_MARKERS = (".git", "pyproject.toml", "driftwatch.toml")
+
+
+def derive_root(paths: list[Path]) -> Path:
+    """Scan root from the (resolved) targets, never from the current directory.
+
+    The nearest ancestor of the first path holding a root marker; otherwise the first path itself
+    if it is a directory, else its parent.
+    """
+    first = paths[0]
+    start = first if first.is_dir() else first.parent
+    for candidate in (start, *start.parents):
+        if any((candidate / marker).exists() for marker in ROOT_MARKERS):
+            return candidate
+    return start
+
+
 def _run_scan(args: argparse.Namespace) -> int:
-    root = Path.cwd()
-    paths = [Path(p) for p in args.paths]
-    missing = [p for p in paths if not p.exists()]
+    raw = [Path(p) for p in args.paths]
+    missing = [p for p in raw if not p.exists()]
     if missing:
         print(f"driftwatch: path not found: {missing[0]}", file=sys.stderr)
         return 2
+    paths = [p.resolve() for p in raw]
+    root = derive_root(paths)
     try:
         config = load_config(root)
     except ConfigError as exc:
