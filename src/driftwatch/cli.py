@@ -6,6 +6,14 @@ import sys
 from pathlib import Path
 
 from driftwatch import __version__
+from driftwatch.baseline import (
+    DEFAULT_BASELINE,
+    BaselineError,
+    filter_baseline,
+    load_baseline,
+    write_baseline,
+)
+from driftwatch.config import ConfigError, load_config, severity_at_least
 from driftwatch.models import Finding, Severity
 from driftwatch.scanner import discover_markdown, scan_files
 
@@ -24,6 +32,17 @@ def build_parser() -> argparse.ArgumentParser:
     scan.add_argument("paths", metavar="PATHS", nargs="*", default=["."], help="files or directories to scan")
     scan.add_argument("--ci", action="store_true", help="CI mode")
     scan.add_argument("--format", choices=FORMATS, default="text", help="output format (default: text)")
+    scan.add_argument(
+        "--baseline",
+        metavar="PATH",
+        default=None,
+        help=f"suppress findings recorded in this baseline file (default: {DEFAULT_BASELINE} if it exists)",
+    )
+    scan.add_argument(
+        "--write-baseline",
+        action="store_true",
+        help="write current findings to the baseline file and exit 0",
+    )
     return parser
 
 
@@ -49,7 +68,7 @@ def _as_dict(finding: Finding, root: Path) -> dict[str, object]:
     }
 
 
-def _print_text(findings: list[Finding], file_count: int, root: Path) -> None:
+def _print_text(findings: list[Finding], file_count: int, root: Path, suppressed: int = 0) -> None:
     if file_count == 0:
         print("no markdown files found: nothing to check yet")
     for finding in findings:
@@ -57,7 +76,8 @@ def _print_text(findings: list[Finding], file_count: int, root: Path) -> None:
         print(f"{where}: {finding.severity.name} [{finding.checker}] {finding.message}")
     errors = sum(f.severity is Severity.ERROR for f in findings)
     warnings = sum(f.severity is Severity.WARNING for f in findings)
-    print(f"{errors} error(s), {warnings} warning(s) in {file_count} file(s) scanned")
+    note = f", {suppressed} suppressed by baseline" if suppressed else ""
+    print(f"{errors} error(s), {warnings} warning(s){note} in {file_count} file(s) scanned")
 
 
 def _run_scan(args: argparse.Namespace) -> int:
@@ -67,13 +87,35 @@ def _run_scan(args: argparse.Namespace) -> int:
     if missing:
         print(f"driftwatch: path not found: {missing[0]}", file=sys.stderr)
         return 2
+    try:
+        config = load_config(root)
+    except ConfigError as exc:
+        print(f"driftwatch: {exc}", file=sys.stderr)
+        return 2
     files = discover_markdown(paths)
-    findings = sorted(scan_files(root, files), key=_sort_key)
+    findings = sorted(scan_files(root, files, config), key=_sort_key)
+
+    default_path = root / DEFAULT_BASELINE
+    baseline_path = Path(args.baseline) if args.baseline else default_path
+    if args.write_baseline:
+        write_baseline(findings, baseline_path, root)
+        print(f"wrote baseline with {len(findings)} finding(s) to {baseline_path}")
+        return 0
+
+    suppressed = 0
+    if args.baseline or baseline_path.is_file():
+        try:
+            result = filter_baseline(findings, load_baseline(baseline_path), root)
+        except BaselineError as exc:
+            print(f"driftwatch: {exc}", file=sys.stderr)
+            return 2
+        findings, suppressed = result.remaining, result.suppressed
+
     if args.format == "json":
         print(json.dumps([_as_dict(f, root) for f in findings], indent=2))
     else:
-        _print_text(findings, len(files), root)
-    return 1 if any(f.severity is Severity.ERROR for f in findings) else 0
+        _print_text(findings, len(files), root, suppressed)
+    return 1 if any(severity_at_least(f.severity, config.fail_on) for f in findings) else 0
 
 
 def main(argv: list[str] | None = None) -> int:
