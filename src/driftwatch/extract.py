@@ -7,7 +7,7 @@ import shlex
 from urllib.parse import unquote
 
 from driftwatch.envscan import ENV_NAME, SYSTEM_ENV_VARS
-from driftwatch.markdown import CodeFence, MarkdownDocument
+from driftwatch.markdown import CodeFence, InlineCode, MarkdownDocument
 from driftwatch.models import Claim, ClaimKind, Location
 
 PATH_EXTENSIONS = (
@@ -89,14 +89,62 @@ def _source_lines(doc: MarkdownDocument) -> list[str]:
         return []
 
 
+_TREE_GLYPHS = frozenset("\u251c\u2514\u2502")  # ├ └ │
+_MIN_LISTING_RUN = 2
+_TREE_COMMENT = re.compile(r"\s+(#|<--|\u2190).*$")
+_TREE_PREFIX = re.compile(r"^[\s\u2500-\u257f|`+\\-]+")
+
+
+def _is_tree_fence(fence: CodeFence) -> bool:
+    """True for box-drawing tree diagrams and directory listings (consecutive lines ending in ``/``)."""
+    lines = [line.rstrip() for line in fence.content.splitlines()]
+    if any(ch in _TREE_GLYPHS for line in lines for ch in line):
+        return True
+    run = 0
+    for line in lines:
+        run = run + 1 if line.endswith("/") else 0
+        if run >= _MIN_LISTING_RUN:
+            return True
+    return False
+
+
+def _tree_names(doc: MarkdownDocument) -> frozenset[str]:
+    """Entry names (without trailing slash) shown in the document's tree-diagram fences."""
+    names: set[str] = set()
+    for fence in doc.code_fences:
+        if not _is_tree_fence(fence):
+            continue
+        for line in fence.content.splitlines():
+            entry = _TREE_PREFIX.sub("", _TREE_COMMENT.sub("", line.rstrip())).strip().rstrip("/")
+            if entry and " " not in entry:
+                names.add(entry)
+    return frozenset(names)
+
+
+def _is_tree_artifact(token: str, names: frozenset[str]) -> bool:
+    """A span naming an entry that a tree-diagram fence in the same document already draws."""
+    return token.rstrip("/").rsplit("/", 1)[-1] in names
+
+
+def _is_http_link_text(code: InlineCode) -> bool:
+    return code.link_target.lower().startswith(("http://", "https://"))
+
+
 def extract_path_claims(doc: MarkdownDocument) -> list[Claim]:
-    """Return a PATH claim for every inline code span that looks like a repo path."""
+    """Return a PATH claim for every inline code span that looks like a repo path.
+
+    Spans that are the visible text of an http(s) link are not claimed, and neither are spans that
+    name an entry drawn in a tree-diagram fence of the same document (a tutorial's illustrative layout).
+    """
     lines = _source_lines(doc)
     titles = {fence.title for fence in doc.code_fences if fence.title}
+    tree = _tree_names(doc)
     claims: list[Claim] = []
     for code in doc.inline_codes:
         token = code.text.strip().rstrip(TRAILING_PUNCTUATION)
-        if not _looks_like_path(token) or token in titles:
+        if not _looks_like_path(token) or token in titles or _is_http_link_text(code):
+            continue
+        if _is_tree_artifact(token, tree):
             continue
         context = lines[code.line - 1] if 0 < code.line <= len(lines) else ""
         claims.append(

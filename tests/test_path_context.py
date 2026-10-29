@@ -30,8 +30,16 @@ def test_authoring_phrase_on_previous_line_is_info(tmp_path: Path) -> None:
     assert [f.severity for f in _scan(tmp_path)] == [Severity.INFO]
 
 
-def test_authoring_phrase_two_lines_up_is_still_error(tmp_path: Path) -> None:
+def test_authoring_phrase_two_lines_up_is_info(tmp_path: Path) -> None:
+    # v3: the look-back window grew from one previous line to two.
+    _write(tmp_path, "docs/index.md", "")
     _write(tmp_path, "README.md", "Name it well.\n\nSee `docs/missing.md` for more.\n")
+    assert [f.severity for f in _scan(tmp_path)] == [Severity.INFO]
+
+
+def test_authoring_phrase_three_lines_up_is_still_error(tmp_path: Path) -> None:
+    _write(tmp_path, "docs/index.md", "")
+    _write(tmp_path, "README.md", "Name it well.\n\n\nSee `docs/missing.md` for more.\n")
     assert [f.severity for f in _scan(tmp_path)] == [Severity.ERROR]
 
 
@@ -67,6 +75,7 @@ def test_markdown_under_tests_is_skipped_by_default(tmp_path: Path) -> None:
 
 
 def test_markdown_under_tests_is_scanned_with_scan_tests(tmp_path: Path) -> None:
+    _write(tmp_path, "docs/index.md", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "tests/assets/page.md", "See `docs/nowhere.md`.\n")
     _write(tmp_path, "driftwatch.toml", "scan_tests = true\n")
     findings = _scan(tmp_path, load_config(tmp_path))
@@ -98,6 +107,7 @@ def test_generated_dirs_are_info_without_gitignore(tmp_path: Path) -> None:
 
 def test_normal_missing_tracked_path_is_still_error(tmp_path: Path) -> None:
     _write(tmp_path, ".gitignore", "dist/\n")
+    _write(tmp_path, "src/__init__.py", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "README.md", "See `src/missing_module.py`.\n")
     findings = _scan(tmp_path)
     assert [(f.severity, f.message) for f in findings] == [

@@ -58,7 +58,20 @@ def _basename_index(root: Path) -> dict[str, str]:
     return index
 
 
-_AUTHORING = re.compile(r"create a file|save it as|name it|add a file|new file called", re.IGNORECASE)
+_AUTHORING = re.compile(
+    r"create a file|save it as|name it|add a file|new file called|\bcalled\b|\bnamed\b|for example|e\.g\.|"
+    r"\byour |a file like",
+    re.IGNORECASE,
+)
+AUTHORING_LOOKBACK = 2
+ECOSYSTEM_FILES = frozenset({
+    "requirements.txt", "setup.py", "pyproject.toml", "package.json", "mypy.ini", "serverless.yml",
+    "llms.txt", "index.html", "404.html", "openapi.json", "docker-compose.yml", "Dockerfile", "Makefile",
+    ".env", "mkdocs.yml", "mkdocs.yaml", "swagger-ui.css", "swagger-ui-bundle.js", "redoc.standalone.js",
+    "favicon.ico",
+})  # fmt: skip
+WORKFLOWS_DIR = ".github/workflows"
+_WORKFLOW_SUFFIXES = (".yml", ".yaml")
 GENERATED_DIRS = ("site", "build", "dist", "docs/build")
 
 
@@ -70,12 +83,13 @@ def _read_lines(file: Path) -> list[str]:
 
 
 def is_authoring_instruction(claim: Claim) -> bool:
-    """True if the claim's line, or the document line just before it, asks the reader to create a file."""
+    """True if the claim's line, or either of the two document lines before it, reads like authoring prose."""
     if _AUTHORING.search(claim.context):
         return True
     lines = _read_lines(claim.location.file)
-    previous = claim.location.line - 2
-    return 0 <= previous < len(lines) and _AUTHORING.search(lines[previous]) is not None
+    end = claim.location.line - 1
+    window = lines[max(0, end - AUTHORING_LOOKBACK) : end]
+    return any(_AUTHORING.search(line) for line in window)
 
 
 def load_gitignore(root: Path) -> list[str]:
@@ -110,6 +124,23 @@ def _relative_to_root(candidates: Sequence[Path], root: Path) -> list[str]:
     return [a.relative_to(base).as_posix() for a in absolute if a.is_relative_to(base)]
 
 
+def _workflow_location(value: str, root: Path) -> str | None:
+    """Root-relative path of a bare ``*.yml`` / ``*.yaml`` name that exists under ``.github/workflows``."""
+    if "/" in value or not value.lower().endswith(_WORKFLOW_SUFFIXES):
+        return None
+    candidate = root / WORKFLOWS_DIR / value
+    return f"{WORKFLOWS_DIR}/{value}" if candidate.is_file() else None
+
+
+def _parent_exists(claim: Claim, root: Path) -> bool:
+    """True if the claim has a directory component and that parent exists under the root or the doc's directory."""
+    parent = Path(claim.value.rstrip("/")).parent
+    if parent == Path("."):
+        return False
+    candidates = [root / parent, claim.location.file.parent / parent]
+    return any(is_within(c, root) and c.is_dir() for c in candidates)
+
+
 class PathChecker:
     """Verifies that claimed paths exist relative to the repo root or the doc's directory."""
 
@@ -126,22 +157,31 @@ class PathChecker:
             if finding is not None and finding.severity is Severity.ERROR:
                 if index is None:
                     index = _basename_index(root)
-                finding = self._with_fallbacks(finding, index)
+                finding = self._with_fallbacks(finding, index, root)
             if finding is not None:
                 findings.append(finding)
         return findings
 
-    def _with_fallbacks(self, finding: Finding, index: dict[str, str]) -> Finding:
-        """Downgrade a missing-path ERROR to a WARNING for placeholder names or a path found elsewhere."""
+    def _with_fallbacks(self, finding: Finding, index: dict[str, str], root: Path) -> Finding:
+        """Grade a missing-path ERROR: placeholder / found-elsewhere / ecosystem file / severity ladder.
+
+        ERROR survives only when the claim has a directory component and its parent directory exists,
+        i.e. the doc points into a real tree. Anything else is at most a WARNING.
+        """
         claim = finding.claim
         basename = Path(claim.value.rstrip("/")).name
         if Path(basename).stem.lower() in PLACEHOLDER_STEMS:
             return Finding(claim, Severity.WARNING, "placeholder path in docs", self.name)
-        found = index.get(basename)
+        found = _workflow_location(claim.value, root) or index.get(basename)
         if found is not None:
             message = f"path does not exist at the stated location; found at: {found}"
             return Finding(claim, Severity.WARNING, message, self.name)
-        return finding
+        if basename in ECOSYSTEM_FILES:
+            return Finding(claim, Severity.INFO, "common ecosystem file, not present in this repo", self.name)
+        if _parent_exists(claim, root):
+            return finding
+        message = f"path does not exist and its parent directory is not in the repo: {claim.value}"
+        return Finding(claim, Severity.WARNING, message, self.name)
 
     def _check_one(self, claim: Claim, root: Path, ignore_patterns: Sequence[str] = ()) -> Finding | None:
         if claim.value.startswith("~/"):

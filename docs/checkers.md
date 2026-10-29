@@ -37,17 +37,29 @@ Further filters remove tokens that only look like paths:
 
 Spans containing a single or double quote character (string literals such as `b"HTTP/1.1"`) are never claimed.
 
-**ERROR:** `path does not exist: ...` when the path exists neither relative to the repository root (the working directory) nor relative to the directory of the document that mentions it, and neither downgrade below applies.
+**Link text:** an inline code span that is the visible text of a markdown link whose target is an `http(s)` URL is never claimed. It names the link's subject, not a repo file. Links with relative targets are unaffected.
+
+**Tree diagrams:** a code fence that contains box-drawing glyphs (`├ └ │`), or that looks like a directory listing (two or more consecutive lines ending in `/`), is a tree diagram. Inline code spans in the same document that name an entry drawn in such a fence (compared by last path segment, so a prose mention of a nested directory matches its entry) are not claimed. Tutorials draw the layout the reader is about to build, then refer to its parts in prose.
+
+**Severity ladder for missing paths:** a path that exists nowhere is graded by how much the document points into the real tree.
+
+- ERROR (`path does not exist: ...`) only when the claimed path has a directory component and its parent directory exists under the repository root or relative to the document. The document points into a real tree and names a file or directory that is not there.
+- WARNING (`path does not exist and its parent directory is not in the repo: ...`) otherwise: a bare file name, or a path whose parent directory is missing too.
+- INFO (`common ecosystem file, not present in this repo`) when the base name is in the built-in ecosystem list: `requirements.txt`, `setup.py`, `pyproject.toml`, `package.json`, `mypy.ini`, `serverless.yml`, `llms.txt`, `index.html`, `404.html`, `openapi.json`, `docker-compose.yml`, `Dockerfile`, `Makefile`, `.env`, `mkdocs.yml`, `mkdocs.yaml`, `swagger-ui.css`, `swagger-ui-bundle.js`, `redoc.standalone.js` and `favicon.ico`. These files are named in docs as things a project of that kind has, whether or not this repo has one.
+
+The placeholder, found-elsewhere and ecosystem rules below are tried before the ladder, in that order, so a file that exists at another location still gets the found-at WARNING.
+
+**ERROR:** `path does not exist: ...` when the path exists neither relative to the repository root (the working directory) nor relative to the directory of the document that mentions it, and no downgrade applies (see the ladder above).
 
 **WARNING:** `absolute path in docs is machine-specific` for any absolute path, whether or not it exists.
 
 **WARNING:** `placeholder path in docs` replaces the ERROR when the missing path's base name without extension is one of `foo bar baz example sample myfile yourfile placeholder test`.
 
-**WARNING:** `path does not exist at the stated location; found at: <path>` replaces the ERROR when a file with the same base name exists elsewhere under the root. The first match in sorted order is reported. The index is built once per scan and skips hidden directories, `venv`, `node_modules`, `dist` and `__pycache__`.
+**WARNING:** `path does not exist at the stated location; found at: <path>` replaces the ERROR when a file with the same base name exists elsewhere under the root. The first match in sorted order is reported. The index is built once per scan and skips hidden directories, `venv`, `node_modules`, `dist` and `__pycache__`. Because hidden directories are skipped, a bare workflow name ending in .yml or .yaml is also looked up under the repository's GitHub workflows directory and gets the same WARNING when it exists there.
 
 **INFO:** `user-local path, not checked` for paths starting with `~/`. They are claimed but never looked up.
 
-**INFO:** `file the reader is asked to create` replaces the ERROR when the claim's line, or the line immediately before it, contains (case-insensitive) `create a file`, `save it as`, `name it`, `add a file` or `new file called`. Such a path is an instruction, not a claim about the repo.
+**INFO:** `file the reader is asked to create` replaces the ERROR when the claim's line, or either of the two lines before it, contains (case-insensitive) `create a file`, `save it as`, `name it`, `add a file`, `new file called`, the words `called` or `named`, `for example`, `e.g.`, `your ` or `a file like`. Such a path is an instruction or an example, not a claim about the repo.
 
 **INFO:** `generated or ignored artifact` replaces the ERROR when the missing path lies under `site/`, `build/`, `dist/` or `docs/build/`, or is matched by the repository's root `.gitignore`. The matcher is deliberately simple: exact names, `dir/` prefixes, and `*` globs via `fnmatch`, matched against the whole path (patterns containing a slash or starting with `/`) or any single path component (other patterns). Limitation: negation lines (`!pattern`) are not supported and are ignored, as are nested `.gitignore` files.
 

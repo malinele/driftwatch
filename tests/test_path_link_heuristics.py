@@ -65,6 +65,7 @@ def test_basename_fallback_picks_first_match_deterministically(tmp_path: Path) -
 
 
 def test_genuinely_missing_path_is_still_error(tmp_path: Path) -> None:
+    _write(tmp_path, "src/keep.py")  # v3: ERROR needs an existing parent directory
     findings = _path_findings(tmp_path, "See `src/gone.py`.\n")
 
     assert [(f.severity, f.message) for f in findings] == [(Severity.ERROR, "path does not exist: src/gone.py")]

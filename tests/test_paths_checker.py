@@ -71,6 +71,7 @@ def test_existing_path_has_no_findings(tmp_path: Path) -> None:
 
 
 def test_missing_path_is_error_with_line(tmp_path: Path) -> None:
+    _write(tmp_path, "src/keep.py", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "README.md", "ok\n\nSee `src/gone.py`.\n")
 
     findings = scan(tmp_path, [tmp_path])
@@ -84,7 +85,8 @@ def test_missing_path_is_error_with_line(tmp_path: Path) -> None:
 
 @pytest.mark.parametrize("name", ["conf.toml", "a.yaml", "a.yml", "a.json", "a.txt", "a.sh", "a.cfg", "a.ini"])
 def test_missing_file_by_extension_is_error(tmp_path: Path, name: str) -> None:
-    _write(tmp_path, "README.md", f"`{name}`\n")
+    _write(tmp_path, "docs/keep.md", "")  # v3: ERROR needs an existing parent directory
+    _write(tmp_path, "README.md", f"`docs/{name}`\n")
 
     findings = scan(tmp_path, [tmp_path])
 
@@ -145,6 +147,7 @@ def test_cli_exit_zero_when_clean(
 def test_cli_exit_one_and_output_format(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    _write(tmp_path, "gone/keep.txt", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "b.md", "`/abs/path`\n")
     _write(tmp_path, "a.md", "x\n`gone/one.py`\n\n`gone/two.py`\n")
     monkeypatch.chdir(tmp_path)
@@ -169,6 +172,7 @@ def test_cli_warnings_only_exit_zero(tmp_path: Path, monkeypatch: pytest.MonkeyP
 def test_cli_json_format(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    _write(tmp_path, "gone/keep.txt", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "a.md", "`gone/one.py`\n")
     monkeypatch.chdir(tmp_path)
 

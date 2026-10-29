@@ -87,6 +87,7 @@ def test_text_summary_mentions_suppressed(tmp_path: Path) -> None:
 def test_cli_sarif_output_file_keeps_summary_on_stderr(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    (tmp_path / "gone").mkdir()  # v3: ERROR needs an existing parent directory
     (tmp_path / "a.md").write_text("`gone/one.py`\n", encoding="utf-8")
     monkeypatch.chdir(tmp_path)
 

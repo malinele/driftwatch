@@ -145,6 +145,7 @@ def test_per_checker_ignore_on_previous_line(tmp_path: Path) -> None:
 def test_write_baseline_then_rerun_suppresses(
     tmp_path: Path, monkeypatch: pytest.MonkeyPatch, capsys: pytest.CaptureFixture[str]
 ) -> None:
+    _write(tmp_path, "missing/keep.txt", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "README.md", "`missing/a.py`\n")
     monkeypatch.chdir(tmp_path)
     assert main(["scan", "."]) == 1
@@ -170,6 +171,7 @@ def test_baseline_entries_exclude_message_text(tmp_path: Path) -> None:
 
 
 def test_new_findings_are_not_suppressed(tmp_path: Path, monkeypatch: pytest.MonkeyPatch) -> None:
+    _write(tmp_path, "missing/keep.txt", "")  # v3: ERROR needs an existing parent directory
     _write(tmp_path, "README.md", "`missing/a.py`\n")
     monkeypatch.chdir(tmp_path)
     assert main(["scan", ".", "--write-baseline"]) == 0

@@ -22,6 +22,7 @@ class CodeFence:
 class InlineCode:
     text: str
     line: int
+    link_target: str = ""  # href of the markdown link whose visible text contains this span, if any
 
 
 @dataclass(frozen=True)
@@ -82,15 +83,19 @@ def _walk_inline(
     links: list[MdLink],
 ) -> None:
     line = _first_line(token)
+    link_target = ""
     for child in token.children or []:
         if child.type in ("softbreak", "hardbreak"):
             line += 1
         elif child.type == "code_inline":
-            codes.append(InlineCode(text=child.content, line=line))
+            codes.append(InlineCode(text=child.content, line=line, link_target=link_target))
         elif child.type == "link_open":
             href = child.attrGet("href")
             if isinstance(href, str):
                 links.append(MdLink(target=href, line=line))
+                link_target = href
+        elif child.type == "link_close":
+            link_target = ""
         elif child.type == "image":
             src = child.attrGet("src")
             if isinstance(src, str):
