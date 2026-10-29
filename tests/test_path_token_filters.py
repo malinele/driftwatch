@@ -53,8 +53,8 @@ def _claims(tmp_path: Path, token: str) -> list[str]:
         r"^/foo\.py$",
         "2>/dev/null",
         "a|b/c.py",
-        # extensionless directory without marker or common source dir
-        "foo/bar/",
+        # single-segment directory that is not a common source dir
+        "foo/",
     ],
 )
 def test_token_is_not_claimed(tmp_path: Path, token: str) -> None:
@@ -71,6 +71,8 @@ def test_token_is_not_claimed(tmp_path: Path, token: str) -> None:
         "scripts/run.sh",
         "README.md",
         "docs/",
+        "test/test_types/",
+        "foo/bar/",
         "app/",
         "./build/",
         "~/notes/",

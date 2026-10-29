@@ -20,6 +20,8 @@ _SCHEME = re.compile(r"^[a-zA-Z][a-zA-Z0-9+.-]*:(//|[^/\s]*@)")
 _WHITESPACE = re.compile(r"\s")
 _ANY_SCHEME = re.compile(r"^([a-zA-Z][a-zA-Z0-9+.-]*:|//)")
 COMMON_SOURCE_DIRS = frozenset({"docs", "src", "tests", "scripts", "app"})
+_PLAUSIBLE_DIR_NAME = re.compile(r"^[a-z0-9_-]{3,}$")
+MIN_DIR_SEGMENTS = 2
 _LEADING_MARKERS = ("./", "../", "~/", "/")
 _EXTENSION = re.compile(r"^.+\.[A-Za-z0-9]+$")
 _BARE_EXTENSION = re.compile(r"^\.[a-z0-9]+$")
@@ -60,6 +62,12 @@ def _looks_like_path(token: str) -> bool:
     return _slash_token_is_path(token)
 
 
+def _is_plausible_dir(token: str, first: str) -> bool:
+    """A multi-segment trailing-slash token whose first segment looks like a directory name."""
+    segments = [part for part in token.split("/") if part]
+    return len(segments) >= MIN_DIR_SEGMENTS and _PLAUSIBLE_DIR_NAME.match(first) is not None
+
+
 def _slash_token_is_path(token: str) -> bool:
     """Decide whether a token containing a slash is a repo path rather than MIME/owner-repo/prose."""
     first, _, rest = token.partition("/")
@@ -68,7 +76,7 @@ def _slash_token_is_path(token: str) -> bool:
     has_marker = token.startswith(_LEADING_MARKERS)
     last = token.rstrip("/").rsplit("/", 1)[-1]
     if token.endswith("/"):
-        return has_marker or first in COMMON_SOURCE_DIRS
+        return has_marker or first in COMMON_SOURCE_DIRS or _is_plausible_dir(token, first)
     if _EXTENSION.search(last):
         return not (_MEDIA_TYPE.match(token) and not last.lower().endswith(PATH_EXTENSIONS))
     return has_marker and not _MEDIA_TYPE.match(token)

@@ -7,7 +7,7 @@ import os
 import posixpath
 import re
 from collections import defaultdict
-from collections.abc import Iterator
+from collections.abc import Iterable, Iterator
 from dataclasses import dataclass, replace
 from pathlib import Path
 
@@ -130,6 +130,19 @@ def is_test_content(file: Path, root: Path) -> bool:
     return any(part in TEST_DIRS for part in relative.parts[:-1])
 
 
+def _dedupe_findings(findings: Iterable[Finding]) -> list[Finding]:
+    """Drop repeats of the same (file, line, checker, value, message), keeping the first."""
+    seen: set[tuple[Path, int, str, str, str]] = set()
+    unique: list[Finding] = []
+    for finding in findings:
+        loc = finding.claim.location
+        key = (loc.file, loc.line, finding.checker, finding.claim.value, finding.message)
+        if key not in seen:
+            seen.add(key)
+            unique.append(finding)
+    return unique
+
+
 def scan_files(root: Path, files: list[Path], config: Config | None = None) -> list[Finding]:
     cfg = config if config is not None else Config()
     files = [f for f in files if not is_excluded(f, root, cfg.exclude)]
@@ -171,7 +184,7 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
                     [c for c in env_claims if c.value not in extra], root, files, cfg.ambient_extra
                 )
                 findings.extend(f for f in checked if f.claim.value not in extra)
-    kept = [f for f in findings if not _is_ignored(f, ignores)]
+    kept = _dedupe_findings(f for f in findings if not _is_ignored(f, ignores))
     return dedupe_locales(kept, root) if cfg.locales else kept
 
 

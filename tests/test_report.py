@@ -7,6 +7,7 @@ from driftwatch import __version__
 from driftwatch.cli import main
 from driftwatch.models import Claim, ClaimKind, Finding, Location, Severity
 from driftwatch.report import render_json, render_sarif, render_text
+from driftwatch.scanner import scan_files
 
 
 def _finding(root: Path, rel: str, line: int, severity: Severity, checker: str = "path") -> Finding:
@@ -104,3 +105,13 @@ def test_cli_output_unwritable_is_usage_error(tmp_path: Path, monkeypatch: pytes
     monkeypatch.chdir(tmp_path)
 
     assert main(["scan", ".", "--output", "no/such/dir/out.txt"]) == 2
+
+
+def test_scan_reports_repeated_inline_path_once(tmp_path: Path) -> None:
+    doc = tmp_path / "README.md"
+    doc.write_text("See `missing/thing.py` and again `missing/thing.py`.\n", encoding="utf-8")
+
+    findings = scan_files(tmp_path, [doc])
+
+    assert len(findings) == 1
+    assert findings[0].claim.value == "missing/thing.py"
