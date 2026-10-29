@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Literal, Protocol
 
 from driftwatch.envscan import scan_code_env_reads
+from driftwatch.extract import extract_myst_labels
 from driftwatch.markdown import parse_markdown
 from driftwatch.models import Claim, ClaimKind, Finding, Location, Severity
 
@@ -246,17 +247,30 @@ def _mkdocs_resolve(file_part: str, doc_file: Path, root: Path, docs_dir: Path) 
     return next((c for c in candidates if is_within(c, root) and c.is_file()), None)
 
 
+def _site_roots(doc_file: Path, root: Path, docs_dir: Path | None) -> list[Path]:
+    """Candidate site roots for a ``/``-absolute link: scan root, docs dir, top of the document's tree."""
+    roots = [root, docs_dir if docs_dir is not None else root / DEFAULT_DOCS_DIR]
+    try:
+        parts = Path(os.path.abspath(doc_file)).relative_to(os.path.abspath(root)).parts
+    except ValueError:
+        parts = ()
+    if len(parts) > 1:
+        roots.append(root / parts[0])
+    return list(dict.fromkeys(roots))
+
+
 def _resolve(file_part: str, doc_file: Path, root: Path, docs_dir: Path | None = None) -> Path | None:
     """Resolve a link target: mkdocs URL semantics first (if on), then doc-relative, then repo root.
 
-    A leading ``/`` means repo root.
+    A leading ``/`` is site-absolute: tried against the scan root, the docs dir, then the docs tree top.
     """
     if docs_dir is not None:
         found = _mkdocs_resolve(file_part, doc_file, root, docs_dir)
         if found is not None:
             return found
     if file_part.startswith("/"):
-        bases = [root / file_part.lstrip("/")]
+        relative = file_part.lstrip("/")
+        bases = [site_root / relative for site_root in _site_roots(doc_file, root, docs_dir)]
     else:
         bases = [doc_file.parent / file_part, root / file_part]
     candidates = [c for base in bases for c in _with_conventions(base, file_part)]
@@ -275,13 +289,37 @@ class LinkChecker:
 
     name = "link"
 
-    def check(self, claims: list[Claim], root: Path, mkdocs: MkdocsSetting = "auto") -> list[Finding]:
+    def check(
+        self,
+        claims: list[Claim],
+        root: Path,
+        mkdocs: MkdocsSetting = "auto",
+        labels: frozenset[str] | None = None,
+    ) -> list[Finding]:
         docs_dir = mkdocs_docs_dir(root, mkdocs)
+        known = labels if labels is not None else collect_myst_labels(root)
         return [
             Finding(claim, Severity.ERROR, f"link target does not exist: {claim.value}", self.name)
             for claim in claims
-            if claim.kind is ClaimKind.LINK and _resolve(claim.value, claim.location.file, root, docs_dir) is None
+            if claim.kind is ClaimKind.LINK
+            and claim.value not in known
+            and _resolve(claim.value, claim.location.file, root, docs_dir) is None
         ]
+
+
+def collect_myst_labels(root: Path) -> frozenset[str]:
+    """Index MyST ``(name)=`` target labels from every markdown file under ``root``."""
+    labels: set[str] = set()
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames[:] = sorted(d for d in dirnames if not d.startswith(".") and d not in _INDEX_SKIP_DIRS)
+        for filename in filenames:
+            if not filename.endswith(".md"):
+                continue
+            try:
+                labels |= extract_myst_labels((Path(dirpath) / filename).read_text(encoding="utf-8"))
+            except (OSError, UnicodeDecodeError):
+                continue
+    return frozenset(labels)
 
 
 DYNAMIC_ANCHOR_MESSAGE = "anchor target is plugin-generated or included content, cannot verify statically"

@@ -23,6 +23,15 @@ COMMON_SOURCE_DIRS = frozenset({"docs", "src", "tests", "scripts", "app"})
 _LEADING_MARKERS = ("./", "../", "~/", "/")
 _EXTENSION = re.compile(r"^.+\.[A-Za-z0-9]+$")
 _BARE_EXTENSION = re.compile(r"^\.[a-z0-9]+$")
+_MYST_TARGET = re.compile(r"^\(([^)]+)\)=\s*$")
+
+
+def extract_myst_labels(text: str) -> frozenset[str]:
+    """Names defined by MyST target lines such as ``(labels/stability-policy)=``."""
+    matches = (_MYST_TARGET.match(line) for line in text.splitlines())
+    return frozenset(m.group(1).strip() for m in matches if m is not None)
+
+
 _REGEX_OR_REDIRECT = re.compile(r"[\^$|]|\d?>")
 _MEDIA_TYPE = re.compile(
     r"^(application|audio|font|image|message|model|multipart|text|video)/[A-Za-z0-9.+_-]+$", re.IGNORECASE

@@ -76,7 +76,9 @@ Limitations:
 
 Skipped: any target with a URL scheme (http, https, mailto and so on) or starting with two slashes, empty targets, and autolinks written in angle brackets. A query string is dropped and percent-escapes are decoded before the lookup. A pure fragment link such as `[x](#section)` has no file part and is handled by the anchor checker; a link like `[x](other.md#section)` yields one link claim and one anchor claim.
 
-Resolution: relative to the document's directory first, then relative to the repository root. A target starting with a slash is relative to the repository root only. A directory counts as existing. A target with no file extension is tried, in order, as written, then with the markdown suffix appended, then as a directory containing an index file, then as a directory containing a readme file (mkdocs conventions; the file names are index.md and README.md). The anchor checker resolves cross-document targets the same way.
+Resolution: relative to the document's directory first, then relative to the repository root. A target starting with a slash is site-absolute: it is tried against the scan root, then the docs directory (docs, or the mkdocs docs_dir), then the top directory of the current document's tree, each with the extensionless chain below; only if none resolve is it an error. A directory counts as existing. A target with no file extension is tried, in order, as written, then with the markdown suffix appended, then as a directory containing an index file, then as a directory containing a readme file (mkdocs conventions; the file names are index.md and README.md). The anchor checker resolves cross-document targets the same way.
+
+MyST labels: a line of the form `(name)=` in any scanned document defines a global label, and a link whose target equals that name resolves. Detection relies on that syntax alone; no Sphinx conf.py is needed.
 
 **ERROR:** `link target does not exist: ...`.
 
@@ -90,7 +92,7 @@ See [the guide](docs/guide.md) and ![diagram](img/flow.png).
 
 Limitations:
 
-- Reference-style links (`[text][ref]`) are resolved by the parser to their definition and checked at the line where they are used. The definition line itself is not a link, so an unused definition is never checked.
+- Reference-style links (`[text][ref]`) are resolved by the parser to their definition and checked at the line where they are used. The definition line itself is not a link, so an unused definition is never checked. Names defined only by `[name]: target` are never matched against MyST labels.
 - External links are not verified; there is no network access.
 - Links written as raw HTML are not extracted.
 

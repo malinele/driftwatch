@@ -14,6 +14,7 @@ from driftwatch.extract import (
     extract_command_claims,
     extract_env_claims,
     extract_link_claims,
+    extract_myst_labels,
     extract_path_claims,
 )
 from driftwatch.markdown import parse_markdown
@@ -134,6 +135,9 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
     findings: list[Finding] = []
     env_claims: list[Claim] = []
     ignores: dict[Path, IgnoreMap] = {}
+    labels = frozenset[str]().union(
+        *(extract_myst_labels(f.read_text(encoding="utf-8", errors="replace")) for f in files)
+    )
     for file in files:
         text = file.read_text(encoding="utf-8", errors="replace")
         ignores[file] = parse_ignores(text)
@@ -149,7 +153,9 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
                 continue
             if name not in cfg.enabled_checkers or isinstance(checker, EnvChecker):
                 continue
-            if isinstance(checker, LinkChecker | AnchorChecker):
+            if isinstance(checker, LinkChecker):
+                findings.extend(checker.check(claims, root, cfg.mkdocs, labels))
+            elif isinstance(checker, AnchorChecker):
                 findings.extend(checker.check(claims, root, cfg.mkdocs))
             else:
                 findings.extend(checker.check(claims, root))
