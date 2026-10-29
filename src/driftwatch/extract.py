@@ -139,18 +139,47 @@ def _command_token(line: str) -> str | None:
     return None
 
 
+_ANNOTATION = re.compile(r"\s+#\s*\(\d+\)!\s*$")
+_POWERSHELL_ENV = "$env:"
+
+
+def _is_non_command_line(line: str) -> bool:
+    """Tree-diagram lines (box-drawing glyphs) and PowerShell ``$Env:`` lines are never commands."""
+    return line.lower().startswith(_POWERSHELL_ENV) or ("\u2500" <= line[:1] <= "\u257f")
+
+
+def _logical_lines(fence: CodeFence) -> list[tuple[int, str, bool]]:
+    """``(offset, line, had_prompt)`` with backslash-continued lines joined and ``# (N)!`` stripped."""
+    results: list[tuple[int, str, bool]] = []
+    pending: tuple[int, str, bool] | None = None
+    for offset, raw in enumerate(fence.content.splitlines()):
+        text = _ANNOTATION.sub("", raw.strip())
+        if pending is not None:
+            start, joined, had_prompt = pending
+            line = f"{joined} {text}".strip()
+        else:
+            start = offset
+            line, had_prompt = _strip_prompt(text)
+        if line.endswith("\\"):
+            pending = (start, line[:-1].rstrip(), had_prompt)
+            continue
+        pending = None
+        results.append((start, line, had_prompt))
+    if pending is not None:
+        results.append(pending)
+    return results
+
+
 def _fence_commands(fence: CodeFence) -> list[tuple[int, str, str]]:
     """``(line, command, stripped_line)`` for each command line in a shell fence."""
-    stripped = [_strip_prompt(line.strip()) for line in fence.content.splitlines()]
+    logical = _logical_lines(fence)
     # In console transcripts, unprompted lines are program output, not commands.
     # Bare fences are mostly output (logs, tracebacks), so only prompted lines count there.
     language = fence.language.strip().lower()
-    require_prompt = language == "" or (language == "console" and any(had for _, had in stripped))
+    require_prompt = language == "" or (language == "console" and any(had for _, _, had in logical))
     results: list[tuple[int, str, str]] = []
-    continued = False
-    for offset, (line, had_prompt) in enumerate(stripped):
-        was_continued, continued = continued, line.endswith("\\")
-        if was_continued or not line or line.startswith("#") or (require_prompt and not had_prompt):
+    for offset, line, had_prompt in logical:
+        if not line or line.startswith("#") or (require_prompt and not had_prompt) or _is_non_command_line(line):
             continue
         command = _command_token(line)
         if command is not None:

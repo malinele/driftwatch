@@ -36,11 +36,11 @@ def test_existing_repo_script_passes(tmp_path: Path) -> None:
     assert _run(tmp_path, _fence("scripts/x.py --flag\n./tool.sh")) == []
 
 
-def test_nonsense_command_fails(tmp_path: Path) -> None:
+def test_unknown_bare_command_is_info_not_error(tmp_path: Path) -> None:
     findings = _run(tmp_path, _fence("frobnicate-the-widgets --now"))
     assert len(findings) == 1
-    assert findings[0].severity is Severity.ERROR
-    assert findings[0].message == "documented command not found: frobnicate-the-widgets"
+    assert findings[0].severity is Severity.INFO
+    assert findings[0].message == "command not found in repo or on PATH (external tool?)"
 
 
 def test_path_and_known_commands_pass(tmp_path: Path) -> None:
@@ -139,3 +139,76 @@ def test_shell_fence_relative_script_still_claimed(tmp_path: Path) -> None:
 def test_claim_location_is_the_actual_line(tmp_path: Path) -> None:
     claims = _claims(tmp_path, _fence("git status\n\nmake test"))
     assert [c.location.line for c in claims] == [4, 6]
+
+
+_SCRIPTS_TOML = '[project]\nname = "x"\n[project.scripts]\nmycli = "x:main"\n'
+
+
+def test_known_tool_has_no_finding(tmp_path: Path) -> None:
+    assert _run(tmp_path, _fence("uv sync\nuvx ruff\npnpm i\ngunicorn app:app\ndeactivate")) == []
+
+
+def test_missing_relative_script_is_error(tmp_path: Path) -> None:
+    findings = _run(tmp_path, _fence("./scripts/missing.sh"))
+    assert [(f.severity, f.message) for f in findings] == [
+        (Severity.ERROR, "documented command not found: ./scripts/missing.sh")
+    ]
+
+
+def test_missing_path_with_separator_is_error(tmp_path: Path) -> None:
+    findings = _run(tmp_path, _fence("scripts/missing.sh"))
+    assert [f.severity for f in findings] == [Severity.ERROR]
+
+
+def test_repo_defined_console_script_passes(tmp_path: Path) -> None:
+    _write(tmp_path, "pyproject.toml", _SCRIPTS_TOML)
+    assert _run(tmp_path, _fence("mycli --help")) == []
+
+
+def test_unlisted_command_with_scripts_defined_is_error(tmp_path: Path) -> None:
+    _write(tmp_path, "pyproject.toml", _SCRIPTS_TOML)
+    findings = _run(tmp_path, _fence("othercli --help"))
+    assert [f.severity for f in findings] == [Severity.ERROR]
+
+
+def test_known_tool_passes_even_when_scripts_defined(tmp_path: Path) -> None:
+    _write(tmp_path, "pyproject.toml", _SCRIPTS_TOML)
+    assert _run(tmp_path, _fence("git status\nuv sync")) == []
+
+
+def test_package_json_bin_defines_commands(tmp_path: Path) -> None:
+    _write(tmp_path, "package.json", '{"name": "pkg", "bin": {"hello": "cli.js"}}')
+    findings = _run(tmp_path, _fence("hello\nnope"))
+    assert [(f.claim.value, f.severity) for f in findings] == [("nope", Severity.ERROR)]
+
+
+def test_package_json_bin_string_uses_package_name(tmp_path: Path) -> None:
+    _write(tmp_path, "package.json", '{"name": "@scope/tool", "bin": "cli.js"}')
+    assert _run(tmp_path, _fence("tool run")) == []
+
+
+def test_command_after_install_line_has_no_finding(tmp_path: Path) -> None:
+    assert _run(tmp_path, _fence("npm install -g express-generator\nexpress myapp")) == []
+
+
+def test_install_line_in_other_fence_does_not_count(tmp_path: Path) -> None:
+    text = _fence("npm install -g express-generator") + "\n" + _fence("express myapp")
+    assert [f.severity for f in _run(tmp_path, text)] == [Severity.INFO]
+
+
+def test_tree_glyphs_and_powershell_env_not_claimed(tmp_path: Path) -> None:
+    body = "│   file.txt\n├── src\n└── README\n$Env:APP_NAME = 'x'"
+    assert _claims(tmp_path, _fence(body)) == []
+
+
+def test_continuation_lines_are_joined(tmp_path: Path) -> None:
+    claims = _claims(tmp_path, _fence("docker run \\\n  --rm \\\n  image\nmake"))
+    assert [(c.value, c.context, c.location.line) for c in claims] == [
+        ("docker", "docker run --rm image", 4),
+        ("make", "make", 7),
+    ]
+
+
+def test_mkdocs_annotation_is_stripped(tmp_path: Path) -> None:
+    claims = _claims(tmp_path, _fence("pip install foo  # (1)!\nmake test # (12)!"))
+    assert [c.context for c in claims] == ["pip install foo", "make test"]

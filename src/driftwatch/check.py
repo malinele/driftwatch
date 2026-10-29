@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import difflib
+import json
 import os
 import posixpath
 import re
@@ -263,7 +264,21 @@ class AnchorChecker:
         return message
 
 
-KNOWN_COMMON = frozenset({"git", "docker", "make", "curl", "pip", "npm", "node", "uvicorn", "pytest"})
+KNOWN_TOOLS = frozenset("""
+git docker make curl wget pip pip3 pipx npm npx node python python3 uvicorn pytest uv uvx hatch pybabel
+gunicorn daphne hypercorn pnpm yarn bun deno conda mamba poetry pdm tox nox ruff mypy black flake8 isort
+gcloud firebase aws az terraform ansible helm kubectl minikube kind brew apt apt-get dpkg yum dnf apk
+snap cargo rustc rustup go java javac mvn gradle dotnet ruby gem bundle rake rails php composer
+where which gedit vim nano code open xdg-open deactivate briefcase django-admin flask celery alembic
+sphinx-build mkdocs jupyter ipython virtualenv pyenv nvm tsc webpack vite next ng gatsby cmake gcc g++
+clang ninja ssh scp rsync tar unzip zip sudo chmod chown mkdir cp mv rm ls cat grep sed awk find tree
+touch head tail less sort uniq wc diff ps kill systemctl journalctl service ping netstat lsof env
+printenv gh pre-commit twine build sh bash zsh powershell pwsh cmd start
+""".split())
+INSTALL_MARKERS = (
+    "pip install", "npm install", "uv add", "brew install", "cargo install", "apt install",
+)  # fmt: skip
+GENERATED_BIN_DIRS = (".venv/", "venv/", "env/", "node_modules/")
 _ASSIGNMENT = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*=")
 
 
@@ -315,41 +330,124 @@ def _module_known(module: str, root: Path) -> bool:
     return (
         _module_in_repo(module, root)
         or top in sys.stdlib_module_names
-        or top in KNOWN_COMMON
+        or top in KNOWN_TOOLS
         or top.lower() in _declared_names(root)[1]
     )
 
 
+def _entry_point_names(text: str) -> set[str]:
+    """Names from a ``console_scripts`` block of ``setup.cfg`` (``name = module:func`` lines)."""
+    names: set[str] = set()
+    in_block = False
+    for line in text.splitlines():
+        if not line.strip():
+            continue
+        if not line[0].isspace():
+            in_block = line.strip().startswith("console_scripts")
+            continue
+        if in_block and "=" in line:
+            names.add(line.split("=", 1)[0].strip())
+    return names
+
+
+def _package_json_bin(root: Path) -> set[str]:
+    try:
+        data = json.loads((root / "package.json").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, ValueError):
+        return set()
+    if not isinstance(data, dict):
+        return set()
+    bin_field = data.get("bin")
+    if isinstance(bin_field, str) and isinstance(data.get("name"), str):
+        return {data["name"].rsplit("/", 1)[-1]}
+    return {str(k) for k in bin_field} if isinstance(bin_field, dict) else set()
+
+
+def _defined_commands(root: Path) -> frozenset[str]:
+    """Commands the repo itself defines: pyproject/setup.cfg console scripts and package.json ``bin``."""
+    names = set(_declared_names(root)[0]) | _package_json_bin(root)
+    try:
+        pyproject = tomllib.loads((root / "pyproject.toml").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError, tomllib.TOMLDecodeError):
+        pyproject = {}
+    names.update(pyproject.get("project", {}).get("gui-scripts", {}))
+    names.update(pyproject.get("tool", {}).get("poetry", {}).get("scripts", {}))
+    try:
+        names |= _entry_point_names((root / "setup.cfg").read_text(encoding="utf-8"))
+    except (OSError, UnicodeDecodeError):
+        pass
+    return frozenset(names)
+
+
+def _is_repo_path(token: str) -> bool:
+    """True when ``token`` is a relative path that should resolve under the repo."""
+    if token.startswith(("./", "../")):
+        return True
+    if "/" not in token or token.startswith(("/", "~")):
+        return False
+    return not token.startswith(GENERATED_BIN_DIRS)
+
+
+def _fence_lines_above(claim: Claim, cache: dict[Path, list[str]]) -> list[str]:
+    """Source lines above the claim in the same code fence (nearest first, up to the opening marker)."""
+    file = claim.location.file
+    if file not in cache:
+        try:
+            cache[file] = file.read_text(encoding="utf-8").splitlines()
+        except (OSError, UnicodeDecodeError):
+            cache[file] = []
+    above: list[str] = []
+    for line in reversed(cache[file][: max(claim.location.line - 1, 0)]):
+        if line.lstrip().startswith(("```", "~~~")):
+            break
+        above.append(line)
+    return above
+
+
 class CommandChecker:
-    """Statically verifies documented shell commands; nothing is ever executed."""
+    """Statically verifies documented shell commands; nothing is ever executed.
+
+    Only repo-local-looking tokens that are missing are errors; bare unknown tokens are at most INFO.
+    """
 
     name = "command"
 
     def check(self, claims: list[Claim], root: Path) -> list[Finding]:
         findings: list[Finding] = []
+        defined = _defined_commands(root)
+        cache: dict[Path, list[str]] = {}
         for claim in claims:
             if claim.kind is not ClaimKind.COMMAND:
                 continue
-            finding = self._check_one(claim, root)
+            finding = self._check_one(claim, root, defined, cache)
             if finding is not None:
                 findings.append(finding)
         return findings
 
-    def _check_one(self, claim: Claim, root: Path) -> Finding | None:
+    def _check_one(
+        self, claim: Claim, root: Path, defined: frozenset[str], cache: dict[Path, list[str]]
+    ) -> Finding | None:
         token = claim.value
         if _is_python(token):
             module = _python_module(claim)
             if module is not None and not _module_known(module, root):
                 return Finding(claim, Severity.ERROR, f"documented python module not found: {module}", self.name)
-        if (
-            (is_within(root / token, root) and (root / token).exists())
-            or shutil.which(token) is not None
-            or _is_python(token)
-            or token in KNOWN_COMMON
-            or token in _declared_names(root)[0]
-        ):
             return None
-        return Finding(claim, Severity.ERROR, f"documented command not found: {token}", self.name)
+        if (is_within(root / token, root) and (root / token).exists()) or token in defined:
+            return None
+        if _is_repo_path(token):
+            return self._missing(claim)
+        if shutil.which(token) is not None or token in KNOWN_TOOLS:
+            return None
+        if defined:
+            return self._missing(claim)
+        if any(marker in line for line in _fence_lines_above(claim, cache) for marker in INSTALL_MARKERS):
+            return None
+        message = "command not found in repo or on PATH (external tool?)"
+        return Finding(claim, Severity.INFO, message, self.name)
+
+    def _missing(self, claim: Claim) -> Finding:
+        return Finding(claim, Severity.ERROR, f"documented command not found: {claim.value}", self.name)
 
 
 _ENV_WORD = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")

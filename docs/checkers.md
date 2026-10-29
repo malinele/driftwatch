@@ -7,7 +7,7 @@ DriftWatch has five checkers, covering four kinds of claim: paths, links and anc
 | `path` | error, warning | Inline code spans that look like file paths exist. |
 | `link` | error | Relative link and image targets exist. |
 | `anchor` | error | Fragments (`#heading`) match a heading in the target markdown file. |
-| `command` | error | The first word of shell lines in code fences is a known command. |
+| `command` | error | Repo-local command paths in shell code fences exist; unknown bare tools are only INFO. |
 | `env` | error, warning | Environment variables in docs and in code agree. |
 
 ## Wiring
@@ -112,11 +112,19 @@ How lines are read:
 - A first word is never claimed when it is all capitals (two or more characters, such as `DEBUG`), ends with `:` or `.`, contains a parenthesis, or is a dotted identifier (contains `.` but no `/`, such as `httpx.ProxyError:`).
 - Lines whose first word is a shell builtin or keyword (`cd`, `export`, `source`, `set`, `echo`, `exit`, `if`, `for`, `while` and similar) or starts with an operator such as a pipe, ampersand, semicolon, parenthesis or brace are skipped.
 
-A command is accepted when any of these holds: it exists relative to the repository root (so a script path like ./scripts/deploy.sh works), it is found on the `PATH` of the machine running the scan, it is `python`, `python3` or a path ending in "/python", or it is one of `git docker make curl pip npm node uvicorn pytest`.
+Continuation lines are joined into one logical line before it is read, lines starting with box-drawing glyphs (`│ ├ └ ─`, tree output) or `$Env:` (PowerShell) are skipped, and a trailing `# (N)!` mkdocs annotation is stripped.
+
+Policy: a command is an ERROR only when it looks repo-local and is missing. A token is accepted without a finding when it exists relative to the repository root, is `python`, `python3` or a path ending in "/python", or is a command the repo defines (`[project.scripts]`, `[project.gui-scripts]`, `[tool.poetry.scripts]`, `console_scripts` in setup.cfg, and `bin` in package.json). A missing token is an ERROR when it:
+
+- starts with `./` or `../`, or
+- contains a path separator and should resolve under the repo (absolute and home-relative paths, and paths under virtualenv or node_modules directories, are exempt), or
+- is a bare name while the repo defines its own commands and the name matches none of them (unless it is found on `PATH` or in the built-in tool list).
+
+Every other bare token that is not found is never an ERROR. It is silent when it is on the `PATH` or in the built-in known-tools allowlist (git, docker, make, curl, pip, npm, node, python, uv, uvx, pnpm, yarn, bun, deno, conda, gcloud, kubectl, brew, apt, cargo, go, java, mvn, gradle and many more). It is also silent when an install-looking line (`pip install`, `npm install`, `uv add`, `brew install`, `cargo install`, `apt install`) appears above it in the same fence. Otherwise it is an INFO.
 
 For `python -m MODULE` the module is also checked: it must be a file or package under the root or under `src/`, a standard-library module, or have one of the well-known names above as its top-level package.
 
-**ERROR:** `documented command not found: ...` or `documented python module not found: ...`. This checker produces no warnings.
+**ERROR:** `documented command not found: ...` (repo-local tokens only) or `documented python module not found: ...`. **INFO:** `command not found in repo or on PATH (external tool?)`. This checker produces no warnings.
 
 Example:
 
@@ -128,7 +136,7 @@ mytool run
 ```
 ````
 
-The first line is an ERROR unless the module exists under the root or `src/`. The second is accepted if that script exists. The third is an ERROR unless `mytool` is on the `PATH`.
+The first line is an ERROR unless the module exists under the root or `src/`. The second is an ERROR if that script is missing. The third is an INFO unless `mytool` is on the `PATH`, installed by an earlier line of the same fence, or defined by the repo. If the repo defines its own commands and `mytool` is not one of them, it is an ERROR.
 
 Limitations:
 
