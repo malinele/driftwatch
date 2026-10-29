@@ -15,6 +15,7 @@ DRIFTWATCH_TOML = "driftwatch.toml"
 KNOWN_KEYS = frozenset({
     "enabled_checkers", "exclude", "env_stoplist_extra", "fail_on",
     "ambient_extra", "historical", "historical_full_scan", "mkdocs", "scan_tests", "locales",
+    "env_tool_prefixes_extra",
 })  # fmt: skip
 _SEVERITY_RANK = {Severity.INFO: 0, Severity.WARNING: 1, Severity.ERROR: 2}
 
@@ -43,6 +44,7 @@ class Config:
     mkdocs: MkdocsSetting = "auto"
     scan_tests: bool = False
     locales: bool = True
+    env_tool_prefixes_extra: tuple[str, ...] = ()
 
 
 def _read_toml(path: Path) -> dict[str, Any]:
@@ -137,6 +139,11 @@ def load_config(root: Path) -> Config:
     mkdocs = _parse_mkdocs(raw["mkdocs"]) if "mkdocs" in raw else defaults.mkdocs
     scan_tests = _parse_bool("scan_tests", raw["scan_tests"]) if "scan_tests" in raw else defaults.scan_tests
     locales = _parse_bool("locales", raw["locales"]) if "locales" in raw else defaults.locales
+    tool_prefixes = (
+        _string_list("env_tool_prefixes_extra", raw["env_tool_prefixes_extra"])
+        if "env_tool_prefixes_extra" in raw
+        else defaults.env_tool_prefixes_extra
+    )
     return Config(
         enabled_checkers=checkers,
         exclude=exclude,
@@ -148,4 +155,5 @@ def load_config(root: Path) -> Config:
         mkdocs=mkdocs,
         scan_tests=scan_tests,
         locales=locales,
+        env_tool_prefixes_extra=tool_prefixes,
     )

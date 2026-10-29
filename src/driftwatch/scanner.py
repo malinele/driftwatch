@@ -12,7 +12,15 @@ from dataclasses import dataclass, replace
 from pathlib import Path
 from urllib.parse import unquote
 
-from driftwatch.check import CHECKERS, AnchorChecker, EnvChecker, LinkChecker, is_within
+from driftwatch.check import (
+    CHECKERS,
+    AnchorChecker,
+    EnvChecker,
+    LinkChecker,
+    find_by_suffix,
+    is_within,
+    paths_by_basename,
+)
 from driftwatch.config import Config
 from driftwatch.extract import (
     extract_command_claims,
@@ -94,7 +102,10 @@ def is_excluded(file: Path, root: Path, patterns: tuple[str, ...]) -> bool:
 
 
 # Changelog-type files describe the past, so only their links and anchors are checked.
-HISTORICAL_PATTERNS = ("CHANGELOG*.md", "HISTORY*.md", "CHANGES*.md", "RELEASES*.md", "docs/release-notes*.md")
+# Built-in patterns match the base name anywhere in the tree (``docs/en/docs/release-notes.md`` too).
+HISTORICAL_PATTERNS = (
+    "release-notes*.md", "release_notes*.md", "CHANGELOG*", "HISTORY*", "CHANGES*", "NEWS*", "RELEASES*.md",
+)  # fmt: skip
 HISTORICAL_CHECKERS = frozenset({"link", "anchor"})
 
 
@@ -106,10 +117,16 @@ def _relative_posix(file: Path, root: Path) -> str:
 
 
 def is_historical(file: Path, root: Path, extra: tuple[str, ...] = ()) -> bool:
-    """True for changelog-type files (built-in patterns plus ``extra``), matched case-insensitively."""
-    relative = _relative_posix(file, root).lower()
+    """True for changelog-type files, matched case-insensitively.
+
+    Built-in patterns match the base name; ``extra`` patterns with a slash match the root-relative path,
+    the others the base name or the path.
+    """
     name = file.name.lower()
-    for pattern in (*HISTORICAL_PATTERNS, *extra):
+    if any(fnmatch.fnmatchcase(name, pattern.lower()) for pattern in HISTORICAL_PATTERNS):
+        return True
+    relative = _relative_posix(file, root).lower()
+    for pattern in extra:
         lowered = pattern.lower()
         if "/" in lowered:
             if fnmatch.fnmatchcase(relative, lowered):
@@ -131,16 +148,44 @@ def is_test_content(file: Path, root: Path) -> bool:
     return any(part in TEST_DIRS for part in relative.parts[:-1])
 
 
+# A span that is both inline code and a relative link target is claimed by both checkers.
+_TARGET_CHECKERS = frozenset({"path", "link"})
+_SEVERITY_RANK = {Severity.INFO: 0, Severity.WARNING: 1, Severity.ERROR: 2}
+DedupeKey = tuple[str, int, str, str, str]
+
+
+def _dedupe_key(finding: Finding) -> DedupeKey:
+    """Real file, line and value, plus checker and message; path and link findings share one slot."""
+    loc = finding.claim.location
+    real = os.path.realpath(loc.file)
+    if finding.checker in _TARGET_CHECKERS:
+        return (real, loc.line, "target", finding.claim.value, "")
+    return (real, loc.line, finding.checker, finding.claim.value, finding.message)
+
+
+def _preferred(kept: Finding, new: Finding) -> bool:
+    """True when ``new`` should replace ``kept``: higher severity, or a link finding over a path one."""
+    if _SEVERITY_RANK[new.severity] != _SEVERITY_RANK[kept.severity]:
+        return _SEVERITY_RANK[new.severity] > _SEVERITY_RANK[kept.severity]
+    return new.checker == "link" and kept.checker == "path"
+
+
 def _dedupe_findings(findings: Iterable[Finding]) -> list[Finding]:
-    """Drop repeats of the same (file, line, checker, value, message), keeping the first."""
-    seen: set[tuple[Path, int, str, str, str]] = set()
+    """One finding per (real file, line, checker, value, message), in first-seen order.
+
+    The file is compared after symlink resolution, so a symlinked copy of a document (reported under the
+    same display path) is not counted twice. A path and a link finding for the same value on the same
+    line are one claim: the more severe one is kept, the link finding on a tie.
+    """
+    slots: dict[DedupeKey, int] = {}
     unique: list[Finding] = []
     for finding in findings:
-        loc = finding.claim.location
-        key = (loc.file, loc.line, finding.checker, finding.claim.value, finding.message)
-        if key not in seen:
-            seen.add(key)
+        key = _dedupe_key(finding)
+        if key not in slots:
+            slots[key] = len(unique)
             unique.append(finding)
+        elif _preferred(unique[slots[key]], finding):
+            unique[slots[key]] = finding
     return unique
 
 
@@ -182,12 +227,39 @@ def scan_files(root: Path, files: list[Path], config: Config | None = None) -> l
         for name, checker in CHECKERS.items():
             if name in cfg.enabled_checkers and isinstance(checker, EnvChecker):
                 checked = checker.check(
-                    [c for c in env_claims if c.value not in extra], root, files, cfg.ambient_extra
+                    [c for c in env_claims if c.value not in extra],
+                    root,
+                    files,
+                    cfg.ambient_extra,
+                    cfg.env_tool_prefixes_extra,
                 )
                 findings.extend(f for f in checked if f.claim.value not in extra)
     kept = _dedupe_findings(f for f in findings if not _is_ignored(f, ignores))
     localized = dedupe_locales(kept, root) if cfg.locales else kept
-    return [_mirror_readme_downgrade(f, root) for f in localized]
+    # Downgrades run after the locale pass and can make messages converge, so dedupe once more at the end.
+    return _dedupe_findings(_link_found_at([_mirror_readme_downgrade(f, root) for f in localized], root))
+
+
+LINK_FOUND_AT_MESSAGE = "link target not found at the stated location; found at: {found}"
+
+
+def _link_found_at(findings: list[Finding], root: Path) -> list[Finding]:
+    """Downgrade link ERRORs whose full relative suffix exists elsewhere under the root to a WARNING."""
+    index: dict[str, list[str]] | None = None
+    result: list[Finding] = []
+    for finding in findings:
+        if finding.checker != "link" or finding.severity is not Severity.ERROR:
+            result.append(finding)
+            continue
+        if index is None:
+            index = paths_by_basename(root)
+        found = find_by_suffix(finding.claim.value, index)
+        if found is None:
+            result.append(finding)
+            continue
+        message = LINK_FOUND_AT_MESSAGE.format(found=found)
+        result.append(replace(finding, severity=Severity.WARNING, message=message))
+    return result
 
 
 README_MIRROR_MESSAGE = (

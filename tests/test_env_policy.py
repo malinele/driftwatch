@@ -63,9 +63,14 @@ def test_historical_is_case_insensitive_and_covers_release_notes(tmp_path: Path)
 
 
 def test_historical_extra_pattern(tmp_path: Path) -> None:
-    _write(tmp_path, "NEWS.md", "Dropped `GONE_VAR=x`.\n")
+    _write(tmp_path, "UPDATES.md", "Dropped `GONE_VAR=x`.\n")
     assert _env(scan(tmp_path, [tmp_path]))
-    assert not _env(scan(tmp_path, [tmp_path], Config(historical=("NEWS.md",))))
+    assert not _env(scan(tmp_path, [tmp_path], Config(historical=("UPDATES.md",))))
+
+
+def test_news_is_historical_by_default(tmp_path: Path) -> None:
+    _write(tmp_path, "docs/sub/NEWS.md", "Dropped `GONE_VAR=x`.\n")
+    assert scan(tmp_path, [tmp_path]) == []
 
 
 def test_historical_full_scan_restores_checking(tmp_path: Path) -> None:

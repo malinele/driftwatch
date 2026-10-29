@@ -13,7 +13,7 @@ import shutil
 import sys
 import tomllib
 import unicodedata
-from collections.abc import Collection, Sequence
+from collections.abc import Collection, Mapping, Sequence
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Literal, Protocol
@@ -48,15 +48,38 @@ PLACEHOLDER_STEMS = frozenset({"foo", "bar", "baz", "example", "sample", "myfile
 _INDEX_SKIP_DIRS = frozenset({"venv", "node_modules", "dist", "__pycache__"})
 
 
-def _basename_index(root: Path) -> dict[str, str]:
-    """Map each file basename under ``root`` to its first root-relative POSIX path (sorted walk)."""
-    index: dict[str, str] = {}
+def paths_by_basename(root: Path) -> dict[str, list[str]]:
+    """Map each file basename under ``root`` to every root-relative POSIX path with it (sorted walk)."""
+    index: dict[str, list[str]] = {}
     for dirpath, dirnames, filenames in os.walk(root):
         dirnames[:] = sorted(d for d in dirnames if not d.startswith(".") and d not in _INDEX_SKIP_DIRS)
         for filename in sorted(filenames):
-            if filename not in index:
-                index[filename] = (Path(dirpath) / filename).relative_to(root).as_posix()
+            index.setdefault(filename, []).append((Path(dirpath) / filename).relative_to(root).as_posix())
     return index
+
+
+def _basename_index(root: Path) -> dict[str, str]:
+    """Map each file basename under ``root`` to its first root-relative POSIX path (sorted walk)."""
+    return {name: paths[0] for name, paths in paths_by_basename(root).items()}
+
+
+MIN_SUFFIX_SEGMENTS = 2
+
+
+def find_by_suffix(value: str, index: Mapping[str, Sequence[str]]) -> str | None:
+    """First indexed path ending in the full relative suffix of ``value`` (leading ``./`` / ``../`` dropped).
+
+    Only suffixes with a directory component count, so a bare name never matches on its basename alone.
+    """
+    if not value or value.startswith(("/", "~")) or "://" in value:
+        return None
+    parts = [p for p in posixpath.normpath(value).split("/") if p not in ("", ".")]
+    while parts and parts[0] == "..":
+        parts = parts[1:]
+    if len(parts) < MIN_SUFFIX_SEGMENTS or ".." in parts:
+        return None
+    suffix = "/".join(parts)
+    return next((p for p in index.get(parts[-1], ()) if p == suffix or p.endswith(f"/{suffix}")), None)
 
 
 _AUTHORING = re.compile(
@@ -69,7 +92,7 @@ ECOSYSTEM_FILES = frozenset({
     "requirements.txt", "setup.py", "pyproject.toml", "package.json", "mypy.ini", "serverless.yml",
     "llms.txt", "index.html", "404.html", "openapi.json", "docker-compose.yml", "Dockerfile", "Makefile",
     ".env", "mkdocs.yml", "mkdocs.yaml", "swagger-ui.css", "swagger-ui-bundle.js", "redoc.standalone.js",
-    "favicon.ico",
+    "favicon.ico", "search_index.json",
 })  # fmt: skip
 WORKFLOWS_DIR = ".github/workflows"
 _WORKFLOW_SUFFIXES = (".yml", ".yaml")
@@ -631,6 +654,32 @@ def _doc_defines(claim: Claim, cache: dict[Path, list[str]]) -> bool:
     return False
 
 
+PROJECT_SCRIPTS_MARKER = "[project.scripts]"
+_FENCE_OPENER = ("```", "~~~")
+_PIP_INSTALL = re.compile(r"\bpip3?\s+install\b(.*)")
+
+
+def _doc_packages_module(claim: Claim, module: str, cache: dict[Path, list[str]]) -> bool:
+    """True when the claim's document packages code itself: ``[project.scripts]``, a fence titled
+    ``pyproject.toml``, or a ``pip install`` of a name matching the module's top-level package."""
+    top = _normalize_name(module.split(".")[0])
+    for line in _doc_lines(claim.location.file, cache):
+        if PROJECT_SCRIPTS_MARKER in line:
+            return True
+        if line.lstrip().startswith(_FENCE_OPENER) and "pyproject.toml" in line:
+            return True
+        match = _PIP_INSTALL.search(line)
+        if match and top in _requirement_names(match.group(1)):
+            return True
+    return False
+
+
+def _requirement_names(args: str) -> set[str]:
+    """Normalized distribution names in ``pip install`` arguments (extras and version pins dropped)."""
+    stripped = (arg.strip("'\"`") for arg in args.split())
+    return {_normalize_name(m.group(0)) for arg in stripped if (m := _REQUIREMENT_NAME.match(arg))}
+
+
 def _missing_local_path(token: str, root: Path) -> bool:
     """A missing ``./`` or ``../`` path whose parent directory exists below the repo root."""
     if not token.startswith(("./", "../")):
@@ -666,9 +715,11 @@ class CommandChecker:
         token = claim.value
         if _is_python(token):
             module = _python_module(claim)
-            if module is not None and not _module_known(module, root):
-                return Finding(claim, Severity.ERROR, f"documented python module not found: {module}", self.name)
-            return None
+            if module is None or _module_known(module, root):
+                return None
+            if _doc_packages_module(claim, module, cache):
+                return Finding(claim, Severity.INFO, f"module built by this tutorial: {module}", self.name)
+            return Finding(claim, Severity.ERROR, f"documented python module not found: {module}", self.name)
         if is_within(root / token, root) and (root / token).exists():
             return None
         if token in defined:
@@ -689,7 +740,7 @@ class CommandChecker:
         return Finding(claim, Severity.ERROR, f"documented command not found: {claim.value}", self.name)
 
 
-_ENV_DEFINITION = re.compile(r"^[ \t]*(?:\$ )?(?:export\s+)?([A-Z][A-Z0-9_]{2,})=")
+_ENV_DEFINITION = re.compile(r"^[ \t]*(?:-[ \t]+)?(?:\$ )?(?:export\s+)?([A-Z][A-Z0-9_]{2,})=")
 _ENV_WORD = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")
 
 
@@ -713,32 +764,87 @@ AMBIENT_ENV = frozenset({
     "PYTHONWARNINGS", "NODE_OPTIONS", "NODE_ENV", "WATCHFILES_FORCE_POLLING", "FORCE_COLOR", "NO_COLOR",
     "DEBIAN_FRONTEND",
 })  # fmt: skip
+# Name prefixes of variables that external tools read (editors, package managers, cloud SDKs, CI hosts).
+TOOL_ENV_PREFIXES = (
+    "GEDIT_", "UV_", "GOOGLE_", "AWS_", "AZURE_", "GCP_", "NPM_", "YARN_", "PNPM_", "CARGO_", "PIP_",
+    "DOCKER_", "COMPOSE_", "KUBE", "K8S_", "GH_", "GITLAB_", "VSCODE_", "JAVA_", "GRADLE_", "MAVEN_",
+)  # fmt: skip
 
 
-def _user_defined_lines(doc: Path) -> dict[str, set[int]]:
-    """Name -> lines where the document defines it: ``VAR=value`` at line start (``.env`` style) or ``export VAR=``."""
+_EXPORT_DEFINITION = re.compile(r"\bexport\s+([A-Z][A-Z0-9_]{2,})=")
+_DOTENV_ASSIGNMENT = re.compile(r"^[ \t]*(?:export\s+)?([A-Z][A-Z0-9_]{2,})[ \t]*=")
+_DOTENV_OPENER = re.compile(r"(?<![\w.])\.env(?![\w])")
+_DOTENV_LANGUAGES = frozenset({"env", "dotenv", ".env"})
+
+
+@dataclass(frozen=True)
+class _DocDefinitions:
+    """Variables a document defines (``dotenv``: inside a ``.env``-style fence) and the lines naming each."""
+
+    defined: frozenset[str]
+    dotenv: frozenset[str]
+    mentions: dict[str, frozenset[int]]
+
+    def covers(self, claim: Claim) -> bool:
+        """A ``.env`` definition covers every line; any other one covers the whole document once the
+        variable is named on a second line (a lone ``export X=1`` is the claim itself)."""
+        if claim.value in self.dotenv:
+            return True
+        return claim.value in self.defined and len(self.mentions.get(claim.value, frozenset())) > 1
+
+
+def _is_dotenv_fence(language: str, opener: str) -> bool:
+    return language.lower() in _DOTENV_LANGUAGES or _DOTENV_OPENER.search(opener) is not None
+
+
+def _dotenv_fence_names(doc: Path, text: str) -> set[str]:
+    """Names assigned in the document's ``.env``-style fences (language env/dotenv or ``.env`` in the opener)."""
+    source = text.splitlines()
+    names: set[str] = set()
+    for fence in parse_markdown(doc, text).code_fences:
+        opener = source[fence.start_line - 1] if 0 < fence.start_line <= len(source) else ""
+        if not _is_dotenv_fence(fence.language, opener):
+            continue
+        names.update(m.group(1) for line in fence.content.splitlines() if (m := _DOTENV_ASSIGNMENT.match(line)))
+    return names
+
+
+def _user_defined(doc: Path) -> _DocDefinitions:
+    """Where the document defines each variable: ``VAR=value`` at line start (``.env`` style, optionally as a
+    ``- `` list item or behind ``export``), ``export VAR=`` anywhere on a line, or any assignment in a
+    ``.env``-style fence."""
     try:
         text = doc.read_text(encoding="utf-8")
     except (OSError, UnicodeDecodeError):
-        return {}
-    lines: dict[str, set[int]] = {}
+        return _DocDefinitions(frozenset(), frozenset(), {})
+    defined: set[str] = set()
+    mentions: dict[str, set[int]] = {}
     for number, line in enumerate(text.splitlines(), start=1):
+        defined.update(m.group(1) for m in _EXPORT_DEFINITION.finditer(line))
         match = _ENV_DEFINITION.match(line)
         if match:
-            lines.setdefault(match.group(1), set()).add(number)
-    return lines
+            defined.add(match.group(1))
+        for word in _ENV_WORD.findall(line):
+            mentions.setdefault(word, set()).add(number)
+    dotenv = frozenset(_dotenv_fence_names(doc, text))
+    return _DocDefinitions(
+        frozenset(defined) | dotenv,
+        dotenv,
+        {name: frozenset(mentions.get(name, set())) for name in defined},
+    )
 
 
-def _defined_elsewhere(claim: Claim, cache: dict[Path, dict[str, set[int]]]) -> bool:
-    """True when the claim's document defines the variable on a line other than the claim's own.
+def _defined_in_document(claim: Claim, cache: dict[Path, _DocDefinitions]) -> bool:
+    """True when the claim's document defines the variable, which then holds for the whole document.
 
-    A lone ``export X=1`` is the claim itself, so it is still checked; a ``.env`` example that the
-    document shows separately makes the variable user-defined.
+    A definition in a ``.env``-style fence covers every mention, its own line included. Any other
+    definition does too once the name appears on a second line; a lone ``export X=1`` that nothing else
+    in the document mentions is the claim itself and is still checked.
     """
     file = claim.location.file
     if file not in cache:
-        cache[file] = _user_defined_lines(file)
-    return bool(cache[file].get(claim.value, set()) - {claim.location.line})
+        cache[file] = _user_defined(file)
+    return cache[file].covers(claim)
 
 
 def _set_inline_for_others(claim: Claim) -> bool:
@@ -772,15 +878,17 @@ class EnvChecker:
         root: Path,
         docs: Sequence[Path] = (),
         ambient_extra: Collection[str] = (),
+        tool_prefixes_extra: Collection[str] = (),
     ) -> list[Finding]:
         reads = scan_code_env_reads(root)
         ambient = AMBIENT_ENV | frozenset(ambient_extra)
+        tools = (*TOOL_ENV_PREFIXES, *tool_prefixes_extra)
         env_claims = [c for c in claims if c.kind is ClaimKind.ENV_VAR]
         prefixes = tuple(p + "_" for p in scan_auto_envvar_prefixes(root))
         ci_words = frozenset(_ENV_WORD.findall(_ci_text(root)))
-        defined: dict[Path, dict[str, set[int]]] = {}
+        defined: dict[Path, _DocDefinitions] = {}
         findings = [
-            self._unread(c, ambient)
+            self._unread(c, ambient, tools)
             for c in env_claims
             if c.value not in reads
             and (
@@ -789,7 +897,7 @@ class EnvChecker:
                     c.value.startswith(prefixes)
                     or c.value in ci_words
                     or _set_inline_for_others(c)
-                    or _defined_elsewhere(c, defined)
+                    or _defined_in_document(c, defined)
                 )
             )
         ]
@@ -797,9 +905,12 @@ class EnvChecker:
             findings.extend(self._undocumented(reads - ambient, env_claims, root, docs))
         return findings
 
-    def _unread(self, claim: Claim, ambient: frozenset[str]) -> Finding:
+    def _unread(self, claim: Claim, ambient: frozenset[str], tools: tuple[str, ...]) -> Finding:
         if claim.value in ambient:
             message = f"ambient environment variable (read by the OS/stdlib, not this codebase): {claim.value}"
+            return Finding(claim, Severity.INFO, message, self.name)
+        if claim.value.startswith(tools):
+            message = f"variable of an external tool (not read by this codebase): {claim.value}"
             return Finding(claim, Severity.INFO, message, self.name)
         return Finding(claim, Severity.ERROR, f"documented env var is not read by the code: {claim.value}", self.name)
 

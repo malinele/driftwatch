@@ -5,7 +5,7 @@ DriftWatch has five checkers, covering four kinds of claim: paths, links and anc
 | Checker | Severity produced | Checks |
 |---------|-------------------|--------|
 | `path` | error, warning | Inline code spans that look like file paths exist. |
-| `link` | error | Relative link and image targets exist. |
+| `link` | error, warning | Relative link and image targets exist. |
 | `anchor` | error, info | Fragments (`#heading`) match a heading, explicit id or HTML anchor in the target markdown file. |
 | `command` | error, info | Repo-defined commands have a target and `./` paths under existing directories exist; every other unknown tool is only INFO. |
 | `env` | error, warning | Environment variables in docs and in code agree. |
@@ -45,7 +45,7 @@ Spans containing a single or double quote character (string literals such as `b"
 
 - ERROR (`path does not exist: ...`) only when the claimed path has a directory component and its parent directory exists under the repository root or relative to the document. The document points into a real tree and names a file or directory that is not there.
 - WARNING (`path does not exist and its parent directory is not in the repo: ...`) otherwise: a bare file name, or a path whose parent directory is missing too.
-- INFO (`common ecosystem file, not present in this repo`) when the base name is in the built-in ecosystem list: `requirements.txt`, `setup.py`, `pyproject.toml`, `package.json`, `mypy.ini`, `serverless.yml`, `llms.txt`, `index.html`, `404.html`, `openapi.json`, `docker-compose.yml`, `Dockerfile`, `Makefile`, `.env`, `mkdocs.yml`, `mkdocs.yaml`, `swagger-ui.css`, `swagger-ui-bundle.js`, `redoc.standalone.js` and `favicon.ico`. These files are named in docs as things a project of that kind has, whether or not this repo has one.
+- INFO (`common ecosystem file, not present in this repo`) when the base name is in the built-in ecosystem list: `requirements.txt`, `setup.py`, `pyproject.toml`, `package.json`, `mypy.ini`, `serverless.yml`, `llms.txt`, `index.html`, `404.html`, `openapi.json`, `docker-compose.yml`, `Dockerfile`, `Makefile`, `.env`, `mkdocs.yml`, `mkdocs.yaml`, `swagger-ui.css`, `swagger-ui-bundle.js`, `redoc.standalone.js`, `favicon.ico` and `search_index.json` (the mkdocs search index). These files are named in docs as things a project of that kind has, whether or not this repo has one.
 
 The placeholder, found-elsewhere and ecosystem rules below are tried before the ladder, in that order, so a file that exists at another location still gets the found-at WARNING.
 
@@ -93,6 +93,10 @@ Resolution: relative to the document's directory first, then relative to the rep
 MyST labels: a line of the form `(name)=` in any scanned document defines a global label, and a link whose target equals that name resolves. Detection relies on that syntax alone; no Sphinx conf.py is needed.
 
 **ERROR:** `link target does not exist: ...`.
+
+**WARNING:** `link target not found at the stated location; found at: <path>` replaces the ERROR when the target's full relative suffix exists elsewhere under the root, for example a link to img/favicon.ico when themes/mkdocs/img/favicon.ico exists. Leading `./` and `../` segments are dropped before matching, the suffix must have a directory component (a bare file name never matches on its base name alone), and the first match of the path checker's sorted base-name index is reported. This runs after the translation fallback and mirror README rules below, so their more specific messages win.
+
+**One finding per claim:** an inline code span whose text equals a relative link target on the same line (the span is the link's visible text, or sits next to the link), is claimed by both the path and the link checker. Their findings for the same value on the same line are merged: the more severe one is kept, the link finding on a tie. Findings are also compared by the document's real path, so a symlinked copy of a document (which reports under the same display path) does not repeat them. The merge runs again after all downgrades.
 
 Template placeholders are skipped: a target that is a single ALLCAPS_WITH_UNDERSCORES token (for example `ENGLISH_VERSION_URL`), or the bare word `url` in a file under a `scripts/` directory.
 
@@ -173,9 +177,9 @@ A token is accepted without a finding when it exists relative to the repository 
 
 **Doc-defined CLIs:** a token is also silent when the same document mentions it (hyphens and underscores compare equal) within three lines of a definition marker: `pip install`, `console_scripts`, `[project.scripts]`, `entry_points`, `add_typer` or `Typer(`. Tutorials invent tools such as `rick-portal-gun` and show how to install or declare them. Otherwise the token is an INFO.
 
-For `python -m MODULE` the module is also checked: it must be a file or package under the root or under `src/`, a standard-library module, or have one of the well-known names above as its top-level package.
+For `python -m MODULE` the module is also checked: it must be a file or package under the root or under `src/`, a standard-library module, or have one of the well-known names above as its top-level package. A module that fails this check is only an INFO (`module built by this tutorial: ...`) when the same document shows packaging context: a `[project.scripts]` line, a code fence whose opening line names `pyproject.toml` (such as a `title="pyproject.toml"` fence), or a `pip install` line installing a name equal to the module's top-level package (hyphens and underscores compare equal, extras and version pins are dropped).
 
-**ERROR:** `documented command not found: ...` (repo-local tokens only) or `documented python module not found: ...`. **INFO:** `command not found in repo or on PATH (external tool?)`. This checker produces no warnings.
+**ERROR:** `documented command not found: ...` (repo-local tokens only) or `documented python module not found: ...`. **INFO:** `command not found in repo or on PATH (external tool?)` or `module built by this tutorial: ...`. This checker produces no warnings.
 
 Example:
 
@@ -199,7 +203,7 @@ Limitations:
 
 ## Historical documents
 
-Changelog-type files describe the past, not the present, so a dead path, command or variable in them is not drift. Files whose base name matches `CHANGELOG*.md`, `HISTORY*.md`, `CHANGES*.md` or `RELEASES*.md`, or whose path matches `docs/release-notes*.md` (case-insensitive), run only the link and anchor checkers. Path, command and env claims are not extracted from them. The `historical` option adds glob patterns (matched against the base name and the root-relative path, case-insensitive); `historical_full_scan = true` turns the policy off. These files still count as documentation for the undocumented-variable warning.
+Changelog-type files describe the past, not the present, so a dead path, command or variable in them is not drift. Files whose base name matches `release-notes*.md`, `release_notes*.md`, `CHANGELOG*`, `HISTORY*`, `CHANGES*`, `NEWS*` or `RELEASES*.md` (case-insensitive) anywhere in the tree, such as a release notes page nested in a translated docs tree, run only the link and anchor checkers. Path, command and env claims are not extracted from them. The `historical` option adds glob patterns (matched against the base name and the root-relative path, case-insensitive); `historical_full_scan = true` turns the policy off. These files still count as documentation for the undocumented-variable warning.
 
 ## Env checker
 
@@ -216,9 +220,11 @@ Hidden directories, `venv`, `node_modules`, `dist` and `__pycache__` are not sea
 **Policy (v3): documented-but-not-read is suppressed** (no finding at all, not even INFO) for a non-ambient variable when any of these holds:
 
 - **Auto env prefix.** Python code contains `auto_envvar_prefix="PREFIX"` (keyword or `"auto_envvar_prefix": "PREFIX"` dict form, the click convention). Every documented `PREFIX_*` name counts as read.
-- **Defined in the document.** The same document has a line that starts with an assignment (`.env` style, optional `$ ` prompt, optional `export`) to that name, on a different line than the claim. The reader is shown how to define it. A lone export line is the claim itself and is still checked.
+- **Defined in the document.** The same document defines the name anywhere: a line that starts with an assignment (`.env` style, optional `- ` list marker as in a compose `environment:` list, optional `$ ` prompt, optional `export`), an export assignment anywhere on a line, or an assignment inside a `.env`-style fence (language `env` or `dotenv`, or `.env` named on the fence's opening line, as in `title=".env"`; spaces around `=` are allowed there). The variable is then user-defined for the whole document, so every mention is suppressed. The reader is shown how to define it. A definition in a `.env`-style fence always counts; any other definition counts once the name appears on a second line of the document, so a lone export line that nothing else mentions is the claim itself and is still checked.
 - **Set inline for another program.** The claim's line assigns the name directly before a command word, as in running python with a hash-seed variable set in front. The variable is set for that program's environment.
 - **Set in CI.** The name appears as an upper-case word in any `.github/workflows/*.yml` or `*.yaml` of the repository.
+
+**INFO:** `variable of an external tool (not read by this codebase): ...` replaces the ERROR for a documented, unread name that starts with a prefix of a variable family read by an external tool: `GEDIT_`, `UV_`, `GOOGLE_`, `AWS_`, `AZURE_`, `GCP_`, `NPM_`, `YARN_`, `PNPM_`, `CARGO_`, `PIP_`, `DOCKER_`, `COMPOSE_`, `KUBE` (no underscore, so KUBECONFIG matches), `K8S_`, `GH_`, `GITLAB_`, `VSCODE_`, `JAVA_`, `GRADLE_` and `MAVEN_`. Add prefixes with `env_tool_prefixes_extra` (a list of strings, matched as plain prefixes). The suppression rules above are applied first.
 
 Ambient names keep their INFO regardless. A variable the code reads but no document mentions still gets the WARNING below, and a documented non-ambient variable matching none of the rules above is still an ERROR.
 
