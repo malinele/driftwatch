@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -14,6 +15,7 @@ class CodeFence:
     language: str
     content: str
     start_line: int  # 1-based line of the opening fence
+    title: str = ""  # file name the fence is labelled with (``title="x.py"`` or ``python x.py``)
 
 
 @dataclass(frozen=True)
@@ -43,6 +45,25 @@ class MarkdownDocument:
     inline_codes: list[InlineCode]
     links: list[MdLink]
     headings: list[Heading]
+
+
+_TITLE_ATTR = re.compile(r"""\btitle\s*=\s*(?:"([^"]*)"|'([^']*)')""")
+
+
+def fence_title(info: str) -> str:
+    """File name a fence info string labels the fence with, or ``""``.
+
+    Recognises ``title="NAME"`` (mkdocs/material) and a bare filename token after the language
+    (```` ```python main.py ````); a token counts as a filename when it has no ``=``, ``{`` or ``:``.
+    """
+    match = _TITLE_ATTR.search(info)
+    if match:
+        return (match.group(1) or match.group(2) or "").strip()
+    tokens = info.split()
+    for token in tokens[1:]:
+        if "." in token.strip(".") and not any(c in token for c in "={:"):
+            return token
+    return ""
 
 
 def _first_line(token: Token) -> int:
@@ -94,7 +115,14 @@ def parse_markdown(path: Path, text: str) -> MarkdownDocument:
         if token.type == "fence":
             info = token.info.strip()
             language = info.split(maxsplit=1)[0] if info else ""
-            fences.append(CodeFence(language=language, content=token.content, start_line=_first_line(token)))
+            fences.append(
+                CodeFence(
+                    language=language,
+                    content=token.content,
+                    start_line=_first_line(token),
+                    title=fence_title(info),
+                )
+            )
         elif token.type == "heading_open":
             inline = tokens[index + 1]
             headings.append(Heading(text=inline.content, level=int(token.tag[1:]), line=_first_line(token)))

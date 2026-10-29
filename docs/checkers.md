@@ -47,6 +47,14 @@ Spans containing a single or double quote character (string literals such as `b"
 
 **INFO:** `user-local path, not checked` for paths starting with `~/`. They are claimed but never looked up.
 
+**INFO:** `file the reader is asked to create` replaces the ERROR when the claim's line, or the line immediately before it, contains (case-insensitive) `create a file`, `save it as`, `name it`, `add a file` or `new file called`. Such a path is an instruction, not a claim about the repo.
+
+**INFO:** `generated or ignored artifact` replaces the ERROR when the missing path lies under `site/`, `build/`, `dist/` or `docs/build/`, or is matched by the repository's root `.gitignore`. The matcher is deliberately simple: exact names, `dir/` prefixes, and `*` globs via `fnmatch`, matched against the whole path (patterns containing a slash or starting with `/`) or any single path component (other patterns). Limitation: negation lines (`!pattern`) are not supported and are ignored, as are nested `.gitignore` files.
+
+**Fence titles:** an inline code span equal to the title of any code fence in the same document is never claimed. A title is `title="NAME"` (mkdocs/material) or a filename token after the language, as in ```` ```python main.py ````.
+
+**Test content:** markdown under `tests/`, `test/`, `fixtures/` or `testdata/` directories (relative to the root) is not scanned by default, since it is usually fixture input. Set `scan_tests = true` in the configuration to scan it.
+
 Example:
 
 ```markdown

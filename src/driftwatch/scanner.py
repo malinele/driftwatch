@@ -114,9 +114,23 @@ def is_historical(file: Path, root: Path, extra: tuple[str, ...] = ()) -> bool:
     return False
 
 
+TEST_DIRS = frozenset({"tests", "test", "fixtures", "testdata"})
+
+
+def is_test_content(file: Path, root: Path) -> bool:
+    """True if ``file`` sits under a tests/test/fixtures/testdata directory inside ``root``."""
+    try:
+        relative = file.resolve().relative_to(root.resolve())
+    except ValueError:
+        return False
+    return any(part in TEST_DIRS for part in relative.parts[:-1])
+
+
 def scan_files(root: Path, files: list[Path], config: Config | None = None) -> list[Finding]:
     cfg = config if config is not None else Config()
     files = [f for f in files if not is_excluded(f, root, cfg.exclude)]
+    if not cfg.scan_tests:
+        files = [f for f in files if not is_test_content(f, root)]
     findings: list[Finding] = []
     env_claims: list[Claim] = []
     ignores: dict[Path, IgnoreMap] = {}

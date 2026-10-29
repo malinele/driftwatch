@@ -75,10 +75,11 @@ def _source_lines(doc: MarkdownDocument) -> list[str]:
 def extract_path_claims(doc: MarkdownDocument) -> list[Claim]:
     """Return a PATH claim for every inline code span that looks like a repo path."""
     lines = _source_lines(doc)
+    titles = {fence.title for fence in doc.code_fences if fence.title}
     claims: list[Claim] = []
     for code in doc.inline_codes:
         token = code.text.strip().rstrip(TRAILING_PUNCTUATION)
-        if not _looks_like_path(token):
+        if not _looks_like_path(token) or token in titles:
             continue
         context = lines[code.line - 1] if 0 < code.line <= len(lines) else ""
         claims.append(

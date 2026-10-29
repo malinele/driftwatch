@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import difflib
+import fnmatch
 import json
 import os
 import posixpath
@@ -55,6 +56,58 @@ def _basename_index(root: Path) -> dict[str, str]:
     return index
 
 
+_AUTHORING = re.compile(r"create a file|save it as|name it|add a file|new file called", re.IGNORECASE)
+GENERATED_DIRS = ("site", "build", "dist", "docs/build")
+
+
+def _read_lines(file: Path) -> list[str]:
+    try:
+        return file.read_text(encoding="utf-8").splitlines()
+    except (OSError, UnicodeDecodeError):
+        return []
+
+
+def is_authoring_instruction(claim: Claim) -> bool:
+    """True if the claim's line, or the document line just before it, asks the reader to create a file."""
+    if _AUTHORING.search(claim.context):
+        return True
+    lines = _read_lines(claim.location.file)
+    previous = claim.location.line - 2
+    return 0 <= previous < len(lines) and _AUTHORING.search(lines[previous]) is not None
+
+
+def load_gitignore(root: Path) -> list[str]:
+    """Patterns from ``root/.gitignore``. Negations (``!``) are not supported and are dropped."""
+    lines = _read_lines(root / ".gitignore")
+    stripped = (line.strip() for line in lines)
+    return [line for line in stripped if line and not line.startswith(("#", "!"))]
+
+
+def _pattern_matches(pattern: str, relative: str) -> bool:
+    anchored = pattern.startswith("/") or "/" in pattern.rstrip("/")
+    body = pattern.strip("/")
+    parts = relative.split("/")
+    if anchored:
+        prefixes = ["/".join(parts[: i + 1]) for i in range(len(parts))]
+        return any(fnmatch.fnmatchcase(prefix, body) for prefix in prefixes)
+    return any(fnmatch.fnmatchcase(part, body) for part in parts)
+
+
+def is_generated_or_ignored(relative: str, patterns: Sequence[str]) -> bool:
+    """True for paths under a build-output directory or matched by a simple ``.gitignore`` matcher."""
+    relative = posixpath.normpath(relative).strip("/")
+    if any(relative == d or relative.startswith(f"{d}/") for d in GENERATED_DIRS):
+        return True
+    return any(_pattern_matches(p, relative) for p in patterns)
+
+
+def _relative_to_root(candidates: Sequence[Path], root: Path) -> list[str]:
+    """Root-relative POSIX paths (``..`` collapsed) for candidates that lie inside ``root``."""
+    base = Path(os.path.abspath(root))
+    absolute = (Path(os.path.abspath(c)) for c in candidates)
+    return [a.relative_to(base).as_posix() for a in absolute if a.is_relative_to(base)]
+
+
 class PathChecker:
     """Verifies that claimed paths exist relative to the repo root or the doc's directory."""
 
@@ -63,10 +116,11 @@ class PathChecker:
     def check(self, claims: list[Claim], root: Path) -> list[Finding]:
         findings: list[Finding] = []
         index: dict[str, str] | None = None
+        ignore_patterns = load_gitignore(root)
         for claim in claims:
             if claim.kind is not ClaimKind.PATH:
                 continue
-            finding = self._check_one(claim, root)
+            finding = self._check_one(claim, root, ignore_patterns)
             if finding is not None and finding.severity is Severity.ERROR:
                 if index is None:
                     index = _basename_index(root)
@@ -87,7 +141,7 @@ class PathChecker:
             return Finding(claim, Severity.WARNING, message, self.name)
         return finding
 
-    def _check_one(self, claim: Claim, root: Path) -> Finding | None:
+    def _check_one(self, claim: Claim, root: Path, ignore_patterns: Sequence[str] = ()) -> Finding | None:
         if claim.value.startswith("~/"):
             return Finding(claim, Severity.INFO, "user-local path, not checked", self.name)
         if Path(claim.value).is_absolute():
@@ -99,6 +153,10 @@ class PathChecker:
             return Finding(claim, Severity.WARNING, f"{ESCAPE_MESSAGE}: {claim.value}", self.name)
         if any(c.exists() for c in inside):
             return None
+        if is_authoring_instruction(claim):
+            return Finding(claim, Severity.INFO, "file the reader is asked to create", self.name)
+        if any(is_generated_or_ignored(r, ignore_patterns) for r in _relative_to_root(inside, root)):
+            return Finding(claim, Severity.INFO, "generated or ignored artifact", self.name)
         return Finding(claim, Severity.ERROR, f"path does not exist: {claim.value}", self.name)
 
 
