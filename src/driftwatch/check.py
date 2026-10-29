@@ -7,11 +7,13 @@ import re
 import shlex
 import shutil
 import sys
+from collections.abc import Sequence
 from pathlib import Path
 from typing import Protocol
 
+from driftwatch.envscan import scan_code_env_reads
 from driftwatch.markdown import parse_markdown
-from driftwatch.models import Claim, ClaimKind, Finding, Severity
+from driftwatch.models import Claim, ClaimKind, Finding, Location, Severity
 
 
 class Checker(Protocol):
@@ -206,9 +208,62 @@ class CommandChecker:
         return Finding(claim, Severity.ERROR, f"documented command not found: {token}", self.name)
 
 
+_ENV_WORD = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")
+
+
+def _mentioned_words(docs: Sequence[Path]) -> set[str]:
+    """Every upper-case word in the raw text of ``docs`` (a looser test than the claim heuristics)."""
+    words: set[str] = set()
+    for doc in docs:
+        try:
+            words.update(_ENV_WORD.findall(doc.read_text(encoding="utf-8")))
+        except (OSError, UnicodeDecodeError):
+            continue
+    return words
+
+
+class EnvChecker:
+    """Bidirectional env var check between documented ``ENV_VAR`` claims and what the code reads.
+
+    The code-read set is built lazily from ``root`` on each call. ``docs`` is the scanned doc corpus;
+    without it, only the claims count as documentation and no undocumented warnings are raised.
+    """
+
+    name = "env"
+
+    def check(self, claims: list[Claim], root: Path, docs: Sequence[Path] = ()) -> list[Finding]:
+        reads = scan_code_env_reads(root)
+        env_claims = [c for c in claims if c.kind is ClaimKind.ENV_VAR]
+        findings = [
+            Finding(c, Severity.ERROR, f"documented env var is not read by the code: {c.value}", self.name)
+            for c in env_claims
+            if c.value not in reads
+        ]
+        if docs:
+            findings.extend(self._undocumented(reads, env_claims, root, docs))
+        return findings
+
+    def _undocumented(
+        self, reads: set[str], claims: list[Claim], root: Path, docs: Sequence[Path]
+    ) -> list[Finding]:
+        mentioned = _mentioned_words(docs) | {c.value for c in claims}
+        readme = root / "README.md"
+        anchor_file = readme if readme.is_file() else docs[0]
+        return [
+            Finding(
+                Claim(ClaimKind.ENV_VAR, name, Location(file=anchor_file, line=1), context=""),
+                Severity.WARNING,
+                f"env var read by code but undocumented: {name}",
+                self.name,
+            )
+            for name in sorted(reads - mentioned)
+        ]
+
+
 CHECKERS: dict[str, Checker] = {
     PathChecker.name: PathChecker(),
     LinkChecker.name: LinkChecker(),
     AnchorChecker.name: AnchorChecker(),
     CommandChecker.name: CommandChecker(),
+    EnvChecker.name: EnvChecker(),
 }

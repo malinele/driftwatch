@@ -6,6 +6,7 @@ import re
 import shlex
 from urllib.parse import unquote
 
+from driftwatch.envscan import ENV_NAME, SYSTEM_ENV_VARS
 from driftwatch.markdown import CodeFence, MarkdownDocument
 from driftwatch.models import Claim, ClaimKind, Location
 
@@ -163,4 +164,63 @@ def extract_command_claims(doc: MarkdownDocument) -> list[Claim]:
                     context=line,
                 )
             )
+    return claims
+
+
+ENV_STOPLIST = frozenset({
+    "TODO", "FIXME", "NOTE", "WARNING", "ERROR", "INFO", "DEBUG", "GET", "POST", "PUT", "DELETE",
+    "PATCH", "HTTP", "HTTPS", "API", "URL", "JSON", "YAML", "README", "LICENSE", "CLI", "SQL",
+    "HTML", "CSS", "TRUE", "FALSE", "NULL",
+})  # fmt: skip
+_ENV_TOKEN = re.compile(r"(?<![A-Za-z0-9_])[A-Z][A-Z0-9_]{2,}(?![A-Za-z0-9_])")
+_ENV_CONTEXTS = (
+    re.compile(r"(?<![A-Za-z0-9_])([A-Z][A-Z0-9_]{2,})="),
+    re.compile(r"\bexport\s+([A-Z][A-Z0-9_]{2,})\b"),
+    re.compile(r"\$\{?([A-Z][A-Z0-9_]{2,})\b"),
+)
+
+
+def _env_ok(name: str) -> bool:
+    return bool(ENV_NAME.match(name)) and name not in ENV_STOPLIST and name not in SYSTEM_ENV_VARS
+
+
+def _env_names(text: str, *, whole_span: bool) -> list[str]:
+    """Env-var-looking names in ``text`` without duplicates.
+
+    An underscore or an assignment/export/``$`` context is required. With ``whole_span`` (inline
+    code) a bare token only counts when it is the entire span, so prose-like code is not mined.
+    """
+    in_context = {m.group(1) for pattern in _ENV_CONTEXTS for m in pattern.finditer(text)}
+    stripped = text.strip()
+    bare = [stripped] if whole_span and _ENV_TOKEN.fullmatch(stripped) else []
+    if not whole_span:
+        bare = _ENV_TOKEN.findall(text)
+    candidates = sorted(in_context | set(bare), key=text.find)
+    return [n for n in candidates if _env_ok(n) and ("_" in n or n in in_context)]
+
+
+def _env_claims(names: list[str], doc: MarkdownDocument, line: int, context: str) -> list[Claim]:
+    location = Location(file=doc.path, line=line)
+    return [Claim(kind=ClaimKind.ENV_VAR, value=n, location=location, context=context) for n in names]
+
+
+def extract_env_claims(doc: MarkdownDocument) -> list[Claim]:
+    """Return an ENV_VAR claim for each env-var-looking name in inline code and shell fences.
+
+    Names match ``^[A-Z][A-Z0-9_]{2,}$`` and must contain ``_`` or appear in an assignment
+    (``VAR=...``), ``export VAR`` or ``$VAR`` / ``${VAR}`` context. A small stoplist (``TODO``,
+    ``GET``, ``JSON`` ...) and OS-provided variables (``PATH``, ``HOME`` ...) are ignored.
+    Inline code only yields a bare name when it is the whole span.
+    """
+    lines = _source_lines(doc)
+    claims: list[Claim] = []
+    for code in doc.inline_codes:
+        context = lines[code.line - 1] if 0 < code.line <= len(lines) else ""
+        claims.extend(_env_claims(_env_names(code.text, whole_span=True), doc, code.line, context))
+    for fence in doc.code_fences:
+        if fence.language.strip().lower() not in SHELL_LANGUAGES:
+            continue
+        for offset, line in enumerate(fence.content.splitlines()):
+            names = _env_names(line, whole_span=False)
+            claims.extend(_env_claims(names, doc, fence.start_line + 1 + offset, line.strip()))
     return claims

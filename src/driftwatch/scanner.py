@@ -6,10 +6,10 @@ import os
 from collections.abc import Iterator
 from pathlib import Path
 
-from driftwatch.check import CHECKERS
-from driftwatch.extract import extract_path_claims
+from driftwatch.check import CHECKERS, EnvChecker
+from driftwatch.extract import extract_env_claims, extract_path_claims
 from driftwatch.markdown import parse_markdown
-from driftwatch.models import Finding
+from driftwatch.models import Claim, Finding
 
 SKIP_DIRS = frozenset({".git", ".venv", "venv", "node_modules", "dist", "__pycache__"})
 
@@ -40,11 +40,20 @@ def _walk(directory: Path) -> Iterator[Path]:
 
 def scan_files(root: Path, files: list[Path]) -> list[Finding]:
     findings: list[Finding] = []
+    env_claims: list[Claim] = []
     for file in files:
         text = file.read_text(encoding="utf-8", errors="replace")
-        claims = extract_path_claims(parse_markdown(file, text))
+        doc = parse_markdown(file, text)
+        claims = extract_path_claims(doc)
+        env_claims.extend(extract_env_claims(doc))
         for checker in CHECKERS.values():
-            findings.extend(checker.check(claims, root))
+            if not isinstance(checker, EnvChecker):
+                findings.extend(checker.check(claims, root))
+    # The env checker is bidirectional, so it needs every claim and the whole doc corpus at once.
+    if files:
+        for checker in CHECKERS.values():
+            if isinstance(checker, EnvChecker):
+                findings.extend(checker.check(env_claims, root, files))
     return findings
 
 
